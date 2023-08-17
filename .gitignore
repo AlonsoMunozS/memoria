@@ -1,0 +1,17 @@
+node_modules/
+dist/
+.tmp
+logs/
+data
+test-results.xml
+.aws-sam/
+*.toml
+*.log
+*.tsbuildinfo
+*.env
+
+public/workbox-*.js
+public/workbox-*.map
+
+# Mac OS
+.DS_Store
