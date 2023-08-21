@@ -20,7 +20,7 @@ const getRandomNumber = (min: number, max: number): number => {
   return randomNumber;
 };
 
-export class TenderController {
+export class CreateTenderController {
   constructor(
     private readonly tenderCretor: TenderCreator,
     ) {}
@@ -31,8 +31,10 @@ export class TenderController {
     const today = new Date();
     const timestamp = today.getTime();
 
-    if (name || safi || province || commune || location || createdBy || mercadoPublicoId || category){
+    if (!name || !safi || !province || !commune || !location || !createdBy || !mercadoPublicoId || !category){
       res.status(400).send();
+      return;
+
     }
     const request: CreateTenderRequest = {
       id : Math.floor(getRandomNumber(1000,999999)),
@@ -51,6 +53,7 @@ export class TenderController {
     try {
       await this.tenderCretor.createTender(request)
       res.status(201).send();
+      return;
     } catch (error) {
       if (error instanceof Error) {
         if (error.name === 'NotFoundException')

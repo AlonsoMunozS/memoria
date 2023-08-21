@@ -19,9 +19,35 @@ export class MongoTenderRepository implements TenderRepository {
   async create(tender : Tender): Promise<void> {
     try {
       await client.connect();
-      const database = client.db("PruebaPMM");
       const collection = database.collection(collectionName);
       await collection.insertOne(tender);
+    }finally{
+      await client.close();
+    }
+  }
+  async find(): Promise<Array<Tender>> {
+    try {
+      await client.connect();
+      const collection = database.collection(collectionName);
+      const tendersCursor = collection.find({});
+      const tendersArray = await tendersCursor.toArray();
+      console.log(tendersArray)
+      const mappedTenders: Tender[] = tendersArray.map((tenderDoc: any) => {
+        return new Tender({   
+          id:tenderDoc.id,
+          name:tenderDoc.name,
+          safi:tenderDoc.safi,
+          province:tenderDoc.province,
+          commune:tenderDoc.commune,
+          location:tenderDoc.location,
+          createdAt:tenderDoc.createdAt,
+          createdBy:tenderDoc.createdBy,
+          currentStage:tenderDoc.currentStage,
+          mercadoPublicoId:tenderDoc.mercadoPublicoId,
+          category:tenderDoc.category,
+          companies:tenderDoc.companies});
+      });
+      return mappedTenders;
     }finally{
       await client.close();
     }

@@ -1,10 +1,12 @@
+import { TenderLocation } from "./tenderLocation"
+
 export class Tender {
 	readonly id: number
 	readonly name: String
 	readonly safi: String
 	readonly province: string
 	readonly commune: string
-	readonly location?: Array<number>
+	readonly location?: TenderLocation
 	readonly createdAt: number
 	readonly createdBy: number
 	readonly currentStage: String
@@ -31,7 +33,7 @@ export class Tender {
          safi: String,
          province: string,
          commune: string,
-         location?: Array<number>,
+         location?: TenderLocation,
          createdAt: number,
          createdBy: number,
          currentStage: String,
