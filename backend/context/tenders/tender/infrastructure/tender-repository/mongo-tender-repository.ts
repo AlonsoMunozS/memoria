@@ -39,6 +39,7 @@ export class MongoTenderRepository implements TenderRepository {
           safi:tenderDoc.safi,
           province:tenderDoc.province,
           commune:tenderDoc.commune,
+          address:tenderDoc.address,
           location:tenderDoc.location,
           createdAt:tenderDoc.createdAt,
           createdBy:tenderDoc.createdBy,

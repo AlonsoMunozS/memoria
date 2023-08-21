@@ -6,6 +6,7 @@ export class Tender {
 	readonly safi: String
 	readonly province: string
 	readonly commune: string
+        readonly address: string
 	readonly location?: TenderLocation
 	readonly createdAt: number
 	readonly createdBy: number
@@ -20,6 +21,7 @@ export class Tender {
         safi,
         province,
         commune,
+        address,
         location,
         createdAt,
         createdBy,
@@ -33,6 +35,7 @@ export class Tender {
          safi: String,
          province: string,
          commune: string,
+         address: string,
          location?: TenderLocation,
          createdAt: number,
          createdBy: number,
@@ -46,6 +49,7 @@ export class Tender {
         this.safi = safi
         this.province = province
         this.commune = commune
+        this.address = address
         this.location = location
         this.createdAt = createdAt
         this.createdBy = createdBy

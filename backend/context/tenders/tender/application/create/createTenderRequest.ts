@@ -6,6 +6,7 @@ export type CreateTenderRequest = {
 	safi: String,
 	province: string,
 	commune: string,
+	address: string,
 	location?: TenderLocation,
 	createdAt: number,
 	createdBy: number,
