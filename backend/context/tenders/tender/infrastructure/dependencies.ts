@@ -1,5 +1,5 @@
 import { TenderCreator } from "../application/create/tenderCreator";
-import { TenderController } from "./rest-api/tenderController";
+import { TenderController } from "./rest-api/createTenderController";
 import { MongoTenderRepository } from "./tender-repository/mongo-tender-repository";
 
 const tenderRepository = new MongoTenderRepository();
