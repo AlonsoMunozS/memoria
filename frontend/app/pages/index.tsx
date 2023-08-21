@@ -8,8 +8,8 @@ import { Button } from 'primereact/button';
 const HomePage = () => {
   return (
     <div>
-      <h1>AFUERA</h1>
-      <Button label="Click Me" />
+      <h1>Home</h1>
+      <Button label="Botón de prueba" />
     </div>
   );
 };

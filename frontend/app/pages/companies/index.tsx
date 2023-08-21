@@ -1,17 +1,13 @@
 import React from 'react';
 import { Button } from 'primereact/button';
-//import "primereact/resources/themes/lara-light-indigo/theme.css";
 
-//core
-//import "primereact/resources/primereact.min.css";
-
-const HomePage = () => {
+const Companies = () => {
   return (
     <div>
-      <h1>Welcome to My Next.js App</h1>
-      <Button label="Click Me" />
+      <h1>/Companies</h1>
+      <Button label="Boton de prueba" />
     </div>
   );
 };
 
-export default HomePage;
+export default Companies;
