@@ -27,10 +27,15 @@ export class TenderController {
 
   async createTender(req: Request, res: Response) {
     const { name, safi, province, commune, location, createdBy, mercadoPublicoId, category} = req.body;
+
     const today = new Date();
     const timestamp = today.getTime();
+
+    if (name || safi || province || commune || location || createdBy || mercadoPublicoId || category){
+      res.status(400).send();
+    }
     const request: CreateTenderRequest = {
-      id : getRandomNumber(1000,999999),
+      id : Math.floor(getRandomNumber(1000,999999)),
       name,
       safi,
       province,
@@ -43,8 +48,19 @@ export class TenderController {
       category
     }
 
-    await this.tenderCretor.createTender(request)
-    res.status(200).send();
+    try {
+      await this.tenderCretor.createTender(request)
+      res.status(201).send();
+    } catch (error) {
+      if (error instanceof Error) {
+        if (error.name === 'NotFoundException')
+        res.status(404).send();
+        else if (error.name === 'InvalidArgumentError')
+        res.status(400).send();
+      }
+      res.status(500).send();
+    }
+
   }
 
 }
