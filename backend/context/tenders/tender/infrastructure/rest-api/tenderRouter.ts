@@ -1,16 +1,17 @@
 import express from "express";
 
-import { tenderController } from "../dependencies";
+import { createTenderController } from "../dependencies";
+import { findTenderController } from "../dependencies";
 
 const tenderRouter = express.Router();
 
 tenderRouter.post(
   "/create",
-  tenderController.createTender.bind(tenderController)
+  createTenderController.createTender.bind(createTenderController)
 );
-// userRouter.get(
-//   "/",
-//   tenderController.findUsers.bind(tenderController)
-// );
+tenderRouter.get(
+  "/",
+  findTenderController.findTenders.bind(findTenderController)
+);
 
 export { tenderRouter };

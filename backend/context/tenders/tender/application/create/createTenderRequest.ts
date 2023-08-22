@@ -1,10 +1,13 @@
+import { TenderLocation } from "../../domain/tenderLocation"
+
 export type CreateTenderRequest = {
 	id: number,
 	name: String,
 	safi: String,
 	province: string,
 	commune: string,
-	location?: Array<number>,
+	address: string,
+	location?: TenderLocation,
 	createdAt: number,
 	createdBy: number,
 	currentStage: String,
