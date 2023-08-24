@@ -29,8 +29,27 @@ export class CreateTenderController {
 
   async createTender(req: Request, res: Response) {
 
+    const {authorization} = req.headers
+    if (!authorization){    
+      res.status(400).send();
+      return;
+    }
+
+    const token = authorization.split(" ")[1]
+    console.log("token:", token)
+  
+    const tokenSections = (token || '').split('.')
+    if (tokenSections.length < 2){    
+        res.status(400).send();
+        return;
+      }
+  
+    const payloadJSON = Buffer.from(tokenSections[1], 'base64').toString('utf8')
+    const payload = JSON.parse(payloadJSON)
+    console.log("payload:", payload)
+
     const body = req.body as CreateTenderBodyRequest
-    console.log('body:', body)
+    // console.log('body:', body)
     const { name, safi, province, commune, address, location, createdBy, mercadoPublicoId, category} = body;
 
     const today = new Date();
