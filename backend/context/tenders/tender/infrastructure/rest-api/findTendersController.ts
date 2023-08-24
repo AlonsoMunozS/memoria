@@ -7,7 +7,7 @@ export class FindTendersController {
     private readonly tendersFinder: TendersFinder,
     ) {}
 
-  async findTenders(req: Request, res: Response) {
+  async findTenders(res: Response) {
 
     try {
       const tenders = await this.tendersFinder.findTenders()

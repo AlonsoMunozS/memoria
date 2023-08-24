@@ -2,13 +2,15 @@ import { Request, Response } from "express";
 
 import { TenderCreator } from "../../application/create/tenderCreator";
 import { CreateTenderRequest } from "../../application/create/createTenderRequest";
+import { TenderLocation } from "../../domain/tenderLocation";
 
 type CreateTenderBodyRequest = {
-	name: String,
-	safi: String,
+	name: string,
+	safi: string,
 	province: string,
 	commune: string,
-	location?: Array<number>,
+  address:string,
+	location?: TenderLocation,
 	createdBy: number,
 	mercadoPublicoId: string,
 	category?: string,
@@ -26,15 +28,21 @@ export class CreateTenderController {
     ) {}
 
   async createTender(req: Request, res: Response) {
-    const { name, safi, province, commune, address, location, createdBy, mercadoPublicoId, category} = req.body;
+
+    const body = req.body as CreateTenderBodyRequest
+    console.log('body:', body)
+    const { name, safi, province, commune, address, location, createdBy, mercadoPublicoId, category} = body;
 
     const today = new Date();
     const timestamp = today.getTime();
 
-    if (!name || !safi || !province || !commune || !address || !location || !createdBy || !mercadoPublicoId || !category){
+    if (!name || !safi || !province || !commune || !address || !createdBy || !mercadoPublicoId ){
       res.status(400).send();
       return;
-
+    }
+    if (location && (!location?.latitude && !location?.longitude)){
+      res.status(400).send();
+      return;
     }
     const request: CreateTenderRequest = {
       id : Math.floor(getRandomNumber(1000,999999)),
@@ -43,7 +51,7 @@ export class CreateTenderController {
       province,
       commune,
       address,
-      location,
+      location: location?.latitude && location?.longitude ? {latitude:location.latitude, longitude:location.longitude} : undefined,
       createdAt: timestamp,
       createdBy,
       currentStage: "FirstStage",
