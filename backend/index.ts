@@ -3,12 +3,14 @@ import express from "express";
 
 import { config } from "./context/shared/infrastructure/config";
 import { tenderRouter } from "./context/tenders/tender/infrastructure/rest-api/tenderRouter";
+import { userRouter } from "./context/users/user/infrastructure/rest-api/userRouter";
 
 function API() {
   const app = express();
 
   app.use(bodyParser.json());
   app.use("/tenders", tenderRouter);
+  app.use("/users", userRouter);
 
   const { port } = config.server;
 

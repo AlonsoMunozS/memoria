@@ -2,18 +2,18 @@ import { TenderLocation } from "./tenderLocation"
 
 export class Tender {
 	readonly id: number
-	readonly name: String
-	readonly safi: String
+	readonly name: string
+	readonly safi: string
 	readonly province: string
 	readonly commune: string
         readonly address: string
 	readonly location?: TenderLocation
 	readonly createdAt: number
 	readonly createdBy: number
-	readonly currentStage: String
+	readonly currentStage: string
 	readonly mercadoPublicoId: string
 	readonly category?: string
-	readonly companies?: Array<String>
+	readonly companies?: Array<string>
 
 	constructor({
         id,
@@ -31,18 +31,18 @@ export class Tender {
         companies
 	}: {
          id: number,
-         name: String,
-         safi: String,
+         name: string,
+         safi: string,
          province: string,
          commune: string,
          address: string,
          location?: TenderLocation,
          createdAt: number,
          createdBy: number,
-         currentStage: String,
+         currentStage: string,
          mercadoPublicoId: string,
          category?: string,
-         companies?: Array<String>
+         companies?: Array<string>
 	}) {
         this.id = id
         this.name = name
