@@ -2,8 +2,9 @@ import React from 'react';
 import TableTenders from './components/TableTenders'
 import { Button } from 'primereact/button';
 import { Tender } from './tender/models/Tender';
+import Layout from '../components/Layout';
 
-const Tenders = () => {
+const Tenders : React.FC = () => {
     const tenders: Array<Tender> = [
         {
             "id": 442202,
@@ -26,11 +27,13 @@ const Tenders = () => {
     ];
 
   return (
-    <div>
-      <h1>/tendes</h1>
-      <Button label="Boton de prueba" />
-      <TableTenders Tenders = {tenders} ></TableTenders>
-    </div>
+    <Layout>
+      <div>
+        <h1>Licitaciones</h1>
+        <Button label="Boton de prueba" />
+        <TableTenders Tenders = {tenders} ></TableTenders>
+      </div>
+    </Layout>
   );
 };
 
