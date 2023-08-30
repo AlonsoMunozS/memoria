@@ -1,7 +1,6 @@
 import { UserAttributes } from '../../domain/UserAttributes';
 import { User } from '../../domain/user';
 import { UserAuth } from '../../domain/userAuth';
-import './firebase-config';
 import { getAuth, createUserWithEmailAndPassword, Auth, UserCredential  } from "firebase/auth";
 import { MongoClient, ServerApiVersion } from "mongodb"
 
@@ -14,14 +13,14 @@ const client = new MongoClient(uri, {
     deprecationErrors: true,
   }
 });
-const database = client.db("PruebaPMM");
-const collectionName = "Users";
 
+const database = client.db("PruebaPMM");
+const collectionName = "Users"
 const auth: Auth = getAuth();
 
 export class FirebaseUserAuth implements UserAuth {
 
-  async create(userAttributes: UserAttributes, password:string): Promise<void> {
+  async create(userAttributes: UserAttributes, password:string): Promise<any> {
     try {
       const userCredential: UserCredential = await createUserWithEmailAndPassword(auth, userAttributes.email, password);
       const userRegisterToken = await userCredential.user.getIdToken()
@@ -29,7 +28,6 @@ export class FirebaseUserAuth implements UserAuth {
     
       const payloadJSON = Buffer.from(tokenSections[1], 'base64').toString('utf8')
       const payload = JSON.parse(payloadJSON)
-      
       const id: number= payload['user_id']
       console.log("FirebaseId:",id)
 
@@ -42,10 +40,13 @@ export class FirebaseUserAuth implements UserAuth {
       const collection = database.collection(collectionName);
       await collection.insertOne(user);
 
+      return userRegisterToken
+
     } catch (error: any) {
       const errorMessage: string = error.message;
       console.log("Firebase-user:", errorMessage);
       throw errorMessage; // Throw the error to be caught by the caller
     }
   }
+
 }

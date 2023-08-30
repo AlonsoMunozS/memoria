@@ -9,9 +9,9 @@ test-results.xml
 *.log
 *.tsbuildinfo
 *.env
-
+private-key.json
 public/workbox-*.js
-public/workbox-*.map
+
 
 # Mac OS
 .DS_Store

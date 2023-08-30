@@ -24,9 +24,9 @@ export class CreateUserController {
     }
 
     try {
-      const resp= await this.userCretor.createUser(request)
+      const resp = await this.userCretor.createUser(request)
       console.log("createUser:",resp)
-      res.status(201).send();
+      res.json(resp);
       return;
     } catch (error) {
       if (error instanceof Error) {
