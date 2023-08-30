@@ -1,8 +1,9 @@
 import React from 'react';
 import TableTenders from './components/TableTenders'
-import { Button } from 'primereact/button';
 import { Tender } from './tender/models/Tender';
 import Layout from '../components/Layout';
+import HomeBar from '../components/HomeBar';
+
 
 const Tenders : React.FC = () => {
     const tenders: Array<Tender> = [
