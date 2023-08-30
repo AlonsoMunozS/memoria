@@ -1,15 +1,17 @@
 import React from 'react';
 import { Button } from 'primereact/button';
 import Layout from '../components/Layout';
+import HomeBar from '../components/HomeBar';
 
 const Contracts : React.FC = () =>  {
   return (
-    <Layout>
-      <div>
-        <h1>Contratos</h1>
-        <Button label="Boton de prueba" />
+    <div>
+      <Layout>
+        <HomeBar/>
+      </Layout>
+      <h1>Contratos</h1>
+      <Button label="Boton de prueba" />
     </div>
-    </Layout>
   );
 };
 

@@ -19,7 +19,133 @@ const Tenders : React.FC = () => {
             },
             "createdAt": 1692593265092,
             "createdBy": 13452377,
-            "currentStage": "FirstStage",
+            "currentStage": "publicación",
+            "mercadoPublicoId": "Prueba1",
+            "category": "Prueba1",
+            "companies": undefined
+          },
+          {
+            "id": 442202,
+            "name": "Prueba1",
+            "safi": "Prueba1",
+            "province": "Prueba1",
+            "commune": "Prueba1",
+            "address": "Prueba1",
+            "location": {
+              "longitude": 10,
+              "latitude": 0
+            },
+            "createdAt": 1692593265092,
+            "createdBy": 13452377,
+            "currentStage": "publicación",
+            "mercadoPublicoId": "Prueba1",
+            "category": "Prueba1",
+            "companies": undefined
+          },
+          {
+            "id": 442202,
+            "name": "Prueba1",
+            "safi": "Prueba1",
+            "province": "Prueba1",
+            "commune": "Prueba1",
+            "address": "Prueba1",
+            "location": {
+              "longitude": 10,
+              "latitude": 0
+            },
+            "createdAt": 1692593265092,
+            "createdBy": 13452377,
+            "currentStage": "publicación",
+            "mercadoPublicoId": "Prueba1",
+            "category": "Prueba1",
+            "companies": undefined
+          },
+          {
+            "id": 442202,
+            "name": "Prueba1",
+            "safi": "Prueba1",
+            "province": "Prueba1",
+            "commune": "Prueba1",
+            "address": "Prueba1",
+            "location": {
+              "longitude": 10,
+              "latitude": 0
+            },
+            "createdAt": 1692593265092,
+            "createdBy": 13452377,
+            "currentStage": "publicación",
+            "mercadoPublicoId": "Prueba1",
+            "category": "Prueba1",
+            "companies": undefined
+          },
+          {
+            "id": 442202,
+            "name": "Prueba1",
+            "safi": "Prueba1",
+            "province": "Prueba1",
+            "commune": "Prueba1",
+            "address": "Prueba1",
+            "location": {
+              "longitude": 10,
+              "latitude": 0
+            },
+            "createdAt": 1692593265092,
+            "createdBy": 13452377,
+            "currentStage": "publicación",
+            "mercadoPublicoId": "Prueba1",
+            "category": "Prueba1",
+            "companies": undefined
+          },
+          {
+            "id": 442202,
+            "name": "Prueba1",
+            "safi": "Prueba1",
+            "province": "Prueba1",
+            "commune": "Prueba1",
+            "address": "Prueba1",
+            "location": {
+              "longitude": 10,
+              "latitude": 0
+            },
+            "createdAt": 1692593265092,
+            "createdBy": 13452377,
+            "currentStage": "publicación",
+            "mercadoPublicoId": "Prueba1",
+            "category": "Prueba1",
+            "companies": undefined
+          },
+          {
+            "id": 442202,
+            "name": "Prueba1",
+            "safi": "Prueba1",
+            "province": "Prueba1",
+            "commune": "Prueba1",
+            "address": "Prueba1",
+            "location": {
+              "longitude": 10,
+              "latitude": 0
+            },
+            "createdAt": 1692593265092,
+            "createdBy": 13452377,
+            "currentStage": "publicación",
+            "mercadoPublicoId": "Prueba1",
+            "category": "Prueba1",
+            "companies": undefined
+          },
+          {
+            "id": 442202,
+            "name": "Prueba1",
+            "safi": "Prueba1",
+            "province": "Prueba1",
+            "commune": "Prueba1",
+            "address": "Prueba1",
+            "location": {
+              "longitude": 10,
+              "latitude": 0
+            },
+            "createdAt": 1692593265092,
+            "createdBy": 13452377,
+            "currentStage": "publicación",
             "mercadoPublicoId": "Prueba1",
             "category": "Prueba1",
             "companies": undefined
@@ -27,13 +153,12 @@ const Tenders : React.FC = () => {
     ];
 
   return (
-    <Layout>
-      <div>
-        <h1>Licitaciones</h1>
-        <Button label="Boton de prueba" />
-        <TableTenders Tenders = {tenders} ></TableTenders>
-      </div>
-    </Layout>
+    <div>
+      <Layout>
+        <HomeBar/>
+      </Layout>
+      <TableTenders Tenders = {tenders} ></TableTenders>
+    </div>
   );
 };
 

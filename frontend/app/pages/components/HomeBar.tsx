@@ -7,22 +7,20 @@ const HomeBar: React.FC = () => {
   const router = useRouter();
 
   const items = [
-    { label: 'Licitaciones', icon: 'pi pi-fw pi-list', link: '/tenders' },
-    { label: 'Contratos en ejecución', icon: 'pi pi-fw pi-list', link: '/contracts' },
-    { label: 'Empresas', icon: 'pi pi-fw pi-list', link: '/companies' },
+    { label: 'Licitaciones', link: '/tenders' },
+    { label: 'Contratos en ejecución', link: '/contracts' },
+    { label: 'Empresas', link: '/companies' },
   ];
 
   const activeIndex = items.findIndex((item) => item.link === router.pathname);
 
   return (
     <div>
-      <div className="card">
-        <TabMenu
-          model={items.map((item) => ({ label: item.label, icon: item.icon }))}
-          activeIndex={activeIndex}
-          onTabChange={(e) => router.push(items[e.index].link)}
-        />
-      </div>
+      <TabMenu
+        model={items.map((item) => ({ label: item.label }))}
+        activeIndex={activeIndex}
+        onTabChange={(e) => router.push(items[e.index].link)}
+      />
     </div>
   );
 };
