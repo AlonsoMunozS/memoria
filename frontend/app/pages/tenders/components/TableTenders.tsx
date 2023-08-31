@@ -5,13 +5,11 @@ import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
 import { Tender } from '../tender/models/Tender';
-interface tenderProps {
-    Tenders: Array<Tender>
+interface TenderProps {
+    tenders: Array<Tender>
 }
 
-const TableTenders = ({Tenders} : tenderProps) => {
-
-    const [tenders, setTenders] = useState(Tenders);
+const TableTenders = ({tenders} : TenderProps) => {
 
     const [filters, setFilters] = useState({
         'global': { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -70,11 +68,11 @@ const TableTenders = ({Tenders} : tenderProps) => {
 
     return (
         <div className="datatable-doc-demo">
-            <DataTable value={tenders} paginator className="p-datatable-customers" header={header} rows={5}
-                paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown" rowsPerPageOptions={[10,25,50]}
+            <DataTable value={tenders} paginator className="p-datatable-customers" header={header} rows={4}
+                paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                 dataKey="id" rowHover
                 filters={filters} filterDisplay="menu" loading={loading}
-                globalFilterFields={['safi', 'address', 'currentStage']} emptyMessage="No customers found."
+                globalFilterFields={['safi', 'address', 'currentStage']} emptyMessage="No se han encontrado licitaciones."
                 currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} Licitaciones">
                 <Column field="safi" header="Safi" sortable filter filterPlaceholder="Search by name" style={{ minWidth: '14rem' }} />
                 <Column field="address" header="Dirección" sortable filter filterPlaceholder="Search by name" style={{ minWidth: '14rem' }} />

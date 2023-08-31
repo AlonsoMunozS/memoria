@@ -11,7 +11,7 @@ const Tenders : React.FC = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch('https://api.example.com/data'); // Cambia la URL por tu API
+        const response = await fetch('http://localhost:3000/tenders/'); // Cambia la URL por tu API
         const jsonData = await response.json();
         setTenders(jsonData);
       } catch (error) {
@@ -26,7 +26,7 @@ const Tenders : React.FC = () => {
       <Layout>
         <HomeBar/>
       </Layout>
-      <TableTenders Tenders = {tenders} ></TableTenders>
+      <TableTenders tenders = {tenders} ></TableTenders>
     </div>
   );
 };
