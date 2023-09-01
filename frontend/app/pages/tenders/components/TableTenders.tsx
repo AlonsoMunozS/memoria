@@ -5,6 +5,7 @@ import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
 import { Tender } from '../tender/models/Tender';
+<<<<<<< Updated upstream
 interface tenderProps {
     Tenders: Array<Tender>
 }
@@ -12,16 +13,24 @@ interface tenderProps {
 const TableTenders = ({Tenders} : tenderProps) => {
 
     const [tenders, setTenders] = useState(Tenders);
+=======
+import { Dropdown } from 'primereact/dropdown';
+interface TenderProps {
+    tenders: Array<Tender>,
+    loading: boolean
+}
+
+const TableTenders = ({tenders, loading} : TenderProps) => {
+>>>>>>> Stashed changes
 
     const [filters, setFilters] = useState({
         'global': { value: null, matchMode: FilterMatchMode.CONTAINS },
         'safi': { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
         'address': { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
-        'currentStages': { operator: FilterOperator.OR, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] }
+        'currentStage': { operator: FilterOperator.OR, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] }
     });
 
     const [globalFilterValue, setGlobalFilterValue] = useState('');
-    const [loading, setLoading] = useState(false);
 
     const currentStages = ['publicación', 'consultas', 'respuestas', 'apertura técnica', 'informe evaluación técnica', 'apertura económica', 'regional', 'subdirección santiago', 'resolución', 'contraloría', 'seremía', 'adjudicación', 'cierre anticipado'];
 
@@ -46,16 +55,20 @@ const TableTenders = ({Tenders} : tenderProps) => {
         )
     }
 
-   /* const stageBodyTemplate = (rowData: string) => {
-        return <span className={`customer-badge status-${rowData.currentStage}`}>{rowData.currentStage}</span>;
-    }*/
+    const currentStageBodyTemplate = (rowData: any) => {
+        return <span className={`customer-badge status-new`}>{rowData.currentStage}</span>;
+    }
 
-    /*const stagesFilderTemplate = (options: string) => {
-        return <Dropdown value={options.value} options={currentStages} onChange={(e) => options.filterCallback(e.value, options.index)} itemTemplate={stagesItemTemplate} placeholder="Select a Status" className="p-column-filter" showClear />;
-    }*/
+    const currentStageFilterTemplate = (options: any) => {
+        return <Dropdown value={options.value} options={currentStages} onChange={(e) => options.filterCallback(e.value, options.index)} itemTemplate={currentStageItemTemplate} placeholder="Select a Status" className="p-column-filter" showClear />;
+    }
 
-    const stagesItemTemplate = (option: string) => {
+    const currentStageItemTemplate = (option: any) => {
         return <span className={`customer-badge status-${option}`}>{option}</span>;
+    }
+
+    const currentStageRowFilterTemplate = (options: any) => {
+        return <Dropdown value={options.value} options={currentStages} onChange={(e) => options.filterApplyCallback(e.value)} itemTemplate={currentStageItemTemplate} placeholder="Selecciona una Estapa" className="p-column-filter" showClear /> 
     }
 
     const actionBodyView = () => {
@@ -74,11 +87,16 @@ const TableTenders = ({Tenders} : tenderProps) => {
                 paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown" rowsPerPageOptions={[10,25,50]}
                 dataKey="id" rowHover
                 filters={filters} filterDisplay="menu" loading={loading}
+<<<<<<< Updated upstream
                 globalFilterFields={['safi', 'address', 'currentStage']} emptyMessage="No customers found."
                 currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} Licitaciones">
+=======
+                globalFilterFields={['safi', 'address', 'currentStage']} emptyMessage="No se han encontrado licitaciones."
+                currentPageReportTemplate="Se encontraton {totalRecords} Licitaciones">
+>>>>>>> Stashed changes
                 <Column field="safi" header="Safi" sortable filter filterPlaceholder="Search by name" style={{ minWidth: '14rem' }} />
                 <Column field="address" header="Dirección" sortable filter filterPlaceholder="Search by name" style={{ minWidth: '14rem' }} />
-                <Column field="currentStage" header="Etapa" sortable filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '10rem' }} />
+                <Column field="currentStage" header="Etapa" sortable filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '10rem' }} body={currentStageBodyTemplate} filter filterElement={currentStageFilterTemplate}/>
                 <Column header='Ver' headerStyle={{ width: '4rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={actionBodyView} />
                 <Column header='Editar' headerStyle={{ width: '4rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={actionBodyEdit} />
             </DataTable>

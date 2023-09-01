@@ -8,15 +8,15 @@ const UserPerfil: React.FC = () => {
     const toast = useRef<Toast | null>(null);
     const items = [
         {
-            label: 'Options',
+            label: '¡Hola, Usuario!',
             items: [
                 {
-                    label: 'Update',
-                    icon: 'pi pi-refresh'
+                    label: 'Ver perfil',
+                    icon: 'pi pi-user-edit'
                 },
                 {
-                    label: 'Delete',
-                    icon: 'pi pi-times'
+                    label: 'Cerrar Sesión',
+                    icon: 'pi pi-sign-out'
                 }
             ]
         }
