@@ -5,31 +5,22 @@ import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
 import { Tender } from '../tender/models/Tender';
-<<<<<<< HEAD
-interface TenderProps {
-    tenders: Array<Tender>
-}
-
-const TableTenders = ({tenders} : TenderProps) => {
-=======
-<<<<<<< Updated upstream
-interface tenderProps {
-    Tenders: Array<Tender>
-}
-
-const TableTenders = ({Tenders} : tenderProps) => {
-
-    const [tenders, setTenders] = useState(Tenders);
-=======
 import { Dropdown } from 'primereact/dropdown';
+import { Tag } from 'primereact/tag';
+
 interface TenderProps {
     tenders: Array<Tender>,
     loading: boolean
 }
 
+type StageType = 'publicacion' | 'FirstStage'
+
+const stages ={
+    "publicacion":"PUBLICACIÓN",
+    "FirstStage" : "PUBLICACIÓN"
+}
+
 const TableTenders = ({tenders, loading} : TenderProps) => {
->>>>>>> Stashed changes
->>>>>>> 12ea35fcbc7e9dc2e6f8a024f23d42392727299f
 
     const [filters, setFilters] = useState({
         'global': { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -58,13 +49,14 @@ const TableTenders = ({tenders, loading} : TenderProps) => {
                     <i className="pi pi-search" />
                     <InputText style={{width: '100%'}} value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Búsqueda por palabra clave" />
                 </span>
-                <Button style={{width:'25%'}} className="p-button-rounded" icon="pi pi-plus" label='Agregar Licitación'/>
+                <Button style={{width:'20%'}} className="p-button-rounded" icon="pi pi-plus" label='Agregar Licitación'/>
             </div>
         )
     }
 
     const currentStageBodyTemplate = (rowData: any) => {
-        return <span className={`customer-badge status-new`}>{rowData.currentStage}</span>;
+        const currentStage:StageType =rowData.currentStage
+        return <Tag className={`tender-status ${currentStage}`}>{stages[currentStage]}</Tag>;
     }
 
     const currentStageFilterTemplate = (options: any) => {
@@ -72,7 +64,7 @@ const TableTenders = ({tenders, loading} : TenderProps) => {
     }
 
     const currentStageItemTemplate = (option: any) => {
-        return <span className={`customer-badge status-${option}`}>{option}</span>;
+        return <Tag className={`customer-badge status-${option}`}>{option}</Tag>;
     }
 
     const currentStageRowFilterTemplate = (options: any) => {
@@ -95,19 +87,10 @@ const TableTenders = ({tenders, loading} : TenderProps) => {
                 paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                 dataKey="id" rowHover
                 filters={filters} filterDisplay="menu" loading={loading}
-<<<<<<< HEAD
-                globalFilterFields={['safi', 'address', 'currentStage']} emptyMessage="No se han encontrado licitaciones."
-=======
-<<<<<<< Updated upstream
-                globalFilterFields={['safi', 'address', 'currentStage']} emptyMessage="No customers found."
->>>>>>> 12ea35fcbc7e9dc2e6f8a024f23d42392727299f
-                currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} Licitaciones">
-=======
                 globalFilterFields={['safi', 'address', 'currentStage']} emptyMessage="No se han encontrado licitaciones."
                 currentPageReportTemplate="Se encontraton {totalRecords} Licitaciones">
->>>>>>> Stashed changes
-                <Column field="safi" header="Safi" sortable filter filterPlaceholder="Search by name" style={{ minWidth: '14rem' }} />
-                <Column field="address" header="Dirección" sortable filter filterPlaceholder="Search by name" style={{ minWidth: '14rem' }} />
+                <Column field="name" header="Nombre" sortable filter  filterPlaceholder="Búsqueda por nombre" style={{ minWidth: '14rem' }} />
+                <Column field="mercadoPublicoId" header="ID Mercado Público" sortable filter filterPlaceholder="Búsqueda por Id mercado público" style={{ minWidth: '14rem' }} />
                 <Column field="currentStage" header="Etapa" sortable filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '10rem' }} body={currentStageBodyTemplate} filter filterElement={currentStageFilterTemplate}/>
                 <Column header='Ver' headerStyle={{ width: '4rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={actionBodyView} />
                 <Column header='Editar' headerStyle={{ width: '4rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={actionBodyEdit} />

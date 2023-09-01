@@ -10,14 +10,14 @@ const HomeBar: React.FC = () => {
 
   const items = [
     { label: 'Licitaciones', link: '/tenders' },
-    { label: 'Contratos en ejecución', link: '/contracts' },
-    { label: 'Empresas', link: '/companies' },
+    { label: 'Contratos en ejecución', link: '/tenders' },
+    { label: 'Empresas', link: '/tenders' },
   ];
 
   const activeIndex = items.findIndex((item) => item.link === router.pathname);
 
   return (
-    <div style={{display: 'flex',justifyContent:'space-between',gap:'2rem'}}>
+    <div style={{display: 'flex',justifyContent:'space-between',gap:'2rem',borderBottom: '1px solid #d8d6d6'}}>
       <TabMenu
         model={items.map((item) => ({ label: item.label }))}
         activeIndex={activeIndex}
