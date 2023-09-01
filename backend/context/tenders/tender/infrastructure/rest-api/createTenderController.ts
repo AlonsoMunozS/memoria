@@ -46,7 +46,7 @@ export class CreateTenderController {
       location,
       createdAt: timestamp,
       createdBy,
-      currentStage: "FirstStage",
+      currentStage: "publicación",
       mercadoPublicoId,
       category
     }
