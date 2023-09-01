@@ -9,15 +9,11 @@ const UserNotification: React.FC = () => {
     const toast = useRef<Toast | null>(null);
     const items = [
         {
-            label: 'Options',
+            label: 'Notificaciones',
             items: [
                 {
-                    label: 'Update',
-                    icon: 'pi pi-refresh'
-                },
-                {
-                    label: 'Delete',
-                    icon: 'pi pi-times'
+                    label: 'Se cambió el estado de licitación de Carretera Osorno',
+                    icon: 'pi pi-pencil'
                 }
             ]
         }
@@ -27,7 +23,7 @@ const UserNotification: React.FC = () => {
         <div>
             <Toast ref={toast}></Toast>
             <div className="card">
-                <Menu model={items} popup ref={menu} id="popup_menu" />
+                <Menu model={items} popup ref={menu} id="popup_menu" style={{ width : '20rem' }}/>
                 <Button
                     className="p-button-rounded p-button-text"
                     style={{
@@ -39,7 +35,7 @@ const UserNotification: React.FC = () => {
                     aria-haspopup
                 >
                     <i className="pi pi-bell p-overlay-badge" style={{ fontSize: '1.3rem' }}>
-                        <Badge value="2" severity="danger"></Badge>
+                        <Badge value="1" severity="danger"></Badge>
                     </i>
                 </Button>
 
