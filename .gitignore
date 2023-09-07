@@ -11,7 +11,7 @@ test-results.xml
 *.env
 private-key.json
 public/workbox-*.js
-
-
+serviceAccountKey.json
+package-lock.json
 # Mac OS
 .DS_Store
