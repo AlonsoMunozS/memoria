@@ -83,12 +83,12 @@ const TableTenders = ({tenders, loading} : TenderProps) => {
 
     return (
         <div className="datatable-doc-demo">
-            <DataTable value={tenders} paginator className="p-datatable-customers" header={header} rows={4}
+            <DataTable value={tenders} paginator className="p-datatable-customers" header={header} rows={5}
                 paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-                dataKey="id" rowHover
+                dataKey="id" rowHover size="small"
                 filters={filters} filterDisplay="menu" loading={loading}
-                globalFilterFields={['safi', 'address', 'currentStage']} emptyMessage="No se han encontrado licitaciones."
-                currentPageReportTemplate="Se encontraton {totalRecords} Licitaciones">
+                globalFilterFields={['name', 'mercadoPublicoId', 'currentStage']} emptyMessage="No se han encontrado licitaciones."
+                currentPageReportTemplate={"Se encontraton {totalRecords} Licitaciones"}>
                 <Column field="name" header="Nombre" sortable filter  filterPlaceholder="Búsqueda por nombre" style={{ minWidth: '14rem' }} />
                 <Column field="mercadoPublicoId" header="ID Mercado Público" sortable filter filterPlaceholder="Búsqueda por Id mercado público" style={{ minWidth: '14rem' }} />
                 <Column field="currentStage" header="Etapa" sortable filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '10rem' }} body={currentStageBodyTemplate} filter filterElement={currentStageFilterTemplate}/>

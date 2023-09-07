@@ -6,7 +6,7 @@
     background-color: #d8dadc;
 }
 .datatable-doc-demo .p-progressbar .p-progressbar-value {
-    background-color: #607d8b;
+    background-color: #ff0000;
 }
 .datatable-doc-demo .p-datepicker {
     min-width: 25rem;
@@ -29,6 +29,10 @@
     text-transform: uppercase;
 }
 
+/* styles.css */
+.datatable-margin {
+    margin: 50px;
+  }
 .datatable-doc-demo .tender-status.publicacion {
     background-color: #ff0000; /* Cambia el color de fondo según el estado 1 */
 }
