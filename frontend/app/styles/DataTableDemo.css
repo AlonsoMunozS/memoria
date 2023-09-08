@@ -34,12 +34,12 @@
     margin: 50px;
   }
 .datatable-doc-demo .tender-status.publicacion {
-    background-color: #ff0000; /* Cambia el color de fondo según el estado 1 */
+    background-color: #da8f4aef; /* Cambia el color de fondo según el estado 1 */
 }
 
 /* Estilo para el estado 2 */
 .datatable-doc-demo .tender-status.FirstStage {
-    background-color: #ff0000; /* Cambia el color de fondo según el estado 2 */
+    background-color: #da8f4aef; /* Cambia el color de fondo según el estado 2 */
 }
 
 /* Estilo para el estado 3 */
