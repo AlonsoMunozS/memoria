@@ -7,15 +7,17 @@ import { CreateUserRequest } from "./createUserRequest";
 export class UserCreator {
   constructor(
     private readonly userAuth: UserAuth,
-  ) {}
+  ) { }
 
-  async createUser(request: CreateUserRequest ): Promise<any> {
+  async createUser(request: CreateUserRequest): Promise<any> {
     const rut = request.userAttributes.rut
     const email = request.userAttributes.email
+    const userPermits = request.userAttributes.userPermits
 
     const userAttributes: UserAttributes = {
       email,
-      rut
+      rut,
+      userPermits
     }
     const userToken = await this.userAuth.create(userAttributes, request.password);
     return userToken
