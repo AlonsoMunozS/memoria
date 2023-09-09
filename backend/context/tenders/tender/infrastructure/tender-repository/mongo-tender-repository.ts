@@ -31,7 +31,6 @@ export class MongoTenderRepository implements TenderRepository {
       const collection = database.collection(collectionName);
       const tendersCursor = collection.find({});
       const tendersArray = await tendersCursor.toArray();
-      console.log(tendersArray)
       const mappedTenders: Tender[] = tendersArray.map((tenderDoc: any) => {
         return new Tender({   
           id:tenderDoc.id,
@@ -53,4 +52,41 @@ export class MongoTenderRepository implements TenderRepository {
       await client.close();
     }
   }
+
+  async findById(tenderId : number): Promise<Tender> {
+    try {
+      await client.connect();
+      const collection = database.collection(collectionName);
+      // const document = await collection.findOne({ _id: objectId });
+      const tenderFound = await collection.findOne({ id: tenderId });
+      const tender = new Tender({   
+        id: tenderFound?.id,
+        name: tenderFound?.name,
+        safi: tenderFound?.safi,
+        province: tenderFound?.province,
+        commune: tenderFound?.commune,
+        address: tenderFound?.address,
+        location: tenderFound?.location,
+        createdAt: tenderFound?.createdAt,
+        createdBy: tenderFound?.createdBy,
+        currentStage: tenderFound?.currentStage,
+        mercadoPublicoId: tenderFound?.mercadoPublicoId,
+        category: tenderFound?.category,
+        companies: tenderFound?.companies});
+      return tender;
+    }finally{
+      await client.close();
+    }
+  }
+  async remove(tenderId : number): Promise<void> {
+    try {
+      await client.connect();
+      const collection = database.collection(collectionName);
+      await collection.deleteOne({ id: tenderId });
+    }finally{
+      await client.close();
+    }
+  }
+  
+  
 }

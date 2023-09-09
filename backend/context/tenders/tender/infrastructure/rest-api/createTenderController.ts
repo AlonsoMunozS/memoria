@@ -73,7 +73,7 @@ export class CreateTenderController {
       location: location?.latitude && location?.longitude ? {latitude:location.latitude, longitude:location.longitude} : undefined,
       createdAt: timestamp,
       createdBy,
-      currentStage: "FirstStage",
+      currentStage: "publicacion",
       mercadoPublicoId,
       category
     }
