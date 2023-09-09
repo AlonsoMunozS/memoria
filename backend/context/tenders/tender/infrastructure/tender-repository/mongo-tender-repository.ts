@@ -31,7 +31,6 @@ export class MongoTenderRepository implements TenderRepository {
       const collection = database.collection(collectionName);
       const tendersCursor = collection.find({});
       const tendersArray = await tendersCursor.toArray();
-      console.log(tendersArray)
       const mappedTenders: Tender[] = tendersArray.map((tenderDoc: any) => {
         return new Tender({   
           id:tenderDoc.id,
@@ -79,4 +78,15 @@ export class MongoTenderRepository implements TenderRepository {
       await client.close();
     }
   }
+  async remove(tenderId : number): Promise<void> {
+    try {
+      await client.connect();
+      const collection = database.collection(collectionName);
+      await collection.deleteOne({ id: tenderId });
+    }finally{
+      await client.close();
+    }
+  }
+  
+  
 }

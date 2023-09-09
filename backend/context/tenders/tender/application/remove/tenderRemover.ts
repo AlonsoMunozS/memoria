@@ -1,14 +1,16 @@
 import { TenderRepository } from "../../domain/tenderRepository";
 import { RemoveTenderRequest } from "./removeTenderRequest";
 
-export class TenderCreator {
+export class TenderRemover {
   constructor(
     private readonly tenderRepository: TenderRepository,
   ) {}
 
-  async createTender(request: RemoveTenderRequest ): Promise<void> {
-    
+  async removeTender(request: RemoveTenderRequest ): Promise<void> {
+    const tender = await this.tenderRepository.findById(request.id)
+    if (!tender) 
+        throw new Error();
 
-    await this.tenderRepository.create(tender);
+    await this.tenderRepository.remove(request.id);
   }
 }
