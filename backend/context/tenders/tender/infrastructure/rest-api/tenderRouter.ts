@@ -1,6 +1,6 @@
 import express from "express";
 
-import { createTenderController, findByIdTenderController } from "../dependencies";
+import { createTenderController, findByIdTenderController, removeTenderController } from "../dependencies";
 import { findTendersController } from "../dependencies";
 import { FindByIdTenderController } from "./findByIdTenderController";
 
@@ -19,6 +19,11 @@ tenderRouter.get(
 tenderRouter.get(
   "/tender/:tenderId",
   findByIdTenderController.findByIdTender.bind(findByIdTenderController)
+);
+
+tenderRouter.delete(
+  "/tender/remove/:tenderId",
+  removeTenderController.removeTender.bind(removeTenderController)
 );
 
 export { tenderRouter };
