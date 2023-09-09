@@ -53,4 +53,30 @@ export class MongoTenderRepository implements TenderRepository {
       await client.close();
     }
   }
+
+  async findById(tenderId : number): Promise<Tender> {
+    try {
+      await client.connect();
+      const collection = database.collection(collectionName);
+      // const document = await collection.findOne({ _id: objectId });
+      const tenderFound = await collection.findOne({ id: tenderId });
+      const tender = new Tender({   
+        id: tenderFound?.id,
+        name: tenderFound?.name,
+        safi: tenderFound?.safi,
+        province: tenderFound?.province,
+        commune: tenderFound?.commune,
+        address: tenderFound?.address,
+        location: tenderFound?.location,
+        createdAt: tenderFound?.createdAt,
+        createdBy: tenderFound?.createdBy,
+        currentStage: tenderFound?.currentStage,
+        mercadoPublicoId: tenderFound?.mercadoPublicoId,
+        category: tenderFound?.category,
+        companies: tenderFound?.companies});
+      return tender;
+    }finally{
+      await client.close();
+    }
+  }
 }

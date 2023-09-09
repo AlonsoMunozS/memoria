@@ -1,7 +1,8 @@
 import express from "express";
 
-import { createTenderController } from "../dependencies";
-import { findTenderController } from "../dependencies";
+import { createTenderController, findByIdTenderController } from "../dependencies";
+import { findTendersController } from "../dependencies";
+import { FindByIdTenderController } from "./findByIdTenderController";
 
 const tenderRouter = express.Router();
 
@@ -9,9 +10,15 @@ tenderRouter.post(
   "/create",
   createTenderController.createTender.bind(createTenderController)
 );
+
 tenderRouter.get(
   "/",
-  findTenderController.findTenders.bind(findTenderController)
+  findTendersController.findTenders.bind(findTendersController)
+);
+
+tenderRouter.get(
+  "/tender/:tenderId",
+  findByIdTenderController.findByIdTender.bind(findByIdTenderController)
 );
 
 export { tenderRouter };

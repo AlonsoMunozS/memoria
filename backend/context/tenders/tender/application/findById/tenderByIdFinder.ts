@@ -9,7 +9,7 @@ export class TenderByIdFinder {
   ) {}
 
   async findByIdTender(request: findByIdTenderRequest): Promise<Tender> {
-    const tenders = await this.tenderRepository.findById();
-    return tenders
+    const tender = await this.tenderRepository.findById(request.id);
+    return tender
   }
 }
