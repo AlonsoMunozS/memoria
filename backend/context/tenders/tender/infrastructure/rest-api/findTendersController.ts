@@ -5,24 +5,24 @@ import { TendersFinder } from "../../application/find/tendersFinder";
 export class FindTendersController {
   constructor(
     private readonly tendersFinder: TendersFinder,
-    ) {}
+  ) { }
 
   async findTenders(req: Request, res: Response) {
-    const {authorization} = req.headers
-    if (!authorization){    
+    const { authorization } = req.headers
+    if (!authorization) {
       res.status(400).send();
       return;
     }
 
     const token = authorization.split(" ")[1]
     console.log("token:", token)
-  
+
     const tokenSections = (token || '').split('.')
-    if (tokenSections.length < 2){    
-        res.status(400).send();
-        return;
-      }
-  
+    if (tokenSections.length < 2) {
+      res.status(400).send();
+      return;
+    }
+
     const payloadJSON = Buffer.from(tokenSections[1], 'base64').toString('utf8')
     const payload = JSON.parse(payloadJSON)
     console.log("payload:", payload)
@@ -33,9 +33,9 @@ export class FindTendersController {
     } catch (error) {
       if (error instanceof Error) {
         if (error.name === 'NotFoundException')
-        res.status(404).send();
+          res.status(404).send();
         else if (error.name === 'InvalidArgumentError')
-        res.status(400).send();
+          res.status(400).send();
       }
       res.status(500).send();
     }

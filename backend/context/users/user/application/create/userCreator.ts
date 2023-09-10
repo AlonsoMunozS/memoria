@@ -19,7 +19,6 @@ export class UserCreator {
       rut,
       userPermits
     }
-    const userToken = await this.userAuth.create(userAttributes, request.password);
-    return userToken
+    await this.userAuth.create(userAttributes, request.password);
   }
 }
