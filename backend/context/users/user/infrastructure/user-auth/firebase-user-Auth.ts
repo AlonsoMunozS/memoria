@@ -5,6 +5,7 @@ import { getAuth, createUserWithEmailAndPassword, Auth, UserCredential, signInWi
 import { MongoClient, ServerApiVersion } from "mongodb"
 import { firebaseAuth } from './firebase-config'
 import { UserToken } from '../../domain/UserToken';
+import * as admin from "firebase-admin";
 const uri = "mongodb+srv://Alonso:1234Alonso@pruebapmm.q41p8o6.mongodb.net/?retryWrites=true&w=majority";
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -19,6 +20,11 @@ const client = new MongoClient(uri, {
 const database = client.db("PruebaPMM");
 const collectionName = "Users"
 
+const serviceAccount = require("./serviceAccountKey.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),
+});
 const auth: Auth = getAuth(firebaseAuth);
 
 export class FirebaseUserAuth implements UserAuth {
@@ -49,15 +55,29 @@ export class FirebaseUserAuth implements UserAuth {
   }
   async login(email: string, password: string): Promise<UserToken> {
     try {
-      const userCredential: UserCredential = await signInWithEmailAndPassword(auth, email, password);
+      admin
+        .auth()
+        .getUserByEmail(email)
+        .then((userRecord) => {
+          // El usuario existe, ahora intenta autenticar con la contraseña
+          return admin.auth().updateUser(userRecord.uid, {
+            password: password,
+          });
+        })
+        .then((userRecord) => {
+          // Autenticación exitosa
+          console.log("Usuario autenticado con éxito:", userRecord);
+        })
+        .catch((error) => {
+          console.error("Error al autenticar usuario:", error);
+        });
 
-      // Obtén el resultado del token de acceso, que incluye el tiempo de expiración.
-      const idTokenResult = await userCredential.user.getIdTokenResult();
+      // const idTokenResult = await userCredential.user.getIdTokenResult();
 
       const token = new UserToken({
-        accessToken: idTokenResult.token,
-        expirationTime: Date.parse(idTokenResult.expirationTime),
-        refreshToken: userCredential.user.refreshToken
+        accessToken: "idTokenResult.token",
+        expirationTime: 1,
+        refreshToken: "userCredential.user.refreshToken"
       });
 
       return token;
