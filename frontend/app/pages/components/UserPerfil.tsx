@@ -30,7 +30,14 @@ const UserPerfil: React.FC = () => {
                 <Button
                     label="Usuario"
                     icon="pi pi-user"
-                    className="p-button-rounded p-button-outlined"
+                    className="p-button-rounded p-button-outlined fullbutton-resp"
+                    onClick={(event) => menu.current?.toggle(event)}
+                    aria-controls="popup_menu"
+                    aria-haspopup
+                />
+                <Button
+                    icon="pi pi-user"
+                    className="p-button-rounded p-button-outlined smallbutton-resp"
                     onClick={(event) => menu.current?.toggle(event)}
                     aria-controls="popup_menu"
                     aria-haspopup

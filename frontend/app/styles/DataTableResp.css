@@ -1,0 +1,18 @@
+/* Estilos generales para pantallas grandes */
+.fullplusbutton-resp {
+    display: block;
+  }
+.smallplusbutton-resp {
+    display: none;
+  }
+  
+/* Estilos para pantallas pequeñas */
+@media (max-width: 800px) {
+.fullplusbutton-resp {
+    display: none;
+    }
+.smallplusbutton-resp {
+    display: flex;
+    visibility: visible;
+    }
+}
