@@ -44,12 +44,15 @@ const TableTenders = ({tenders, loading} : TenderProps) => {
 
     const renderHeader = () => {
         return (
-            <div style={{display: 'flex',justifyContent:'space-between',gap:'2rem'}}>
-                <span className="p-input-icon-left" style={{width: '100%'}}>
+            <div style={{display: 'flex', alignItems:'center', justifyContent:'space-between'}}>
+                <div className="p-input-icon-left" style={{flexGrow:1, marginRight: '10px' }}>
                     <i className="pi pi-search" />
                     <InputText style={{width: '100%'}} value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Búsqueda por palabra clave" />
-                </span>
-                <Button style={{width:'20%'}} className="p-button-rounded" icon="pi pi-plus" label='Agregar Licitación'/>
+                </div>
+                <div>
+                    <Button className="p-button-rounded fullplusbutton-resp" icon="pi pi-plus" label='Agregar Licitación'/>
+                    <Button className="p-button-rounded smallplusbutton-resp" icon="pi pi-plus" />
+                </div>
             </div>
         )
     }

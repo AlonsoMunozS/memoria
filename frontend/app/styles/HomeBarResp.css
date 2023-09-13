@@ -1,0 +1,33 @@
+/* Estilos generales para pantallas grandes */
+.tabmenu-resp {
+    display: block;
+  }
+.menubar-resp {
+    display: none;
+  }
+.fullbutton-resp {
+  display: block;
+}
+.smallbutton-resp {
+  display: none;
+}
+  
+  /* Estilos para pantallas pequeñas */
+  @media (max-width: 800px) {
+    .tabmenu-resp {
+      display: none; /* Ocultar el TabMenu en pantallas pequeñas */
+    }
+    .menubar-resp {
+      display: block;
+      outline: none;
+      border: none;
+      background-color: transparent;
+      width: 100%;
+    }
+    .fullbutton-resp {
+      display: none;
+    }
+    .smallbutton-resp {
+      display: flex;
+    }
+  }
