@@ -96,11 +96,22 @@ export class PdfKitReportConstructor implements ReportConstructor {
 			}
 		}
 		const diagnosed = (isDiagnosed: boolean) => {
-			const y1 = formTextarea(290, 'Sugerencia diagnóstica', report.diagnosis)
+			if (isDiagnosed) {
+				const y1 = formTextarea(290, 'Sugerencia diagnóstica', report.diagnosis?.explanation)
 
-			const y2 = formTextarea(y1, 'Fundamento diagnóstico', report.diagnosticBasis)
+				const y2 = formTextarea(y1, 'Fundamento diagnóstico', report.diagnosis?.diagnosticBasis)
 
-			return formTextarea(y2, 'Recomendación de manejo clínico', report.clinicalManagementSuggestion)
+				return formTextarea(y2, 'Recomendación de manejo clínico', report.diagnosis?.clinicalManagementSuggestion)
+			}
+			const textNoDiagnosed = report?.lowQualityExam?.explanation ? ' Baja calidad del examen' :
+				report?.requiredComplementaryExams?.explanation ? 'Requiere examenes complementarios' :
+					report?.requiredFaceToFaceEvaluation?.explanation ? 'Requiere evaluación presencial' : '-'
+
+			const treatmentNoDiagnosed = textNoDiagnosed === '-' ? '-' : report.lowQualityExam?.explanation || report.requiredComplementaryExams?.explanation || report.requiredFaceToFaceEvaluation?.explanation;
+			const treatmentNoDiagnosedTag = textNoDiagnosed === '-' ? '' : report.lowQualityExam?.explanation ? 'Observaciones' : report.requiredComplementaryExams?.explanation ? 'Exámenes' : 'Observaciones';
+
+			const y = formTextarea(290, 'Razón de Limitación Diagnóstica', textNoDiagnosed)
+			return formTextarea(y, treatmentNoDiagnosedTag, treatmentNoDiagnosed)
 		}
 
 		const formTextarea = (y: number, title: string, value?: string) => {
@@ -231,25 +242,25 @@ contacto@simbiotica.ai`
 			.strokeColor('#4C6674')
 			.stroke()
 
-		const y3 = diagnosed(report.diagnosis ? true : false)
+		const y = diagnosed(!!report.diagnosis?.explanation)
 
 
-		doc.fontSize(12).fillColor('#2D4D5C').text('Consulta presencial con otorrino', margins.left, y3)
+		doc.fontSize(12).fillColor('#2D4D5C').text('Consulta presencial con otorrino', margins.left, y)
 
 		// formCheckbox(margins.left + 20, y3 + 10, false)
 
 		doc
 			.fontSize(12)
 			.fillColor('#2D4D5C')
-			.text('Sí', margins.left, y3 + 30)
-		formCheckbox(margins.left + 18, y3 + 29, report.requiredFaceToFaceEvaluation)
-
+			.text('Sí', margins.left, y + 30)
+		formCheckbox(margins.left + 18, y + 29, !!report.requiredFaceToFaceEvaluation?.explanation)
 		doc
 			.fontSize(12)
 			.fillColor('#2D4D5C')
-			.text('No', margins.left + 100, y3 + 30)
-		formCheckbox(margins.left + 100 + 21, y3 + 29, !report.requiredFaceToFaceEvaluation)
+			.text('No', margins.left + 100, y + 30)
+		formCheckbox(margins.left + 100 + 21, y + 29, !report.requiredFaceToFaceEvaluation?.explanation)
 
+		const y3 = 550;
 		/**
 		 * FIRMA
 		 * FIRMA

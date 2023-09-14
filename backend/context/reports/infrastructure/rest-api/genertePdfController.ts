@@ -22,10 +22,12 @@ export class GeneratePdfController {
       establishmentName: "string",
       diagnosticMethod: "string",
       reason: "string",
-      clinicalManagementSuggestion: "string",
-      diagnosis: "string",
-      diagnosticBasis: "string",
-      requiredFaceToFaceEvaluation: false,
+      diagnosis: {},
+      lowQualityExam: {},
+      requiredComplementaryExams: {},
+      requiredFaceToFaceEvaluation: {
+        explanation: "Expicacion"
+      }
     }
 
     try {
