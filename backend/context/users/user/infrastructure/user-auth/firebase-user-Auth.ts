@@ -1,12 +1,13 @@
 import { UserAttributes } from '../../domain/UserAttributes';
 import { User } from '../../domain/user';
 import { UserAuth } from '../../domain/userAuth';
-import { getAuth, createUserWithEmailAndPassword, Auth, UserCredential, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, UserCredential, signInWithEmailAndPassword, Auth, createUserWithEmailAndPassword } from "firebase/auth";
 import { MongoClient, ServerApiVersion } from "mongodb"
 import { firebaseAuth } from './firebase-config'
 import { UserToken } from '../../domain/UserToken';
 import * as admin from "firebase-admin";
-const uri = "mongodb+srv://Alonso:1234Alonso@pruebapmm.q41p8o6.mongodb.net/?retryWrites=true&w=majority";
+
+const uri = "mongodb://Alonso:1234Alonso@ac-ouxjhz4-shard-00-00.q41p8o6.mongodb.net:27017,ac-ouxjhz4-shard-00-01.q41p8o6.mongodb.net:27017,ac-ouxjhz4-shard-00-02.q41p8o6.mongodb.net:27017/?replicaSet=atlas-8gtwdq-shard-0&authSource=admin&tls=true";
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -25,16 +26,15 @@ const serviceAccount = require("./serviceAccountKey.json");
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),
 });
-const auth: Auth = getAuth(firebaseAuth);
+const authFirebase = getAuth(firebaseAuth);
 
 export class FirebaseUserAuth implements UserAuth {
 
   async create(userAttributes: UserAttributes, password: string): Promise<void> {
     try {
-      const userCredential: UserCredential = await createUserWithEmailAndPassword(auth, userAttributes.email, password);
+      const userCredential: UserCredential = await createUserWithEmailAndPassword(authFirebase, userAttributes.email, password);
       const userRegisterToken = await userCredential.user.getIdToken()
       const tokenSections = (userRegisterToken || '').split('.')
-
       const payloadJSON = Buffer.from(tokenSections[1], 'base64').toString('utf8')
       const payload = JSON.parse(payloadJSON)
       const id: number = payload['user_id']
@@ -50,40 +50,30 @@ export class FirebaseUserAuth implements UserAuth {
 
     } catch (error: any) {
       const errorMessage: string = error.message;
+      console.log(error)
       throw errorMessage; // Throw the error to be caught by the caller
     }
   }
   async login(email: string, password: string): Promise<UserToken> {
     try {
-      admin
-        .auth()
-        .getUserByEmail(email)
-        .then((userRecord) => {
-          // El usuario existe, ahora intenta autenticar con la contraseña
-          return admin.auth().updateUser(userRecord.uid, {
-            password: password,
-          });
-        })
-        .then((userRecord) => {
-          // Autenticación exitosa
-          console.log("Usuario autenticado con éxito:", userRecord);
-        })
-        .catch((error) => {
-          console.error("Error al autenticar usuario:", error);
-        });
+      const userCredential = await signInWithEmailAndPassword(authFirebase, email, password);
 
-      // const idTokenResult = await userCredential.user.getIdTokenResult();
+      // Aquí obtén el token de acceso del usuario autenticado
+      const idTokenResult = await userCredential.user.getIdTokenResult();
 
       const token = new UserToken({
-        accessToken: "idTokenResult.token",
-        expirationTime: 1,
-        refreshToken: "userCredential.user.refreshToken"
+        accessToken: idTokenResult.token,
+        expirationTime: new Date(idTokenResult.expirationTime).getTime(),
+        refreshToken: userCredential.user.refreshToken
       });
 
+      console.log("Usuario autenticado con éxito:", userCredential.user);
+
       return token;
-    } catch (error: any) {
-      const errorMessage: string = error.message;
-      throw errorMessage; // Lanza el error para que lo capture el llamador
+    } catch (error) {
+      console.error("Error al autenticar usuario:", error);
+      throw error; // Puedes lanzar el error nuevamente para manejarlo en un nivel superior si es necesario
     }
   }
+
 }
