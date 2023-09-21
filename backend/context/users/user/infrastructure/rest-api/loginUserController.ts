@@ -28,9 +28,11 @@ export class LoginUserController {
             return;
         } catch (error) {
             if (error instanceof Error) {
-                if (error.name === 'NotFoundException')
+                if (error.message === 'auth/wrong-password')
+                    res.status(401).send();
+                else if (error.message === 'auth/user-not-found')
                     res.status(404).send();
-                else if (error.name === 'InvalidArgumentError')
+                else if (error.message === 'auth/invalid-email')
                     res.status(400).send();
             }
             res.status(500).send();

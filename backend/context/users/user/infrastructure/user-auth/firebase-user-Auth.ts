@@ -6,6 +6,7 @@ import { MongoClient, ServerApiVersion } from "mongodb"
 import { firebaseAuth } from './firebase-config'
 import { UserToken } from '../../domain/UserToken';
 import * as admin from "firebase-admin";
+import { FirebaseError } from 'firebase/app';
 
 const uri = "mongodb://Alonso:1234Alonso@ac-ouxjhz4-shard-00-00.q41p8o6.mongodb.net:27017,ac-ouxjhz4-shard-00-01.q41p8o6.mongodb.net:27017,ac-ouxjhz4-shard-00-02.q41p8o6.mongodb.net:27017/?replicaSet=atlas-8gtwdq-shard-0&authSource=admin&tls=true";
 
@@ -71,8 +72,12 @@ export class FirebaseUserAuth implements UserAuth {
 
       return token;
     } catch (error) {
-      console.error("Error al autenticar usuario:", error);
-      throw error; // Puedes lanzar el error nuevamente para manejarlo en un nivel superior si es necesario
+      if (error instanceof FirebaseError) {
+        const errorCode = error.code;
+        console.log(errorCode)
+        throw new Error(errorCode);
+      } // Puedes lanzar el error nuevamente para manejarlo en un nivel superior si es necesario
+      throw error
     }
   }
 
