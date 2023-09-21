@@ -7,7 +7,7 @@ import { Dialog } from 'primereact/dialog';
 import { Divider } from 'primereact/divider';
 import { classNames } from 'primereact/utils';
 import { Tender } from '../tender/models/Tender';
-import * as stages from '../../../data/stages.json';
+import { stages } from '../../../data/stages';
 
 interface FormErrors {
     name?: string

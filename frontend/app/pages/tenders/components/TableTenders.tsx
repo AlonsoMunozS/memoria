@@ -9,7 +9,7 @@ import { Dropdown } from 'primereact/dropdown';
 import { Tag } from 'primereact/tag';
 import NewTenderDialog from './NewTenderDialog';
 import NewTenderForm from './NewTenderForm';
-import * as stages from '../../../data/stages.json';
+import { stages } from '../../../data/stages';
 
 interface TenderProps {
     tenders: Array<Tender>,

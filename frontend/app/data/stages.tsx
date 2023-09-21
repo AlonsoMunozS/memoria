@@ -1,4 +1,4 @@
-{
+export const stages = {
     "tag": [
         "PUBLICACIÓN",
         "CONSULTAS",
