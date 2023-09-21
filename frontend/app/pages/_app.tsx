@@ -4,6 +4,7 @@ import 'primeicons/primeicons.css';
 import '../styles/DataTableDemo.css';
 import '../styles/HomeBarResp.css';
 import '../styles/DataTableResp.css';
+import '../styles/Form.css';
 
 import type { AppProps } from 'next/app';
 
