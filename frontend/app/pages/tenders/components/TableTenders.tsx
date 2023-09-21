@@ -61,7 +61,7 @@ const TableTenders = ({ tenders, loading }: TenderProps) => {
 
     const currentStageBodyTemplate = (rowData: any) => {
         const currentStage: number = rowData.currentStage
-        return <Tag className={`tender-status ${currentStage}`}>{stages.tag[currentStage]}</Tag>;
+        return <Tag className={`tender-status stage${currentStage}`}>{stages.tag[currentStage]}</Tag>;
     }
 
     const currentStageFilterTemplate = (options: any) => {
