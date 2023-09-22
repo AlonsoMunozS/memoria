@@ -27,12 +27,33 @@ export class CreateTenderController {
   ) { }
 
   async createTender(req: Request, res: Response) {
-    const { name, safi, province, commune, address, location, createdBy, mercadoPublicoId, category } = req.body;
+
+    const { authorization } = req.headers
+    if (!authorization) {
+      res.status(400).send();
+      return;
+    }
+
+    const token = authorization.split(" ")[1]
+    console.log("token:", token)
+
+    const tokenSections = (token || '').split('.')
+    if (tokenSections.length < 2) {
+      res.status(400).send();
+      return;
+    }
+
+    const payloadJSON = Buffer.from(tokenSections[1], 'base64').toString('utf8')
+    const payload = JSON.parse(payloadJSON)
+    console.log("payload:", payload['user_id'])
+    const createdBy = payload['user_id']
+
+    const { name, safi, province, commune, address, location, mercadoPublicoId, category } = req.body;
 
     const today = new Date();
     const timestamp = today.getTime();
 
-    if (!name || !safi || !province || !commune || !address || !location || !createdBy || !mercadoPublicoId || !category) {
+    if (!name || !safi || !province || !commune || !address || !location || !mercadoPublicoId || !category) {
       res.status(400).send();
       return;
     }
