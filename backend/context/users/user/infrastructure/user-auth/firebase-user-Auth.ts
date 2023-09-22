@@ -38,7 +38,7 @@ export class FirebaseUserAuth implements UserAuth {
       const tokenSections = (userRegisterToken || '').split('.')
       const payloadJSON = Buffer.from(tokenSections[1], 'base64').toString('utf8')
       const payload = JSON.parse(payloadJSON)
-      const id: number = payload['user_id']
+      const id = payload['user_id']
 
       const user = User.create({
         id,
