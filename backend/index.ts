@@ -4,7 +4,7 @@ import express from "express";
 import { config } from "./context/shared/infrastructure/config";
 import { tenderRouter } from "./context/tenders/tender/infrastructure/rest-api/tenderRouter";
 
-function boostrap() {
+function API() {
   const app = express();
 
   app.use((req, res, next) => {
@@ -25,4 +25,4 @@ function boostrap() {
   });
 }
 
-boostrap();
+API();
