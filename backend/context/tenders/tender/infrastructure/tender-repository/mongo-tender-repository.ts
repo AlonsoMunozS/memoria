@@ -28,6 +28,8 @@ export class MongoTenderRepository implements TenderRepository {
   async find(): Promise<Array<Tender>> {
     try {
       await client.connect();
+      console.log("Si funca")
+
       const collection = database.collection(collectionName);
       const tendersCursor = collection.find({});
       const tendersArray = await tendersCursor.toArray();

@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 
 import { TenderCreator } from "../../application/create/tenderCreator";
 import { CreateTenderRequest } from "../../application/create/createTenderRequest";
+import { TenderLocation } from "../../domain/tenderLocation";
 
 type CreateTenderBodyRequest = {
   name: String,
@@ -34,7 +35,6 @@ export class CreateTenderController {
     if (!name || !safi || !province || !commune || !address || !location || !createdBy || !mercadoPublicoId || !category) {
       res.status(400).send();
       return;
-
     }
     const request: CreateTenderRequest = {
       id: Math.floor(getRandomNumber(1000, 999999)),
@@ -43,7 +43,7 @@ export class CreateTenderController {
       province,
       commune,
       address,
-      location,
+      location: location?.latitude && location?.longitude ? { latitude: location.latitude, longitude: location.longitude } : undefined,
       createdAt: timestamp,
       createdBy,
       currentStage: 0,
