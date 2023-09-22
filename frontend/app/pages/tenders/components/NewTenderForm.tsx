@@ -3,11 +3,10 @@ import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
-import { Dialog } from 'primereact/dialog';
-import { Divider } from 'primereact/divider';
 import { classNames } from 'primereact/utils';
 import { Tender } from '../tender/models/Tender';
 import { stages } from '../../../data/stages';
+import { Tag } from 'primereact/tag';
 
 interface FormErrors {
     name?: string
@@ -15,7 +14,6 @@ interface FormErrors {
     province?: string
     commune?: string
     address?: string
-    currentStage?: string
     mercadoPublicoId?: string
     category?: string
 }
@@ -57,10 +55,6 @@ export const NewTenderForm = () => {
                 errors.safi = 'Safi no válido';
             }
 
-            if (!data.currentStage) {
-                errors.currentStage = 'Este campo es requerido.';
-            }
-
             return errors;
         },
         onSubmit: (data) => {
@@ -83,6 +77,9 @@ export const NewTenderForm = () => {
     return (
         <div className="form-demo">
             <div className="flex justify-content-center">
+                <div className="tagstage">
+                    <Tag id="currentStage" className="tender-status stage0 justify-content-end">{stages.tag[0]}</Tag>
+                </div>
                 <div className="card">
                     <form onSubmit={formik.handleSubmit} className="p-fluid">
                         <div className="field">
@@ -98,14 +95,6 @@ export const NewTenderForm = () => {
                                 <label htmlFor="safi" className={classNames({ 'p-error': isFormFieldValid('safi') })}>Safi*</label>
                             </span>
                             {getFormErrorMessage('safi')}
-                        </div>
-                        <div className="field grid-item full-width">
-                            <span className="p-float-label">
-                                <InputText id="currentStage" name="currentStage" value={stages.tag[0]} onChange={formik.handleChange}
-                                    className={classNames({ 'p-invalid': isFormFieldValid('currentStage') })} disabled={true} />
-                                <label htmlFor="currentStage" className={classNames({ 'p-error': isFormFieldValid('currentStage') })}>Etapa actual</label>
-                            </span>
-                            {getFormErrorMessage('currentStage')}
                         </div>
                         <Button type="submit" label="Submit" className="mt-2" />
                     </form>

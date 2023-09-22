@@ -42,78 +42,58 @@
     margin: 50px;
 }
 
-.datatable-doc-demo .tender-status.stage0 {
+.tender-status.stage0 {
     background-color: #00ff00;
-    /* Cambia el color de fondo según el estado 1 */
 }
 
-/* Estilo para el estado 2 */
-.datatable-doc-demo .tender-status.stage1 {
+.tender-status.stage1 {
     background-color: #0074d9;
-    /* Cambia el color de fondo según el estado 2 */
 }
 
-/* Estilo para el estado 3 */
-.datatable-doc-demo .tender-status.stage2 {
+.tender-status.stage2 {
     background-color: #ffd700;
-    /* Cambia el color de fondo según el estado 3 */
 }
 
-.datatable-doc-demo .tender-status.stage3 {
+.tender-status.stage3 {
     background-color: #ff5733;
-    /* Cambia el color de fondo según el estado 1 */
 }
 
-/* Estilo para el estado 2 */
-.datatable-doc-demo .tender-status.stage4 {
+.tender-status.stage4 {
     background-color: #ff009d;
-    /* Cambia el color de fondo según el estado 2 */
 }
 
-/* Estilo para el estado 3 */
-.datatable-doc-demo .tender-status.stage5 {
+.tender-status.stage5 {
     background-color: #8b008b;
-    /* Cambia el color de fondo según el estado 3 */
 }
 
-.datatable-doc-demo .tender-status.stage6 {
+.tender-status.stage6 {
     background-color: #ff9bf2;
-    /* Cambia el color de fondo según el estado 1 */
 }
 
-/* Estilo para el estado 2 */
-.datatable-doc-demo .tender-status.stage7 {
+.tender-status.stage7 {
     background-color: #001f3f;
-    /* Cambia el color de fondo según el estado 2 */
 }
 
-.datatable-doc-demo .tender-status.stage8 {
+.tender-status.stage8 {
     background-color: #ffff00;
-    /* Cambia el color de fondo según el estado 2 */
 }
 
-.datatable-doc-demo .tender-status.stage9 {
+.tender-status.stage9 {
     background-color: #800080;
-    /* Cambia el color de fondo según el estado 2 */
 }
 
-.datatable-doc-demo .tender-status.stage10 {
+.tender-status.stage10 {
     background-color: #00ced1;
-    /* Cambia el color de fondo según el estado 2 */
 }
 
-.datatable-doc-demo .tender-status.stage11 {
+.tender-status.stage11 {
     background-color: #4169e1;
-    /* Cambia el color de fondo según el estado 2 */
 }
 
-.datatable-doc-demo .tender-status.stage12 {
+.tender-status.stage12 {
     background-color: #ff0000;
-    /* Cambia el color de fondo según el estado 2 */
 }
 
-/* Estilo por defecto 3 */
-.datatable-doc-demo .tender-status {
+.tender-status {
     background-color: rgb(0, 0, 0);
-    /* Cambia el color de fondo según el estado 3 */
 }
