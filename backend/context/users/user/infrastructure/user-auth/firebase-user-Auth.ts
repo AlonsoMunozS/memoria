@@ -31,24 +31,15 @@ const authFirebase = getAuth(firebaseAuth);
 
 export class FirebaseUserAuth implements UserAuth {
 
-  async create(userAttributes: UserAttributes, password: string): Promise<void> {
+  async create(email: string, password: string): Promise<string> {
     try {
-      const userCredential: UserCredential = await createUserWithEmailAndPassword(authFirebase, userAttributes.email, password);
+      const userCredential: UserCredential = await createUserWithEmailAndPassword(authFirebase, email, password);
       const userRegisterToken = await userCredential.user.getIdToken()
       const tokenSections = (userRegisterToken || '').split('.')
       const payloadJSON = Buffer.from(tokenSections[1], 'base64').toString('utf8')
       const payload = JSON.parse(payloadJSON)
-      const id = payload['user_id']
-
-      const user = User.create({
-        id,
-        userAttributes
-      })
-
-      await client.connect();
-      const collection = database.collection(collectionName);
-      await collection.insertOne(user);
-
+      const userId = payload['user_id']
+      return userId
     } catch (error: any) {
       const errorMessage: string = error.message;
       console.log(error)

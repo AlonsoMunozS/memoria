@@ -10,7 +10,7 @@ import { MongoUserRepository } from "./user-repository/mongo-user-repository";
 const userFirebaseAuth = new FirebaseUserAuth();
 const userRepository = new MongoUserRepository();
 
-const userCreator = new UserCreator(userFirebaseAuth)
+const userCreator = new UserCreator(userFirebaseAuth, userRepository)
 const userLoginer = new UserLoginer(userFirebaseAuth)
 const userFinder = new UserFinder(userRepository)
 

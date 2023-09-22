@@ -1,7 +1,8 @@
+import { UserAttributes } from './UserAttributes';
 import { User } from './user';
 
 export interface UserRepository {
-    // create(userAttributes: UserAttributes, password: string): Promise<void>;
+    create(userId: string, userAttributes: UserAttributes): Promise<void>;
     findById(id: string): Promise<User>;
 }
 
