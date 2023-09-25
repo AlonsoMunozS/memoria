@@ -1,6 +1,6 @@
 import express from "express";
 
-import { createUserController, findByIdUserController, loginUserController } from "../dependencies";
+import { createUserController, findByIdUserController, loginUserController, updatePasswordController } from "../dependencies";
 import { FindByIdUserController } from "./findByIdUserController";
 
 
@@ -19,6 +19,11 @@ userRouter.post(
 userRouter.get(
   "/user/:userId",
   findByIdUserController.findByIdUser.bind(findByIdUserController)
+);
+
+userRouter.put(
+  "/updatePassword",
+  updatePasswordController.updatePassword.bind(updatePasswordController)
 );
 
 export { userRouter };

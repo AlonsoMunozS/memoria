@@ -19,7 +19,6 @@ export class UpdateTenderController {
         }
         const { name, safi, province, commune, address, location, currentStage, mercadoPublicoId, category } = req.body;
 
-        console.log(safi)
         const request: UpdateTenderRequest = {
             id: tenderId,
             name,

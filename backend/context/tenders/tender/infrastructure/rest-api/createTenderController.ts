@@ -35,7 +35,6 @@ export class CreateTenderController {
     }
 
     const token = authorization.split(" ")[1]
-    console.log("token:", token)
 
     const tokenSections = (token || '').split('.')
     if (tokenSections.length < 2) {
@@ -45,7 +44,6 @@ export class CreateTenderController {
 
     const payloadJSON = Buffer.from(tokenSections[1], 'base64').toString('utf8')
     const payload = JSON.parse(payloadJSON)
-    console.log("payload:", payload['user_id'])
     const createdBy = payload['user_id']
 
     const { name, safi, province, commune, address, location, mercadoPublicoId, category } = req.body;

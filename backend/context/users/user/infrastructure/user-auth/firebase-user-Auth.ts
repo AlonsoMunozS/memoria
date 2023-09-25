@@ -1,7 +1,7 @@
 import { UserAttributes } from '../../domain/UserAttributes';
 import { User } from '../../domain/user';
 import { UserAuth } from '../../domain/userAuth';
-import { getAuth, UserCredential, signInWithEmailAndPassword, Auth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, UserCredential, signInWithEmailAndPassword, Auth, createUserWithEmailAndPassword, updatePassword } from "firebase/auth";
 import { MongoClient, ServerApiVersion } from "mongodb"
 import { firebaseAuth } from './firebase-config'
 import { UserToken } from '../../domain/UserToken';
@@ -59,8 +59,6 @@ export class FirebaseUserAuth implements UserAuth {
         refreshToken: userCredential.user.refreshToken
       });
 
-      console.log("Usuario autenticado con éxito:", userCredential.user);
-
       return token;
     } catch (error) {
       if (error instanceof FirebaseError) {
@@ -71,5 +69,23 @@ export class FirebaseUserAuth implements UserAuth {
       throw error
     }
   }
+  async updatePassword(email: string, password: string, newPassword: string): Promise<void> {
+    try {
+      const userCredential = await signInWithEmailAndPassword(authFirebase, email, password)
+      await updatePassword(userCredential.user, newPassword)
+
+      // const pass = await updatePassword(userCredential.user, newPassword)
+    } catch (error) {
+      if (error instanceof FirebaseError) {
+        const errorCode = error.code;
+        console.log(errorCode)
+        throw new Error(errorCode);
+      }
+      console.log(error) // Puedes lanzar el error nuevamente para manejarlo en un nivel superior si es necesario
+      throw error
+    }
+  }
 
 }
+
+
