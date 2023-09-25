@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "@types/pdfkit": "^0.12.10",
-    "pdfkit": "^0.13.0"
-  }
-}
