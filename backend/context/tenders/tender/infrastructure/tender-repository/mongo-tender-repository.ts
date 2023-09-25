@@ -92,5 +92,17 @@ export class MongoTenderRepository implements TenderRepository {
     }
   }
 
+  async update(updatedTender: Tender): Promise<void> {
+    try {
+      await client.connect();
+      const collection = database.collection(collectionName);
+      const filter = { id: updatedTender.id };
+
+      await collection.updateOne(filter, { $set: updatedTender });
+    } finally {
+      await client.close();
+    }
+  }
+
 
 }
