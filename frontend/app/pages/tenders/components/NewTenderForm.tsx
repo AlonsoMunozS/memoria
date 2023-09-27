@@ -7,10 +7,12 @@ import { classNames } from 'primereact/utils';
 import { Tender } from '../tender/models/Tender';
 import { stages } from '../../../data/stages';
 import { Tag } from 'primereact/tag';
+import { Dropdown, DropdownProps } from 'primereact/dropdown';
 
 interface FormErrors {
     name?: string
     safi?: string
+    region?: string
     province?: string
     commune?: string
     address?: string
@@ -28,17 +30,91 @@ export const NewTenderForm = () => {
         name: '',
         safi: '',
     });
+    const [selectedRegion, setSelectedRegion] = useState<boolean>(false);
+    const [selectedProvince, setSelectedProvince] = useState<boolean>(false);
+    const [provinceSelectRegion, setProvinceSelectRegion] = useState<Array<string>>();
+    const [communeSelectProvince, setCommuneSelectProvince] = useState<Array<string>>();
+
+    const regions = require('../../../data/regions.json');
+    const provinces = require('../../../data/provinces.json');
+    const communes = require('../../../data/communes.json');
+
+
+    const onRegionChange = (e: { value: any }) => {
+        if (e.value) {
+            setSelectedRegion(true);
+            setSelectedProvince(false);
+            findProvince(e.value);
+        }
+        else {
+            setSelectedRegion(false);
+            setSelectedProvince(false);
+        }
+    }
+
+    const findProvince = (searchedRegion: string) => {
+        if (searchedRegion) {
+            const findRegion = provinces.find((region: any) =>
+                region.region.toLowerCase() === searchedRegion.toLowerCase()
+            );
+            setProvinceSelectRegion(findRegion.provinces);
+        }
+
+    }
+
+    const onProvinceChange = (e: { value: any }) => {
+        if (e.value) {
+            setSelectedProvince(true);
+            findCommune(e.value);
+        }
+        else {
+            setSelectedProvince(false);
+        }
+    }
+
+    const findCommune = (searchedProvince: string) => {
+        if (searchedProvince) {
+            const findProvince = communes.find((province: any) =>
+                province.province.toLowerCase() === searchedProvince.toLowerCase()
+            );
+            setCommuneSelectProvince(findProvince.communes);
+        }
+
+    }
+
+
+
+    const countryOptionTemplate = (option: any) => {
+        return (
+            <div>{option}</div>
+        );
+    }
+
+    const selectedCountryTemplate = (option: string, props: DropdownProps) => {
+        if (option) {
+            return (
+                <div>{option}</div>
+            );
+        }
+
+        return (
+            <span>
+                {props.placeholder}
+            </span>
+        );
+    }
 
     const formik = useFormik({
         initialValues: {
             name: '',
             safi: '',
-            province: '',
-            comune: '',
-            address: '',
-            currentStage: '',
-            mercadoPublicoId: '',
-            category: ''
+            region: null, //no incluir
+            province: null,
+            commune: null,
+            address: null,
+            currentStage: null,
+            mercadoPublicoId: null,
+            category: null
 
         },
         validate: (data) => {
@@ -54,14 +130,23 @@ export const NewTenderForm = () => {
             else if (/[^a-zA-Z0-9]+/.test(data.safi)) {
                 errors.safi = 'Safi no válido';
             }
+            if (!data.region) {
+                errors.region = 'Este campo es requerido.';
+            }
+            if (!data.province) {
+                errors.province = 'Este campo es requerido.';
+            }
+            if (!data.commune) {
+                errors.commune = 'Este campo es requerido.';
+            }
 
             return errors;
         },
         onSubmit: (data) => {
             setFormData(data);
             setShowMessage(true);
-
             formik.resetForm();
+            console.log(data);
         }
     });
 
@@ -95,6 +180,27 @@ export const NewTenderForm = () => {
                                 <label htmlFor="safi" className={classNames({ 'p-error': isFormFieldValid('safi') })}>Safi*</label>
                             </span>
                             {getFormErrorMessage('safi')}
+                        </div>
+                        <div className="field">
+                            <span>
+                                <Dropdown id='region' name='region' value={formik.values.region} options={regions.regions} onChange={(event) => { onRegionChange(event), formik.handleChange(event) }} filter showClear placeholder="Seleccionar Región" emptyFilterMessage="No se encontraron coincidencias" valueTemplate={selectedCountryTemplate} itemTemplate={countryOptionTemplate} className={classNames({ 'p-error': isFormFieldValid('region') })} />
+                                <label htmlFor="region" className={classNames({ 'p-error': isFormFieldValid('region') })}></label>
+                                {getFormErrorMessage('region')}
+                            </span>
+                        </div>
+                        <div className="field">
+                            <span>
+                                <Dropdown id='province' name='province' value={selectedRegion ? formik.values.province : null} options={provinceSelectRegion} onChange={(event) => { onProvinceChange(event), formik.handleChange(event) }} disabled={!selectedRegion} filter showClear placeholder="Seleccionar Provincia" emptyFilterMessage="No se encontraron coincidencias" valueTemplate={selectedCountryTemplate} itemTemplate={countryOptionTemplate} className={classNames({ 'p-error': isFormFieldValid('province') })} />
+                                <label htmlFor="province" className={classNames({ 'p-error': isFormFieldValid('province') })}></label>
+                                {getFormErrorMessage('province')}
+                            </span>
+                        </div>
+                        <div className="field">
+                            <span>
+                                <Dropdown id='commune' name='commune' value={selectedProvince ? formik.values.commune : null} options={communeSelectProvince} onChange={formik.handleChange} disabled={!selectedProvince} filter showClear placeholder="Seleccionar Comuna" emptyFilterMessage="No se encontraron coincidencias" valueTemplate={selectedCountryTemplate} itemTemplate={countryOptionTemplate} className={classNames({ 'p-error': isFormFieldValid('comuna') })} />
+                                <label htmlFor="commune" className={classNames({ 'p-error': isFormFieldValid('commune') })}></label>
+                                {getFormErrorMessage('commune')}
+                            </span>
                         </div>
                         <Button type="submit" label="Submit" className="mt-2" />
                     </form>
