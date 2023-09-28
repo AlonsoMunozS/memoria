@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-
+import VerifyToken from "../../../../shared/infrastructure/firebase-verify-token";
 import { TendersFinder } from "../../application/find/tendersFinder";
 
 export class FindTendersController {
@@ -8,15 +8,16 @@ export class FindTendersController {
   ) { }
 
   async findTenders(req: Request, res: Response) {
-    // const { authorization } = req.headers
-    // if (!authorization) {
-    //   res.status(400).send();
-    //   return;
-    // }
+    const { authorization } = req.headers
+    if (!authorization) {
+      res.status(400).send();
+      return;
+    }
 
-    // const token = authorization.split(" ")[1]
-    // console.log("token:", token)
-
+    const token = authorization.split(" ")[1]
+    console.log("token:", token)
+    const userId = await VerifyToken(token)
+    console.log(userId)
     // const tokenSections = (token || '').split('.')
     // if (tokenSections.length < 2) {
     //   res.status(400).send();
