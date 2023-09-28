@@ -26,12 +26,12 @@ export class CreateTenderController {
   ) { }
 
   async createTender(req: Request, res: Response) {
-    const { name, safi, province, commune, address, location, createdBy, mercadoPublicoId, category } = req.body;
+    const { name, safi, region, province, commune, address, mercadoPublicoId, category } = req.body;
 
     const today = new Date();
     const timestamp = today.getTime();
 
-    if (!name || !safi || !province || !commune || !address || !location || !createdBy || !mercadoPublicoId || !category) {
+    if (!name || !safi || !region || !province || !commune || !address || !mercadoPublicoId || !category) {
       res.status(400).send();
       return;
 
@@ -40,12 +40,12 @@ export class CreateTenderController {
       id: Math.floor(getRandomNumber(1000, 999999)),
       name,
       safi,
+      region,
       province,
       commune,
       address,
-      location,
       createdAt: timestamp,
-      createdBy,
+      createdBy: "prueba",
       currentStage: 0,
       mercadoPublicoId,
       category
