@@ -5,5 +5,6 @@ export interface TenderRepository {
 	find(): Promise<Array<Tender>>;
 	findById(tenderId: number): Promise<Tender>;
 	remove(tenderId: number): Promise<void>;
+	update(updatedTender: Tender): Promise<void>;
 }
 

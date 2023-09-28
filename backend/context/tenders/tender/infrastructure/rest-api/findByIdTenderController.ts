@@ -6,30 +6,29 @@ import { findByIdTenderRequest } from "../../application/findById/findByIdTender
 export class FindByIdTenderController {
   constructor(
     private readonly tenderByIdFinder: TenderByIdFinder,
-    ) {}
+  ) { }
 
   async findByIdTender(req: Request, res: Response) {
 
-    const tenderId  = parseInt(req.params.tenderId)
+    const tenderId = parseInt(req.params.tenderId)
 
     if (!tenderId) {
-        res.status(404).send();
-        return;
+      res.status(404).send();
+      return;
     }
-    console.log(tenderId,"asdasdsa")
-    
+
     const request: findByIdTenderRequest = {
-        id : tenderId
-      }
+      id: tenderId
+    }
     try {
       const tender = await this.tenderByIdFinder.findByIdTender(request)
       res.json(tender);
     } catch (error) {
       if (error instanceof Error) {
         if (error.name === 'NotFoundException')
-        res.status(404).send();
+          res.status(404).send();
         else if (error.name === 'InvalidArgumentError')
-        res.status(400).send();
+          res.status(400).send();
       }
       res.status(500).send();
     }

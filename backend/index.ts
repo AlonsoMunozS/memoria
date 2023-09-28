@@ -3,8 +3,10 @@ import express from "express";
 
 import { config } from "./context/shared/infrastructure/config";
 import { tenderRouter } from "./context/tenders/tender/infrastructure/rest-api/tenderRouter";
+import { userRouter } from "./context/users/user/infrastructure/rest-api/userRouter";
+import { pdfRouter } from "./context/reports/infrastructure/rest-api/pdfRouter";
 
-function boostrap() {
+function API() {
   const app = express();
 
   app.use((req, res, next) => {
@@ -17,6 +19,8 @@ function boostrap() {
 
   app.use(bodyParser.json());
   app.use("/tenders", tenderRouter);
+  app.use("/users", userRouter);
+  app.use("/pdf", pdfRouter);
 
   const { port } = config.server;
 
@@ -25,4 +29,4 @@ function boostrap() {
   });
 }
 
-boostrap();
+API();
