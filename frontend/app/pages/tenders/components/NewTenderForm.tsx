@@ -9,6 +9,10 @@ import { stages } from '../../../data/stages';
 import { Tag } from 'primereact/tag';
 import { Dropdown, DropdownProps } from 'primereact/dropdown';
 
+interface dialogProps {
+    setShowDialog: (bool: boolean) => void;
+}
+
 interface FormErrors {
     name?: string
     safi?: string
@@ -17,14 +21,13 @@ interface FormErrors {
     commune?: string
     address?: string
     mercadoPublicoId?: string
-    category?: string
 }
 interface FormData {
     name: string;
     safi: string;
 }
 
-export const NewTenderForm = () => {
+export const NewTenderForm: React.FC<dialogProps> = ({ setShowDialog }) => {
     const [showMessage, setShowMessage] = useState(false);
     const [formData, setFormData] = useState<FormData>({
         name: '',
@@ -38,6 +41,7 @@ export const NewTenderForm = () => {
     const regions = require('../../../data/regions.json');
     const provinces = require('../../../data/provinces.json');
     const communes = require('../../../data/communes.json');
+    const categories = require('../../../data/categories.json');
 
 
     const onRegionChange = (e: { value: any }) => {
@@ -82,15 +86,13 @@ export const NewTenderForm = () => {
 
     }
 
-
-
-    const countryOptionTemplate = (option: any) => {
+    const dropOptionTemplate = (option: any) => {
         return (
             <div>{option}</div>
         );
     }
 
-    const selectedCountryTemplate = (option: string, props: DropdownProps) => {
+    const dropSelectedTemplate = (option: string, props: DropdownProps) => {
         if (option) {
             return (
                 <div>{option}</div>
@@ -103,6 +105,9 @@ export const NewTenderForm = () => {
             </span>
         );
     }
+    const onHide = () => {
+        setShowDialog(false);
+    }
 
     const formik = useFormik({
         initialValues: {
@@ -111,9 +116,8 @@ export const NewTenderForm = () => {
             region: null, //no incluir
             province: null,
             commune: null,
-            address: null,
-            currentStage: null,
-            mercadoPublicoId: null,
+            address: '',
+            mercadoPublicoId: '',
             category: null
 
         },
@@ -130,14 +134,25 @@ export const NewTenderForm = () => {
             else if (/[^a-zA-Z0-9]+/.test(data.safi)) {
                 errors.safi = 'Safi no válido';
             }
+
+            if (!data.mercadoPublicoId) {
+                errors.mercadoPublicoId = 'Este campo es requerido.';
+            }
+
             if (!data.region) {
                 errors.region = 'Este campo es requerido.';
             }
+
             if (!data.province) {
                 errors.province = 'Este campo es requerido.';
             }
+
             if (!data.commune) {
                 errors.commune = 'Este campo es requerido.';
+            }
+
+            if (!data.address) {
+                errors.address = 'Este campo es requerido.';
             }
 
             return errors;
@@ -147,6 +162,7 @@ export const NewTenderForm = () => {
             setShowMessage(true);
             formik.resetForm();
             console.log(data);
+            onHide();
         }
     });
 
@@ -182,27 +198,51 @@ export const NewTenderForm = () => {
                             {getFormErrorMessage('safi')}
                         </div>
                         <div className="field">
+                            <span className="p-float-label">
+                                <InputText id="mercadoPublicoId" name="mercadoPublicoId" value={formik.values.mercadoPublicoId} onChange={formik.handleChange} className={classNames({ 'p-invalid': isFormFieldValid('mercadoPublicoId') })} />
+                                <label htmlFor="mercadoPublicoId" className={classNames({ 'p-error': isFormFieldValid('mercadoPublicoId') })}>Id de Mercado Público*</label>
+                            </span>
+                            {getFormErrorMessage('mercadoPublicoId')}
+                        </div>
+                        <div className="field">
                             <span>
-                                <Dropdown id='region' name='region' value={formik.values.region} options={regions.regions} onChange={(event) => { onRegionChange(event), formik.handleChange(event) }} filter showClear placeholder="Seleccionar Región" emptyFilterMessage="No se encontraron coincidencias" valueTemplate={selectedCountryTemplate} itemTemplate={countryOptionTemplate} className={classNames({ 'p-error': isFormFieldValid('region') })} />
+                                <Dropdown id='region' name='region' value={formik.values.region} options={regions.regions} onChange={(event) => { onRegionChange(event), formik.handleChange(event) }} filter showClear placeholder="Seleccionar Región" emptyFilterMessage="No se encontraron coincidencias" valueTemplate={dropSelectedTemplate} itemTemplate={dropOptionTemplate} className={classNames({ 'p-error': isFormFieldValid('region') })} />
                                 <label htmlFor="region" className={classNames({ 'p-error': isFormFieldValid('region') })}></label>
                                 {getFormErrorMessage('region')}
                             </span>
                         </div>
                         <div className="field">
                             <span>
-                                <Dropdown id='province' name='province' value={selectedRegion ? formik.values.province : null} options={provinceSelectRegion} onChange={(event) => { onProvinceChange(event), formik.handleChange(event) }} disabled={!selectedRegion} filter showClear placeholder="Seleccionar Provincia" emptyFilterMessage="No se encontraron coincidencias" valueTemplate={selectedCountryTemplate} itemTemplate={countryOptionTemplate} className={classNames({ 'p-error': isFormFieldValid('province') })} />
+                                <Dropdown id='province' name='province' value={selectedRegion ? formik.values.province : null} options={provinceSelectRegion} onChange={(event) => { onProvinceChange(event), formik.handleChange(event) }} disabled={!selectedRegion} filter showClear placeholder="Seleccionar Provincia" emptyFilterMessage="No se encontraron coincidencias" valueTemplate={dropSelectedTemplate} itemTemplate={dropOptionTemplate} className={classNames({ 'p-error': isFormFieldValid('province') })} />
                                 <label htmlFor="province" className={classNames({ 'p-error': isFormFieldValid('province') })}></label>
                                 {getFormErrorMessage('province')}
                             </span>
                         </div>
                         <div className="field">
                             <span>
-                                <Dropdown id='commune' name='commune' value={selectedProvince ? formik.values.commune : null} options={communeSelectProvince} onChange={formik.handleChange} disabled={!selectedProvince} filter showClear placeholder="Seleccionar Comuna" emptyFilterMessage="No se encontraron coincidencias" valueTemplate={selectedCountryTemplate} itemTemplate={countryOptionTemplate} className={classNames({ 'p-error': isFormFieldValid('comuna') })} />
+                                <Dropdown id='commune' name='commune' value={selectedProvince ? formik.values.commune : null} options={communeSelectProvince} onChange={formik.handleChange} disabled={!selectedProvince} filter showClear placeholder="Seleccionar Comuna" emptyFilterMessage="No se encontraron coincidencias" valueTemplate={dropSelectedTemplate} itemTemplate={dropOptionTemplate} className={classNames({ 'p-error': isFormFieldValid('comuna') })} />
                                 <label htmlFor="commune" className={classNames({ 'p-error': isFormFieldValid('commune') })}></label>
                                 {getFormErrorMessage('commune')}
                             </span>
                         </div>
-                        <Button type="submit" label="Submit" className="mt-2" />
+                        <div className="field">
+                            <span className="p-float-label">
+                                <InputText id="address" name="address" value={formik.values.address} onChange={formik.handleChange} className={classNames({ 'p-invalid': isFormFieldValid('address') })} />
+                                <label htmlFor="address" className={classNames({ 'p-error': isFormFieldValid('address') })}>Dirección*</label>
+                            </span>
+                            {getFormErrorMessage('address')}
+                        </div>
+                        <div className="field">
+                            <span>
+                                <Dropdown id='category' name='category' value={formik.values.category} options={categories.categories} onChange={formik.handleChange} filter showClear placeholder="Seleccionar Categoría" emptyFilterMessage="No se encontraron coincidencias" valueTemplate={dropSelectedTemplate} itemTemplate={dropOptionTemplate} />
+                                <label htmlFor="category" className={classNames({ 'p-error': isFormFieldValid('commune') })}></label>
+                            </span>
+                        </div>
+                        <div className="confirm-button-container">
+                            {/*<Button type="submit" label="Submit" className="mt-2" />*/}
+                            <Button type="button" label="Cancelar" icon="pi pi-times" onClick={() => onHide()} className="p-button-text" />
+                            <Button type="submit" label="Guardar" icon="pi pi-check" autoFocus />
+                        </div>
                     </form>
                 </div>
             </div>

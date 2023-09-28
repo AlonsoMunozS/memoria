@@ -10,3 +10,18 @@
 .form-demo .tagstage {
     text-align: right;
 }
+
+.confirm-button-container {
+    position: sticky;
+    bottom: 0;
+    background-color: white;
+    /* Agrega un fondo blanco si es necesario para que el botón se destaque */
+    padding: 10px;
+    /* Añade espacio alrededor del botón si es necesario */
+    z-index: 1;
+    /* Ajusta el valor según sea necesario para que el botón esté por encima del contenido del formulario */
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    /* Dos columnas automáticas */
+    gap: 10px;
+}
