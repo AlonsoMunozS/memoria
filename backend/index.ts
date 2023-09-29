@@ -2,7 +2,7 @@ import bodyParser from "body-parser";
 import express from "express";
 import cors from 'cors';
 
-import { config } from "./context/shared/infrastructure/config";
+import config from "./context/shared/infrastructure/config.local";
 import { tenderRouter } from "./context/tenders/tender/infrastructure/rest-api/tenderRouter";
 import { userRouter } from "./context/users/user/infrastructure/rest-api/userRouter";
 import { pdfRouter } from "./context/reports/infrastructure/rest-api/pdfRouter";
