@@ -5,11 +5,12 @@ import { CreateTenderRequest } from "../../application/create/createTenderReques
 import VerifyToken from "../../../../shared/infrastructure/firebase-verify-token";
 
 type CreateTenderBodyRequest = {
-  name: String,
-  safi: String,
+  name: string,
+  safi: string,
+  region: string
   province: string,
   commune: string,
-  location?: Array<number>,
+  address: string
   createdBy: number,
   mercadoPublicoId: string,
   category?: string,
@@ -43,12 +44,12 @@ export class CreateTenderController {
       return;
     }
 
-    const { name, safi, region, province, commune, address, mercadoPublicoId, category } = req.body;
+    const { name, safi, region, province, commune, address, mercadoPublicoId, category } = req.body as CreateTenderBodyRequest;
 
     const today = new Date();
-    const timestamp = today.getTime();
+    const createdAt = today.getTime();
 
-    if (!name || !safi || !region || !province || !commune || !address || !mercadoPublicoId || !category) {
+    if (!name || !safi || !region || !province || !commune || !address || !mercadoPublicoId) {
       res.status(400).send();
       return;
     }
@@ -60,7 +61,7 @@ export class CreateTenderController {
       province,
       commune,
       address,
-      createdAt: timestamp,
+      createdAt,
       createdBy,
       currentStage: 0,
       mercadoPublicoId,

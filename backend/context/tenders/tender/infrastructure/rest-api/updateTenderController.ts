@@ -17,12 +17,13 @@ export class UpdateTenderController {
             res.status(404).send();
             return;
         }
-        const { name, safi, province, commune, address, location, currentStage, mercadoPublicoId, category } = req.body;
+        const { name, safi, region, province, commune, address, location, currentStage, mercadoPublicoId, category } = req.body;
 
         const request: UpdateTenderRequest = {
             id: tenderId,
             name,
             safi,
+            region,
             province,
             commune,
             address,
