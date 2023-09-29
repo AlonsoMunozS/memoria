@@ -38,9 +38,9 @@ export class CreateTenderController {
     const token = authorization.split(" ")[1]
 
     const createdBy = await VerifyToken(token)
-
+    console.log(createdBy)
     if (!createdBy) {
-      res.status(400).send();
+      res.status(401).send({ error: "invalid-token" });
       return;
     }
 

@@ -1,6 +1,4 @@
 import * as admin from "firebase-admin";
-import { FirebaseError } from 'firebase/app';
-import * as serviceAccount from './serviceAccountKey.json'
 
 async function VerifyToken(token: string): Promise<string | undefined> {
   try {

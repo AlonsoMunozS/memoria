@@ -8,25 +8,20 @@ export class FindTendersController {
   ) { }
 
   async findTenders(req: Request, res: Response) {
-    const { authorization } = req.headers
-    if (!authorization) {
-      res.status(400).send();
-      return;
-    }
-
-    const token = authorization.split(" ")[1]
-    console.log("token:", token)
-    const userId = await VerifyToken(token)
-    console.log(userId)
-    // const tokenSections = (token || '').split('.')
-    // if (tokenSections.length < 2) {
+    // const { authorization } = req.headers
+    // if (!authorization) {
     //   res.status(400).send();
     //   return;
     // }
 
-    // const payloadJSON = Buffer.from(tokenSections[1], 'base64').toString('utf8')
-    // const payload = JSON.parse(payloadJSON)
-    // console.log("payload:", payload)
+    // const token = authorization.split(" ")[1]
+    // console.log("token:", token)
+    // const userId = await VerifyToken(token)
+
+    // if (!userId) {
+    //   res.status(401).send();
+    //   return;
+    // }
 
     try {
       const tenders = await this.tendersFinder.findTenders()
