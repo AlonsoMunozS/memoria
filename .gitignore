@@ -8,6 +8,7 @@ test-results.xml
 *.log
 *.tsbuildinfo
 *.env
+config.local.ts
 private-key.json
 public/workbox-*.js
 serviceAccountKey.json
