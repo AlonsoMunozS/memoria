@@ -8,6 +8,7 @@ import { Tender } from '../tender/models/Tender';
 import { stages } from '../../../data/stages';
 import { Tag } from 'primereact/tag';
 import { Dropdown, DropdownProps } from 'primereact/dropdown';
+import createTender from '../../services/TenderService';
 
 interface dialogProps {
     setShowDialog: (bool: boolean) => void;
@@ -113,12 +114,12 @@ export const NewTenderForm: React.FC<dialogProps> = ({ setShowDialog }) => {
         initialValues: {
             name: '',
             safi: '',
-            region: null, //no incluir
-            province: null,
-            commune: null,
+            region: undefined,
+            province: undefined,
+            commune: undefined,
             address: '',
             mercadoPublicoId: '',
-            category: null
+            category: undefined
 
         },
         validate: (data) => {
@@ -160,9 +161,9 @@ export const NewTenderForm: React.FC<dialogProps> = ({ setShowDialog }) => {
         onSubmit: (data) => {
             setFormData(data);
             setShowMessage(true);
-            formik.resetForm();
-            console.log(data);
             onHide();
+            formik.resetForm();
+            createTender(data);
         }
     });
 

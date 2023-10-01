@@ -4,13 +4,13 @@ export type Tender = {
 	id?: number
 	name: string
 	safi: string
-	province: string
-	commune: string
+	region?: string
+	province?: string
+	commune?: string
 	address: string
-	location?: TenderLocation
-	createdAt: number
-	createdBy: number
-	currentStage: string
+	createdAt?: number
+	createdBy?: number
+	currentStage?: string
 	mercadoPublicoId: string
 	category?: string
 	companies?: Array<string>

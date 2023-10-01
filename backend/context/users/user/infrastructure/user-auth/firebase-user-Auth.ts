@@ -8,25 +8,6 @@ import { UserToken } from '../../domain/UserToken';
 import * as admin from "firebase-admin";
 import { FirebaseError } from 'firebase/app';
 
-const uri = "mongodb://Alonso:1234Alonso@ac-ouxjhz4-shard-00-00.q41p8o6.mongodb.net:27017,ac-ouxjhz4-shard-00-01.q41p8o6.mongodb.net:27017,ac-ouxjhz4-shard-00-02.q41p8o6.mongodb.net:27017/?replicaSet=atlas-8gtwdq-shard-0&authSource=admin&tls=true";
-
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
-const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  }
-});
-
-const database = client.db("PruebaPMM");
-const collectionName = "Users"
-
-const serviceAccount = require("./serviceAccountKey.json");
-
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),
-});
 const authFirebase = getAuth(firebaseAuth);
 
 export class FirebaseUserAuth implements UserAuth {
