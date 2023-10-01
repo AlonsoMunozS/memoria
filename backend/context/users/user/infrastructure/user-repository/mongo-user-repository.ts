@@ -2,8 +2,9 @@ import { MongoClient, ServerApiVersion } from "mongodb"
 import { UserRepository } from "../../domain/UserRepository";
 import { User } from "../../domain/user";
 import { UserAttributes } from "../../domain/UserAttributes";
+import config from '../../../../shared/infrastructure/config.local'
 
-const uri = "mongodb://Alonso:1234Alonso@ac-ouxjhz4-shard-00-00.q41p8o6.mongodb.net:27017,ac-ouxjhz4-shard-00-01.q41p8o6.mongodb.net:27017,ac-ouxjhz4-shard-00-02.q41p8o6.mongodb.net:27017/?replicaSet=atlas-8gtwdq-shard-0&authSource=admin&tls=true";
+const uri = config.mongoUri
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
   serverApi: {
