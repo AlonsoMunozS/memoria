@@ -2,14 +2,15 @@ import { Request, Response } from "express";
 
 import { TenderCreator } from "../../application/create/tenderCreator";
 import { CreateTenderRequest } from "../../application/create/createTenderRequest";
-import { TenderLocation } from "../../domain/tenderLocation";
+import VerifyToken from "../../../../shared/infrastructure/firebase-verify-token";
 
 type CreateTenderBodyRequest = {
-  name: String,
-  safi: String,
+  name: string,
+  safi: string,
+  region: string
   province: string,
   commune: string,
-  location?: Array<number>,
+  address: string
   createdBy: number,
   mercadoPublicoId: string,
   category?: string,
@@ -36,22 +37,18 @@ export class CreateTenderController {
 
     const token = authorization.split(" ")[1]
 
-    const tokenSections = (token || '').split('.')
-    if (tokenSections.length < 2) {
-      res.status(400).send();
+    const createdBy = await VerifyToken(token)
+    if (!createdBy) {
+      res.status(401).send();
       return;
     }
 
-    const payloadJSON = Buffer.from(tokenSections[1], 'base64').toString('utf8')
-    const payload = JSON.parse(payloadJSON)
-    const createdBy = payload['user_id']
-
-    const { name, safi, province, commune, address, location, mercadoPublicoId, category } = req.body;
+    const { name, safi, region, province, commune, address, mercadoPublicoId, category } = req.body as CreateTenderBodyRequest;
 
     const today = new Date();
-    const timestamp = today.getTime();
+    const createdAt = today.getTime();
 
-    if (!name || !safi || !province || !commune || !address || !location || !mercadoPublicoId || !category) {
+    if (!name || !safi || !region || !province || !commune || !address || !mercadoPublicoId) {
       res.status(400).send();
       return;
     }
@@ -59,11 +56,11 @@ export class CreateTenderController {
       id: Math.floor(getRandomNumber(1000, 999999)),
       name,
       safi,
+      region,
       province,
       commune,
       address,
-      location: location?.latitude && location?.longitude ? { latitude: location.latitude, longitude: location.longitude } : undefined,
-      createdAt: timestamp,
+      createdAt,
       createdBy,
       currentStage: 0,
       mercadoPublicoId,

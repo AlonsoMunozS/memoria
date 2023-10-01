@@ -2,25 +2,10 @@ import { UserAttributes } from '../../domain/UserAttributes';
 import { User } from '../../domain/user';
 import { UserAuth } from '../../domain/userAuth';
 import { getAuth, UserCredential, signInWithEmailAndPassword, Auth, createUserWithEmailAndPassword, updatePassword } from "firebase/auth";
-import { MongoClient, ServerApiVersion } from "mongodb"
 import { firebaseAuth } from './firebase-config'
 import { UserToken } from '../../domain/UserToken';
 import * as admin from "firebase-admin";
 import { FirebaseError } from 'firebase/app';
-
-const uri = "mongodb://Alonso:1234Alonso@ac-ouxjhz4-shard-00-00.q41p8o6.mongodb.net:27017,ac-ouxjhz4-shard-00-01.q41p8o6.mongodb.net:27017,ac-ouxjhz4-shard-00-02.q41p8o6.mongodb.net:27017/?replicaSet=atlas-8gtwdq-shard-0&authSource=admin&tls=true";
-
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
-const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  }
-});
-
-const database = client.db("PruebaPMM");
-const collectionName = "Users"
 
 const serviceAccount = require("./serviceAccountKey.json");
 
@@ -85,7 +70,20 @@ export class FirebaseUserAuth implements UserAuth {
       throw error
     }
   }
-
+  async verifyToken(token: string): Promise<string> {
+    try {
+      const decodedToken = await admin.auth().verifyIdToken(token);
+      return decodedToken.uid;
+    } catch (error) {
+      if (error instanceof FirebaseError) {
+        const errorCode = error.code;
+        console.log(errorCode)
+        throw new Error(errorCode);
+      }
+      console.log(error) // Puedes lanzar el error nuevamente para manejarlo en un nivel superior si es necesario
+      throw error
+    }
+  }
 }
 
 

@@ -1,0 +1,19 @@
+[
+    {
+        "region": "Región de Los Lagos",
+        "provinces": [
+            "Llanquihue",
+            "Osorno",
+            "Chiloé",
+            "Palena"
+        ]
+    },
+    {
+        "region": "Región de Ñuble",
+        "provinces": [
+            "Ñuble",
+            "Diguillín",
+            "Itata"
+        ]
+    }
+]

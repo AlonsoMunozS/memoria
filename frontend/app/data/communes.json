@@ -1,0 +1,77 @@
+[
+    {
+        "province": "Llanquihue",
+        "communes": [
+            "Puerto Montt",
+            "Puerto Varas",
+            "Calbuco",
+            "Cochamó",
+            "Fresia",
+            "Frutillar",
+            "Los Muermos",
+            "Llanquihue",
+            "Maullín"
+        ]
+    },
+    {
+        "province": "Osorno",
+        "communes": [
+            "Osorno",
+            "Puerto Octay",
+            "Purranque",
+            "Puyehue",
+            "Río Negro",
+            "San Juan de la Costa",
+            "San Pablo"
+        ]
+    },
+    {
+        "province": "Chiloé",
+        "communes": [
+            "Castro",
+            "Ancud",
+            "Chonchi",
+            "Curaco de Vélez",
+            "Dalcahue",
+            "Puqueldón",
+            "Queilén",
+            "Quellón",
+            "Quemchi",
+            "Quinchao"
+        ]
+    },
+    {
+        "province": "Palena",
+        "communes": [
+            "Puerto Montt",
+            "Chaitén",
+            "Futaleufú",
+            "Hualaihué",
+            "Palena"
+        ]
+    },
+    {
+        "province": "Ñuble",
+        "communes": [
+            "Chillán",
+            "Bulnes",
+            "Cobquecura"
+        ]
+    },
+    {
+        "province": "Diguillín",
+        "communes": [
+            "Chillán Viejo",
+            "Coelemu",
+            "San Carlos"
+        ]
+    },
+    {
+        "province": "Itata",
+        "communes": [
+            "Quillón",
+            "Bulnes",
+            "San Nicolás"
+        ]
+    }
+]

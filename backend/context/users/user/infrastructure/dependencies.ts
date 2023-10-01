@@ -1,4 +1,3 @@
-import { UpdateTenderController } from "../../../tenders/tender/infrastructure/rest-api/updateTenderController";
 import { UserCreator } from "../application/create/userCreator";
 import { UserFinder } from "../application/findById/userFinder";
 import { UserLoginer } from "../application/singIn/userLoginer";
