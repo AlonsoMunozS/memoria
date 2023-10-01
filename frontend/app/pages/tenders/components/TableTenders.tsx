@@ -51,8 +51,8 @@ const TableTenders = ({ tenders, loading }: TenderProps) => {
                 <div>
                     <Button className="p-button-rounded fullplusbutton-resp" icon="pi pi-plus" label='Agregar Licitación' onClick={() => { setDisplayNewTenderDialog(true) }} />
                     <Button className="p-button-rounded smallplusbutton-resp" icon="pi pi-plus" onClick={() => { setDisplayNewTenderDialog(true) }} />
-                    <NewTenderDialog showDialog={displayNewTenderDialog} setShowDialog={setDisplayNewTenderDialog} >
-                        <NewTenderForm />
+                    <NewTenderDialog showDialog={displayNewTenderDialog} setShowDialog={setDisplayNewTenderDialog}>
+                        <NewTenderForm setShowDialog={setDisplayNewTenderDialog} />
                     </NewTenderDialog>
                 </div>
             </div>

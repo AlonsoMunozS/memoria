@@ -4,12 +4,12 @@ export class Tender {
         readonly id: number
         readonly name: string
         readonly safi: string
+        readonly region: string
         readonly province: string
         readonly commune: string
         readonly address: string
-        readonly location?: TenderLocation
         readonly createdAt: number
-        readonly createdBy: number
+        readonly createdBy: string
         readonly currentStage: number
         readonly mercadoPublicoId: string
         readonly category?: string
@@ -19,10 +19,10 @@ export class Tender {
                 id,
                 name,
                 safi,
+                region,
                 province,
                 commune,
                 address,
-                location,
                 createdAt,
                 createdBy,
                 currentStage,
@@ -33,12 +33,12 @@ export class Tender {
                 id: number,
                 name: string,
                 safi: string,
+                region: string,
                 province: string,
                 commune: string,
                 address: string,
-                location?: TenderLocation,
                 createdAt: number,
-                createdBy: number,
+                createdBy: string,
                 currentStage: number,
                 mercadoPublicoId: string,
                 category?: string,
@@ -47,10 +47,10 @@ export class Tender {
                 this.id = id
                 this.name = name
                 this.safi = safi
+                this.region = region
                 this.province = province
                 this.commune = commune
                 this.address = address
-                this.location = location
                 this.createdAt = createdAt
                 this.createdBy = createdBy
                 this.currentStage = currentStage

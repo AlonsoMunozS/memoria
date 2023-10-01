@@ -17,7 +17,6 @@ export class TenderUpdater {
             province: request.province ? request.province : oldTender.province,
             commune: request.commune ? request.commune : oldTender.commune,
             address: request.address ? request.address : oldTender.address,
-            location: request.location ? request.location : oldTender.location,
             currentStage: request.currentStage ? request.currentStage : oldTender.currentStage,
             mercadoPublicoId: request.mercadoPublicoId ? request.mercadoPublicoId : oldTender.mercadoPublicoId,
             category: request.category ? request.category : oldTender.category,

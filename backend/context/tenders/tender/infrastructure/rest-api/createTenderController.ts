@@ -27,31 +27,12 @@ export class CreateTenderController {
   ) { }
 
   async createTender(req: Request, res: Response) {
-
-    const { authorization } = req.headers
-    if (!authorization) {
-      res.status(400).send();
-      return;
-    }
-
-    const token = authorization.split(" ")[1]
-
-    const tokenSections = (token || '').split('.')
-    if (tokenSections.length < 2) {
-      res.status(400).send();
-      return;
-    }
-
-    const payloadJSON = Buffer.from(tokenSections[1], 'base64').toString('utf8')
-    const payload = JSON.parse(payloadJSON)
-    const createdBy = payload['user_id']
-
-    const { name, safi, province, commune, address, location, mercadoPublicoId, category } = req.body;
+    const { name, safi, region, province, commune, address, mercadoPublicoId, category } = req.body;
 
     const today = new Date();
     const timestamp = today.getTime();
 
-    if (!name || !safi || !province || !commune || !address || !location || !mercadoPublicoId || !category) {
+    if (!name || !safi || !region || !province || !commune || !address || !mercadoPublicoId || !category) {
       res.status(400).send();
       return;
     }
@@ -59,12 +40,12 @@ export class CreateTenderController {
       id: Math.floor(getRandomNumber(1000, 999999)),
       name,
       safi,
+      region,
       province,
       commune,
       address,
-      location: location?.latitude && location?.longitude ? { latitude: location.latitude, longitude: location.longitude } : undefined,
       createdAt: timestamp,
-      createdBy,
+      createdBy: "prueba",
       currentStage: 0,
       mercadoPublicoId,
       category
