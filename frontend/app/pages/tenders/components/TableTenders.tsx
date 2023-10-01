@@ -13,7 +13,8 @@ import { stages } from '../../../data/stages';
 
 interface TenderProps {
     tenders: Array<Tender>,
-    loading: boolean
+    loading: boolean,
+    setLoading: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 /*const stages = {
@@ -21,7 +22,7 @@ interface TenderProps {
     "FirstStage": "PUBLICACIÓN"
 }*/
 
-const TableTenders = ({ tenders, loading }: TenderProps) => {
+const TableTenders = ({ tenders, loading, setLoading }: TenderProps) => {
 
     const [filters, setFilters] = useState({
         'global': { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -52,7 +53,7 @@ const TableTenders = ({ tenders, loading }: TenderProps) => {
                     <Button className="p-button-rounded fullplusbutton-resp" icon="pi pi-plus" label='Agregar Licitación' onClick={() => { setDisplayNewTenderDialog(true) }} />
                     <Button className="p-button-rounded smallplusbutton-resp" icon="pi pi-plus" onClick={() => { setDisplayNewTenderDialog(true) }} />
                     <NewTenderDialog showDialog={displayNewTenderDialog} setShowDialog={setDisplayNewTenderDialog}>
-                        <NewTenderForm setShowDialog={setDisplayNewTenderDialog} />
+                        <NewTenderForm setShowDialog={setDisplayNewTenderDialog} setLoading={setLoading} />
                     </NewTenderDialog>
                 </div>
             </div>
@@ -91,7 +92,7 @@ const TableTenders = ({ tenders, loading }: TenderProps) => {
             <DataTable value={tenders} paginator className="p-datatable-customers" header={header} rows={5}
                 paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                 dataKey="id" rowHover size="small"
-                filters={filters} filterDisplay="menu" loading={loading}
+                filters={filters} filterDisplay="menu"
                 globalFilterFields={['name', 'mercadoPublicoId', 'currentStage']} emptyMessage="No se han encontrado licitaciones."
                 currentPageReportTemplate={"Se encontraton {totalRecords} Licitaciones"}>
                 <Column field="name" header="Nombre" sortable filter filterPlaceholder="Búsqueda por nombre" style={{ minWidth: '14rem' }} />

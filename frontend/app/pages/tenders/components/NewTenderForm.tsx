@@ -4,7 +4,6 @@ import { useFormik } from 'formik';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { classNames } from 'primereact/utils';
-import { Tender } from '../tender/models/Tender';
 import { stages } from '../../../data/stages';
 import { Tag } from 'primereact/tag';
 import { Dropdown, DropdownProps } from 'primereact/dropdown';
@@ -12,6 +11,7 @@ import createTender from '../../services/TenderService';
 
 interface dialogProps {
     setShowDialog: (bool: boolean) => void;
+    setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 interface FormErrors {
@@ -28,7 +28,7 @@ interface FormData {
     safi: string;
 }
 
-export const NewTenderForm: React.FC<dialogProps> = ({ setShowDialog }) => {
+export const NewTenderForm: React.FC<dialogProps> = ({ setShowDialog, setLoading }) => {
     const [showMessage, setShowMessage] = useState(false);
     const [formData, setFormData] = useState<FormData>({
         name: '',
@@ -163,7 +163,7 @@ export const NewTenderForm: React.FC<dialogProps> = ({ setShowDialog }) => {
             setShowMessage(true);
             onHide();
             formik.resetForm();
-            createTender(data);
+            createTender(data, setLoading);
         }
     });
 
