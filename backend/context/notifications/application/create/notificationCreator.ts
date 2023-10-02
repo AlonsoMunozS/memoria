@@ -8,7 +8,7 @@ export class NotificationCreator {
     ) { }
 
     async createNotification(request: CreateNotificationRequest): Promise<void> {
-        const notification = new Notification(request)
-        await this.notificationRepository.create(notification);
+        // const notification = new Notification(request)
+        // await this.notificationRepository.create(notification);
     }
 }
