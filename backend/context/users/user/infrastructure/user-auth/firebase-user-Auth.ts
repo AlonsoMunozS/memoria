@@ -71,20 +71,7 @@ export class FirebaseUserAuth implements UserAuth {
       throw error
     }
   }
-  async verifyToken(token: string): Promise<string> {
-    try {
-      const decodedToken = await admin.auth().verifyIdToken(token);
-      return decodedToken.uid;
-    } catch (error) {
-      if (error instanceof FirebaseError) {
-        const errorCode = error.code;
-        console.log(errorCode)
-        throw new Error(errorCode);
-      }
-      console.log(error) // Puedes lanzar el error nuevamente para manejarlo en un nivel superior si es necesario
-      throw error
-    }
-  }
+
 }
 
 
