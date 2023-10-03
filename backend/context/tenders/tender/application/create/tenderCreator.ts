@@ -16,7 +16,6 @@ export class TenderCreator {
   async createTender(request: CreateTenderRequest): Promise<void> {
     const tender = new Tender(request)
     await this.tenderRepository.create(tender);
-    console.log("creada")
     const users = await this.userRepository.findByRole("licitador")
     const notifications = users.map(user => {
       return new AddNotification({ tenderId: request.id, userId: user.id, createAt: request.createdAt })

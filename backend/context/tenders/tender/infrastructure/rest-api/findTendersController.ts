@@ -15,7 +15,6 @@ export class FindTendersController {
     }
 
     const token = authorization.split(" ")[1]
-    console.log("token:", token)
     const userId = await VerifyToken(token)
 
     if (!userId) {

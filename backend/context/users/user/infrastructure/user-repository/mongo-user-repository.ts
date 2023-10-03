@@ -71,7 +71,6 @@ export class MongoUserRepository implements UserRepository {
           userPermits: userDoc?.userPermits
         });
       });
-      console.log("mapperUser:", mappedUser)
       return mappedUser;
     } finally {
       await client.close();
