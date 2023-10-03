@@ -18,7 +18,7 @@ export class TenderCreator {
     await this.tenderRepository.create(tender);
     const users = await this.userRepository.findByRole("licitador")
     const notifications = users.map(user => {
-      return new AddNotification({ tenderId: request.id, userId: user.id, createAt: request.createdAt })
+      return new AddNotification({ tenderId: request.id, userId: user.id, createdAt: request.createdAt })
     })
     await this.notificationRepository.create(notifications)
   }

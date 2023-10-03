@@ -21,7 +21,7 @@ export class TenderRemover {
     const today = new Date();
     const createdAt = today.getTime();
     const notifications = admin.map(admin => {
-      return new RemoveNotification({ tenderId: tender.id, userId: admin.id, createAt: createdAt })
+      return new RemoveNotification({ tenderId: tender.id, userId: admin.id, createdAt: createdAt })
     })
     await this.notificationRepository.create(notifications)
 

@@ -25,4 +25,27 @@ export class MongoNotificationRepository implements NotificationRepository {
       await client.close();
     }
   }
+  async findByUser(userId: string): Promise<Array<Notification> | null> {
+    try {
+      await client.connect();
+      const collection = database.collection(collectionName);
+      const notificationsCursor = collection.find({ userId: userId });
+      if (!notificationsCursor) {
+        return null
+      }
+      const notificationsArray = await notificationsCursor.toArray();
+      const mappedNotifications: Notification[] = notificationsArray.map((notificationDoc) => {
+        return new Notification({
+          id: notificationDoc.id,
+          userId: notificationDoc.userId,
+          message: notificationDoc.message,
+          createdAt: notificationDoc.createdAt,
+          read: notificationDoc.read
+        });
+      });
+      return mappedNotifications;
+    } finally {
+      await client.close();
+    }
+  }
 }
