@@ -18,6 +18,7 @@ export class FirebaseUserAuth implements UserAuth {
 
   async create(email: string, password: string): Promise<string> {
     try {
+      console.log("email:", email, "password:", password)
       const userCredential: UserCredential = await createUserWithEmailAndPassword(authFirebase, email, password);
       const userRegisterToken = await userCredential.user.getIdToken()
       const tokenSections = (userRegisterToken || '').split('.')

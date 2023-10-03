@@ -1,6 +1,6 @@
 import { Notification } from "./notification";
 
 export interface NotificationRepository {
-    create(notification: Notification): Promise<void>;
+    create(notifications: Array<Notification>): Promise<void>;
 }
 

@@ -1,4 +1,5 @@
 import { MongoNotificationRepository } from "../../../notifications/infrastructure/tender-repository/mongo-notification-repository";
+import { MongoUserRepository } from "../../../users/user/infrastructure/user-repository/mongo-user-repository";
 import { TenderCreator } from "../application/create/tenderCreator";
 import { TendersFinder } from "../application/find/tendersFinder";
 import { TenderByIdFinder } from "../application/findById/tenderByIdFinder";
@@ -13,8 +14,9 @@ import { MongoTenderRepository } from "./tender-repository/mongo-tender-reposito
 
 const tenderRepository = new MongoTenderRepository();
 const notificationRepository = new MongoNotificationRepository();
+const userRepository = new MongoUserRepository();
 
-const tenderCreator = new TenderCreator(tenderRepository, notificationRepository)
+const tenderCreator = new TenderCreator(tenderRepository, notificationRepository, userRepository)
 const tendersFinder = new TendersFinder(tenderRepository)
 const tenderByIdFinder = new TenderByIdFinder(tenderRepository)
 const tenderRemover = new TenderRemover(tenderRepository)

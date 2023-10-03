@@ -16,11 +16,11 @@ const collectionName = "Notifications";
 
 export class MongoNotificationRepository implements NotificationRepository {
 
-  async create(notification: Notification): Promise<void> {
+  async create(notifications: Array<Notification>): Promise<void> {
     try {
       await client.connect();
       const collection = database.collection(collectionName);
-      await collection.insertOne(notification);
+      await collection.insertMany(notifications);
     } finally {
       await client.close();
     }
