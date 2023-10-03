@@ -38,7 +38,10 @@ export class RemoveTenderController {
       res.status(201).send();
       return;
     } catch (error) {
-      console.log(error)
+      if (error instanceof Error) {
+        if (error.message === 'TenderNotFound')
+          res.status(404).send();
+      }
       res.status(500).send();
     }
 

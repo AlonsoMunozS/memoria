@@ -19,7 +19,7 @@ const userRepository = new MongoUserRepository();
 const tenderCreator = new TenderCreator(tenderRepository, notificationRepository, userRepository)
 const tendersFinder = new TendersFinder(tenderRepository)
 const tenderByIdFinder = new TenderByIdFinder(tenderRepository)
-const tenderRemover = new TenderRemover(tenderRepository)
+const tenderRemover = new TenderRemover(tenderRepository, notificationRepository, userRepository)
 const tenderUpdater = new TenderUpdater(tenderRepository)
 
 
