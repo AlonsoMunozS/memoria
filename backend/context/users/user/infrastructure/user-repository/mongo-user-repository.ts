@@ -53,4 +53,19 @@ export class MongoUserRepository implements UserRepository {
       await client.close();
     }
   }
+  async findByRole(role: string): Promise<Array<string>> {
+    try {
+      await client.connect();
+      const collection = database.collection(collectionName);
+      // const document = await collection.findOne({ _id: objectId });
+      const usersFound = await collection.findOne({ role: role });
+      const usersArray = await usersFound?.toArray();
+      const mappedUsers: Array<string> = usersArray.map((userDoc: User) => {
+        return userDoc.id
+      });
+      return mappedUsers;
+    } finally {
+      await client.close();
+    }
+  }
 }

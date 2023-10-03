@@ -13,8 +13,9 @@ export class TenderCreator {
 
   async createTender(request: CreateTenderRequest): Promise<void> {
     const tender = new Tender(request)
-    const notification = new AddNotification({ tenderId: request.id, userId: request.createdBy, createAt: request.createdAt })
     await this.tenderRepository.create(tender);
+
+    const notification = new AddNotification({ tenderId: request.id, userId: request.createdBy, createAt: request.createdAt })
     await this.notificationRepository.create(notification)
 
   }
