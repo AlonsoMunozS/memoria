@@ -1,111 +1,76 @@
 export type ReportPrimitives = {
-	id: string;
-	createdAt: number;
-	reviewerName: string;
-	examinerName: string;
-	establishmentName: string;
-	diagnosticMethod: string;
-	reason: string;
-	diagnosis?: {
-		clinicalManagementSuggestion?: string
-		explanation?: string,
-		diagnosticBasis?: string
-	}
-	requiredFaceToFaceEvaluation?: {
+	reviewer: {
+		id?: string,
+		firstName?: string,
+		lastName?: string,
+	},
+	diagnosisInfo?: {
+		diagnosis?: string,
+		diagnosticBasis?: string,
+		managementSuggestion?: string,
+	},
+	undeterminedInfo?: {
 		explanation?: string
 	},
-	reviewerSignature?: string,
-	requiredComplementaryExams?: {
-		explanation?: string
+	observations?: {
+		lowQualityExam?: {
+			explanation?: string
+		},
+		requiredComplementaryExams?: {
+			explanation?: string
+		},
+		requiredFaceToFaceEvaluation?: {
+			explanation?: string
+		},
+	},
+	timestamps: {
+		reservedAt: number,
+		diagnosedAt: number
 	}
-	lowQualityExam?: {
-		explanation?: string
-	}
-
 }
 
 export class Report {
-	readonly id: string;
-	readonly createdAt: number;
-	readonly reviewerName: string;
-	readonly examinerName: string;
-	readonly establishmentName: string;
-	readonly diagnosticMethod: string;
-	readonly reason: string;
-	readonly reviewerSignature?: string;
-	readonly diagnosis?: {
-		clinicalManagementSuggestion?: string | undefined
-		explanation?: string | undefined,
-		diagnosticBasis?: string | undefined
-	};
-	readonly requiredFaceToFaceEvaluation?: {
-		explanation?: string | undefined
-	};
-	readonly requiredComplementaryExams?: {
-		explanation?: string | undefined
-	};
-	readonly lowQualityExam?: {
-		explanation?: string | undefined
+	readonly reviewer: {
+		id?: string,
+		firstName?: string,
+		lastName?: string,
+	}
+	readonly diagnosisInfo?: {
+		diagnosis?: string,
+		diagnosticBasis?: string,
+		managementSuggestion?: string,
+	}
+	readonly undeterminedInfo?: {
+		explanation?: string
+	}
+	readonly observations?: {
+		lowQualityExam?: {
+			explanation?: string
+		},
+		requiredComplementaryExams?: {
+			explanation?: string
+		},
+		requiredFaceToFaceEvaluation?: {
+			explanation?: string
+		},
+	}
+	readonly timestamps: {
+		reservedAt?: number,
+		diagnosedAt?: number
 	}
 
 	constructor({
-		id,
-		createdAt,
-		reviewerName,
-		examinerName,
-		establishmentName,
-		diagnosticMethod,
-		reason,
-		reviewerSignature,
-		diagnosis,
-		requiredFaceToFaceEvaluation,
-		requiredComplementaryExams,
-		lowQualityExam
-	}: {
-		id: string,
-		createdAt: number,
-		reviewerName: string,
-		examinerName: string,
-		establishmentName: string,
-		diagnosticMethod: string,
-		reason: string,
-		reviewerSignature?: string,
-		diagnosis?: {
-			clinicalManagementSuggestion?: string | undefined
-			explanation?: string | undefined,
-			diagnosticBasis?: string | undefined
-		}
-		requiredFaceToFaceEvaluation?: {
-			explanation?: string | undefined
-		},
-		requiredComplementaryExams?: {
-			explanation?: string | undefined
-		}
-		lowQualityExam?: {
-			explanation?: string | undefined
-		}
-	}) {
-		this.id = id;
-		this.createdAt = createdAt;
-		this.reviewerName = reviewerName;
-		this.examinerName = examinerName;
-		this.establishmentName = establishmentName;
-		this.diagnosticMethod = diagnosticMethod;
-		this.reason = reason;
-		this.diagnosis = {
-			explanation: diagnosis?.explanation,
-			clinicalManagementSuggestion: diagnosis?.clinicalManagementSuggestion,
-			diagnosticBasis: diagnosis?.diagnosticBasis,
-		};
-		this.requiredFaceToFaceEvaluation = {
-			explanation: requiredFaceToFaceEvaluation?.explanation
-		}
-		this.requiredComplementaryExams = {
-			explanation: requiredComplementaryExams?.explanation
-		}
-		this.lowQualityExam = {
-			explanation: lowQualityExam?.explanation
-		}
+		reviewer,
+		diagnosisInfo,
+		undeterminedInfo,
+		observations,
+		timestamps,
+	}: ReportPrimitives) {
+		this.reviewer = reviewer;
+		this.diagnosisInfo = diagnosisInfo;
+		this.undeterminedInfo = undeterminedInfo;
+		this.observations = observations;
+		this.timestamps = timestamps;
 	}
 
 }

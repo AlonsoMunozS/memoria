@@ -15,19 +15,42 @@ export class GeneratePdfController {
 
 
     const request: GenerateReportRequest = {
-      id: "string",
-      createdAt: 1694542266,
-      reviewerName: "string",
-      examinerName: "string",
-      establishmentName: "string",
-      diagnosticMethod: "string",
-      reason: "string",
-      diagnosis: {},
-      lowQualityExam: {},
-      requiredComplementaryExams: {},
-      requiredFaceToFaceEvaluation: {
-        explanation: "Expicacion"
+      reviewer: {
+        id: "string",
+        firstName: "string",
+        lastName: "string",
+      },
+      undeterminedInfo: {
+        explanation: "string"
+      },
+      observations: {
+        lowQualityExam: {
+          explanation: "string"
+        },
+        requiredComplementaryExams: {
+          explanation: "string"
+        },
+        requiredFaceToFaceEvaluation: {
+          explanation: "string"
+        },
+      },
+      timestamps: {
+        reservedAt: 123,
+        diagnosedAt: 123
       }
+      // id: "string",
+      // createdAt: 1694542266,
+      // reviewerName: "string",
+      // examinerName: "string",
+      // establishmentName: "string",
+      // diagnosticMethod: "string",
+      // reason: "string",
+      // diagnosis: {},
+      // lowQualityExam: {},
+      // requiredComplementaryExams: {},
+      // requiredFaceToFaceEvaluation: {
+      //   explanation: "Expicacion"
+      // }
     }
 
     try {

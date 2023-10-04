@@ -3,7 +3,9 @@ import { ReportConstructor } from '../domain/ReportConstructor'
 
 const PDFDocument = require('pdfkit');
 const fs = require('fs');
-
+const boldText = (text: string) => {
+	return { text, bold: true }; // Define el texto en negrita usando el atributo 'bold'
+};
 export class PdfKitReportConstructor implements ReportConstructor {
 	async generate(report: GenerateReportRequest) {
 		const documentW = 595.28
@@ -97,22 +99,37 @@ export class PdfKitReportConstructor implements ReportConstructor {
 		}
 		const diagnosed = (isDiagnosed: boolean) => {
 			if (isDiagnosed) {
-				const y1 = formTextarea(290, 'Sugerencia diagnóstica', report.diagnosis?.explanation)
+				const y1 = formTextarea(290, 'Sugerencia diagnóstica', report.diagnosisInfo?.diagnosis)
 
-				const y2 = formTextarea(y1, 'Fundamento diagnóstico', report.diagnosis?.diagnosticBasis)
+				const y2 = formTextarea(y1, 'Fundamento diagnóstico', report.diagnosisInfo?.diagnosticBasis)
 
-				return formTextarea(y2, 'Recomendación de manejo clínico', report.diagnosis?.clinicalManagementSuggestion)
+				const y = formTextarea(y2, 'Recomendación de manejo clínico', report.diagnosisInfo?.managementSuggestion)
+				if (report?.observations?.lowQualityExam || report?.observations?.requiredComplementaryExams || report?.observations?.requiredFaceToFaceEvaluation) {
+					const treatmentNoDiagnosed = (report?.observations?.lowQualityExam ? report?.observations?.lowQualityExam?.explanation + "\n" : "")
+						+ (report?.observations?.requiredComplementaryExams ? report?.observations?.requiredComplementaryExams?.explanation + "\n" : "")
+						+ (report?.observations?.requiredFaceToFaceEvaluation ? report?.observations?.requiredFaceToFaceEvaluation?.explanation : "")
+
+					return formTextareaObservation(y, report?.observations?.lowQualityExam?.explanation, report?.observations?.requiredComplementaryExams?.explanation, report?.observations?.requiredFaceToFaceEvaluation?.explanation)
+				}
+				return y
+			} else {
+				const textNoDiagnosed = report.undeterminedInfo?.explanation
+				// const textNoDiagnosed = report?.observations?.lowQualityExam?.explanation ? ' Baja calidad del examen' :
+				// 	report?.observations?.requiredComplementaryExams?.explanation ? 'Requiere examenes complementarios' :
+				// 		report?.observations?.requiredFaceToFaceEvaluation?.explanation ? 'Requiere evaluación presencial' : '-'
+				const y = formTextarea(290, 'Razón de Limitación Diagnóstica', textNoDiagnosed)
+				if (report?.observations?.lowQualityExam || report?.observations?.requiredComplementaryExams || report?.observations?.requiredFaceToFaceEvaluation) {
+					const treatmentNoDiagnosed = (report?.observations?.lowQualityExam ? "Baja calidad del examen: " + report?.observations?.lowQualityExam?.explanation + "\n" : "")
+						+ (report?.observations?.requiredComplementaryExams ? "Requiere exámenes complementarios: " + report?.observations?.requiredComplementaryExams?.explanation + "\n" : "")
+						+ (report?.observations?.requiredFaceToFaceEvaluation ? "Requiere evaluación presencial: " + report?.observations?.requiredFaceToFaceEvaluation?.explanation : "")
+
+					return formTextareaObservation(y, report?.observations?.lowQualityExam?.explanation, report?.observations?.requiredComplementaryExams?.explanation, report?.observations?.requiredFaceToFaceEvaluation?.explanation)
+				}
+				return y
 			}
-			const textNoDiagnosed = report?.lowQualityExam?.explanation ? ' Baja calidad del examen' :
-				report?.requiredComplementaryExams?.explanation ? 'Requiere examenes complementarios' :
-					report?.requiredFaceToFaceEvaluation?.explanation ? 'Requiere evaluación presencial' : '-'
-
-			const treatmentNoDiagnosed = textNoDiagnosed === '-' ? '-' : report.lowQualityExam?.explanation || report.requiredComplementaryExams?.explanation || report.requiredFaceToFaceEvaluation?.explanation;
-			const treatmentNoDiagnosedTag = textNoDiagnosed === '-' ? '' : report.lowQualityExam?.explanation ? 'Observaciones' : report.requiredComplementaryExams?.explanation ? 'Exámenes' : 'Observaciones';
-
-			const y = formTextarea(290, 'Razón de Limitación Diagnóstica', textNoDiagnosed)
-			return formTextarea(y, treatmentNoDiagnosedTag, treatmentNoDiagnosed)
 		}
+
+
 
 		const formTextarea = (y: number, title: string, value?: string) => {
 			const heightOfTitle = doc.fontSize(12).heightOfString(title)
@@ -137,7 +154,27 @@ export class PdfKitReportConstructor implements ReportConstructor {
 
 			return y + heigthOfText + heightOfTitle + 23
 		}
+		const formTextareaObservation = (y: number, lowQualityExam?: string, requiredComplementaryExams?: string, requiredFaceToFaceEvaluation?: string) => {
+			const title = "Observaciones";
+			const heightOfTitle = doc.fontSize(12).heightOfString(title);
+			doc.fontSize(12).fillColor('#2D4D5C').text(title, margins.left, y);
 
+			let heigthOfText = 10;
+
+			if (lowQualityExam) {
+				boldText('Baja calidad del examen: '); // Establece el texto en negrita
+				doc.text(lowQualityExam, { continued: true }); // Continúa escribiendo sin cambiar el estilo de fuente
+				doc.font('Helvetica'); // Restaura el estilo de fuente normal
+			}
+
+			doc
+				.roundedRect(margins.left, y + 15, documentW - (margins.left + margins.right), heigthOfText + 5, 3)
+				.lineWidth(0.5)
+				.strokeColor('#9E9E9E')
+				.stroke()
+
+			return y + heigthOfText + heightOfTitle + 23
+		}
 		// const ottoLogo = await getImage('https://smb-email-resources.s3.sa-east-1.amazonaws.com/otto.png')
 		// if (ottoLogo) {
 		// 	doc.image(ottoLogo, {
@@ -181,7 +218,7 @@ contacto@simbiotica.ai`
 			25,
 			3,
 			'Fecha de examen',
-			new Date(report.createdAt).toLocaleDateString('es-ES')
+			new Date(report.timestamps.diagnosedAt).toLocaleDateString('es-ES')
 		)
 
 		formInput(
@@ -191,7 +228,7 @@ contacto@simbiotica.ai`
 			25,
 			3,
 			'Médico tratante',
-			report.examinerName
+			"report.examinerName"
 		)
 
 		formInput(
@@ -201,7 +238,7 @@ contacto@simbiotica.ai`
 			25,
 			3,
 			'Método diagnostico',
-			report.diagnosticMethod
+			"report.diagnosticMethod"
 		)
 
 		// FORM RIGHT
@@ -212,7 +249,7 @@ contacto@simbiotica.ai`
 			25,
 			3,
 			'Establecimiento de salud',
-			report.establishmentName
+			"report.establishmentName"
 		)
 
 		formInput(
@@ -222,7 +259,7 @@ contacto@simbiotica.ai`
 			25,
 			3,
 			'Medico especialista',
-			report.reviewerName
+			report.reviewer.firstName
 		)
 
 		formInput(
@@ -232,7 +269,7 @@ contacto@simbiotica.ai`
 			25,
 			3,
 			'Motivo de consulta',
-			report.reason
+			"report.reason"
 		)
 
 		doc
@@ -242,7 +279,7 @@ contacto@simbiotica.ai`
 			.strokeColor('#4C6674')
 			.stroke()
 
-		const y = diagnosed(!!report.diagnosis?.explanation)
+		const y = diagnosed(!!report.diagnosisInfo?.diagnosis)
 
 
 		doc.fontSize(12).fillColor('#2D4D5C').text('Consulta presencial con otorrino', margins.left, y)
@@ -253,12 +290,12 @@ contacto@simbiotica.ai`
 			.fontSize(12)
 			.fillColor('#2D4D5C')
 			.text('Sí', margins.left, y + 30)
-		formCheckbox(margins.left + 18, y + 29, !!report.requiredFaceToFaceEvaluation?.explanation)
+		formCheckbox(margins.left + 18, y + 29, !!report.observations?.requiredFaceToFaceEvaluation?.explanation)
 		doc
 			.fontSize(12)
 			.fillColor('#2D4D5C')
 			.text('No', margins.left + 100, y + 30)
-		formCheckbox(margins.left + 100 + 21, y + 29, !report.requiredFaceToFaceEvaluation?.explanation)
+		formCheckbox(margins.left + 100 + 21, y + 29, !report.observations?.requiredFaceToFaceEvaluation?.explanation)
 
 		const y3 = 550;
 		/**
