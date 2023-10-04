@@ -31,6 +31,13 @@ export class RemoveNotification extends Notification {
         super({ id: tenderId, userId, message: "Licitacion Eliminada", createdAt, read: false });
     }
 }
+export class RequestRemoveNotification extends Notification {
+    readonly requester: string
+    constructor({ tenderId, userId, requester, createdAt }: { tenderId: number, userId: string, requester: string, createdAt: number }) {
+        super({ id: tenderId, userId, message: "Solicitud de eliminacion de licitacion", createdAt, read: false });
+        this.requester = requester
+    }
+}
 
 export class AddNotification extends Notification {
     constructor({ tenderId, userId, createdAt }: { tenderId: number, userId: string, createdAt: number }) {
