@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FilterMatchMode, FilterOperator } from 'primereact/api';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
@@ -10,12 +10,13 @@ import { Tag } from 'primereact/tag';
 import NewTenderDialog from './NewTenderDialog';
 import NewTenderForm from './NewTenderForm';
 import { stages } from '../../../data/stages';
+import InfoMessage from '../../components/InfoMessage';
+import { ProgressSpinner } from 'primereact/progressspinner';
 
 interface TenderProps {
     tenders: Array<Tender>,
     setLoading: React.Dispatch<React.SetStateAction<boolean>>,
-    setType: React.Dispatch<React.SetStateAction<"success" | "info" | "warn" | "error" | undefined>>,
-    setMessage: React.Dispatch<React.SetStateAction<string | undefined>>
+    loading: boolean
 }
 
 /*const stages = {
@@ -23,7 +24,7 @@ interface TenderProps {
     "FirstStage": "PUBLICACIÓN"
 }*/
 
-const TableTenders = ({ tenders, setLoading, setType, setMessage }: TenderProps) => {
+const TableTenders = ({ tenders, setLoading, loading }: TenderProps) => {
 
     const [filters, setFilters] = useState({
         'global': { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -33,6 +34,10 @@ const TableTenders = ({ tenders, setLoading, setType, setMessage }: TenderProps)
     });
     const [globalFilterValue, setGlobalFilterValue] = useState('');
     const [displayNewTenderDialog, setDisplayNewTenderDialog] = useState(false);
+
+    const [type, setType] = useState<"success" | "info" | "warn" | "error" | undefined>();
+    const [message, setMessage] = useState<string | undefined>();
+    const [showToast, setShowToast] = useState<boolean>(false);
 
     const onGlobalFilterChange = (e: any) => {
         const value = e.target.value;
@@ -53,9 +58,6 @@ const TableTenders = ({ tenders, setLoading, setType, setMessage }: TenderProps)
                 <div>
                     <Button className="p-button-rounded fullplusbutton-resp" icon="pi pi-plus" label='Agregar Licitación' onClick={() => { setDisplayNewTenderDialog(true) }} />
                     <Button className="p-button-rounded smallplusbutton-resp" icon="pi pi-plus" onClick={() => { setDisplayNewTenderDialog(true) }} />
-                    <NewTenderDialog showDialog={displayNewTenderDialog} setShowDialog={setDisplayNewTenderDialog}>
-                        <NewTenderForm setShowDialog={setDisplayNewTenderDialog} setLoading={setLoading} setType={setType} setMessage={setMessage} />
-                    </NewTenderDialog>
                 </div>
             </div>
         )
@@ -85,7 +87,9 @@ const TableTenders = ({ tenders, setLoading, setType, setMessage }: TenderProps)
     const actionBodyEdit = () => {
         return <Button className="p-button-rounded" icon="pi pi-pencil"></Button>;
     }
-
+    useEffect(() => {
+        setShowToast(true)
+    }, [type]);
     const header = renderHeader();
 
     return (
@@ -102,6 +106,12 @@ const TableTenders = ({ tenders, setLoading, setType, setMessage }: TenderProps)
                 <Column header='Ver' headerStyle={{ width: '4rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={actionBodyView} />
                 <Column header='Editar' headerStyle={{ width: '4rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={actionBodyEdit} />
             </DataTable>
+            <NewTenderDialog showDialog={displayNewTenderDialog} setShowDialog={setDisplayNewTenderDialog}>
+                <NewTenderForm setShowDialog={setDisplayNewTenderDialog} setType={setType} setMessage={setMessage} />
+            </NewTenderDialog>
+            <div className='p-toast'>
+                <InfoMessage type={type} message={message} showToast={showToast} />
+            </div>
         </div>
     );
 };
