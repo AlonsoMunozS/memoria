@@ -20,18 +20,21 @@ export class GeneratePdfController {
         firstName: "string",
         lastName: "string",
       },
+      // diagnosisInfo: {
+      //   diagnosis: "Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto.",
+      //   diagnosticBasis: "Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto.",
+      //   managementSuggestion: "Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto.",
+      // },
       undeterminedInfo: {
-        explanation: "string"
+        explanation: "Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto."
       },
       observations: {
         lowQualityExam: {
-          explanation: "string"
+          explanation: 'Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto.'
         },
         requiredComplementaryExams: {
-          explanation: "string"
-        },
-        requiredFaceToFaceEvaluation: {
-          explanation: "string"
+          explanation: 'Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto.'
+
         },
       },
       timestamps: {

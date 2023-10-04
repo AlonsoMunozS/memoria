@@ -3,9 +3,7 @@ import { ReportConstructor } from '../domain/ReportConstructor'
 
 const PDFDocument = require('pdfkit');
 const fs = require('fs');
-const boldText = (text: string) => {
-	return { text, bold: true }; // Define el texto en negrita usando el atributo 'bold'
-};
+
 export class PdfKitReportConstructor implements ReportConstructor {
 	async generate(report: GenerateReportRequest) {
 		const documentW = 595.28
@@ -26,29 +24,29 @@ export class PdfKitReportConstructor implements ReportConstructor {
 
 		// Create document
 
-		// doc.pipe(fs.createWriteStream('output.pdf'))
+		doc.pipe(fs.createWriteStream('output.pdf'))
 
-		// const getImage = (url: string): Promise<Buffer> => {
-		// 	return new Promise((resolve, reject) => {
-		// 		const httpModule = url.startsWith('https') ? https : http
+		const getImage = (url: string): Promise<Buffer> => {
+			return new Promise((resolve, reject) => {
+				const httpModule = url.startsWith('https') ? https : http
 
-		// 		httpModule
-		// 			.get(url, res => {
-		// 				const chunks: Array<Buffer> = []
+				httpModule
+					.get(url, res => {
+						const chunks: Array<Buffer> = []
 
-		// 				res.on('data', (chunk: Buffer) => {
-		// 					chunks.push(chunk)
-		// 				})
+						res.on('data', (chunk: Buffer) => {
+							chunks.push(chunk)
+						})
 
-		// 				res.on('end', () => {
-		// 					resolve(Buffer.concat(chunks))
-		// 				})
-		// 			})
-		// 			.on('error', err => {
-		// 				reject(err)
-		// 			})
-		// 	})
-		// }
+						res.on('end', () => {
+							resolve(Buffer.concat(chunks))
+						})
+					})
+					.on('error', err => {
+						reject(err)
+					})
+			})
+		}
 
 		const formCheckbox = (x: number, y: number, isChecked: boolean) => {
 			const checkboxSize = 12
@@ -101,7 +99,7 @@ export class PdfKitReportConstructor implements ReportConstructor {
 			if (isDiagnosed) {
 				const y1 = formTextarea(290, 'Sugerencia diagnóstica', report.diagnosisInfo?.diagnosis)
 
-				const y2 = formTextarea(y1, 'Fundamento diagnóstico', report.diagnosisInfo?.diagnosticBasis)
+				const y2 = formTextarea(y1 - 10, 'Fundamento diagnóstico', report.diagnosisInfo?.diagnosticBasis)
 
 				const y = formTextarea(y2, 'Recomendación de manejo clínico', report.diagnosisInfo?.managementSuggestion)
 				if (report?.observations?.lowQualityExam || report?.observations?.requiredComplementaryExams || report?.observations?.requiredFaceToFaceEvaluation) {
@@ -160,29 +158,85 @@ export class PdfKitReportConstructor implements ReportConstructor {
 			doc.fontSize(12).fillColor('#2D4D5C').text(title, margins.left, y);
 
 			let heigthOfText = 10;
-
+			let totalHeight = y + 20;
 			if (lowQualityExam) {
-				boldText('Baja calidad del examen: '); // Establece el texto en negrita
-				doc.text(lowQualityExam, { continued: true }); // Continúa escribiendo sin cambiar el estilo de fuente
-				doc.font('Helvetica'); // Restaura el estilo de fuente normal
-			}
+				const textBold = "Baja calidad del examen:"
+				heigthOfText = doc.fontSize(9).heightOfString(textBold);
 
+				doc
+					.fontSize(9)
+					.font('Helvetica-Bold') // Establece la fuente en negrita
+					.fillColor('#000000')
+					.text(textBold, margins.left + 5, totalHeight);
+				totalHeight = totalHeight + heigthOfText
+				doc
+					.fontSize(9)
+					.font('Helvetica')
+					.fillColor('#000000')
+					.text(lowQualityExam, margins.left + 5, totalHeight);
+
+				heigthOfText = doc.fontSize(9).heightOfString(lowQualityExam);
+				totalHeight = totalHeight + heigthOfText
+
+			}
+			if (requiredComplementaryExams) {
+				totalHeight = totalHeight + 5
+				const textBold = "Requiere exámenes complementarios:"
+				heigthOfText = doc.fontSize(9).heightOfString(textBold);
+
+				doc
+					.fontSize(9)
+					.font('Helvetica-Bold') // Establece la fuente en negrita
+					.fillColor('#000000')
+					.text(textBold, margins.left + 5, totalHeight);
+				totalHeight = totalHeight + heigthOfText
+
+				doc
+					.fontSize(9)
+					.font('Helvetica')
+					.fillColor('#000000')
+					.text(requiredComplementaryExams, margins.left + 5, totalHeight);
+
+				heigthOfText = doc.fontSize(9).heightOfString(requiredComplementaryExams)
+				totalHeight = totalHeight + heigthOfText;
+			}
+			if (requiredFaceToFaceEvaluation) {
+				totalHeight = totalHeight + 5
+				const textBold = "Requiere evaluación presencial:"
+				heigthOfText = doc.fontSize(9).heightOfString(textBold);
+
+				doc
+					.fontSize(9)
+					.font('Helvetica-Bold') // Establece la fuente en negrita
+					.fillColor('#000000')
+					.text(textBold, margins.left + 5, totalHeight);
+				totalHeight = totalHeight + heigthOfText
+
+				doc
+					.fontSize(9)
+					.font('Helvetica')
+					.fillColor('#000000')
+					.text(requiredFaceToFaceEvaluation, margins.left + 5, totalHeight);
+
+				heigthOfText = doc.fontSize(9).heightOfString(requiredFaceToFaceEvaluation);
+				totalHeight = totalHeight + heigthOfText;
+			}
 			doc
-				.roundedRect(margins.left, y + 15, documentW - (margins.left + margins.right), heigthOfText + 5, 3)
+				.roundedRect(margins.left, y + 15, documentW - (margins.left + margins.right), totalHeight - y - 12, 3)
 				.lineWidth(0.5)
 				.strokeColor('#9E9E9E')
 				.stroke()
 
-			return y + heigthOfText + heightOfTitle + 23
+			return totalHeight + 23
 		}
-		// const ottoLogo = await getImage('https://smb-email-resources.s3.sa-east-1.amazonaws.com/otto.png')
-		// if (ottoLogo) {
-		// 	doc.image(ottoLogo, {
-		// 		fit: [40, 40],
-		// 		align: 'center',
-		// 		valign: 'center'
-		// 	})
-		// }
+		const ottoLogo = await getImage('https://smb-email-resources.s3.sa-east-1.amazonaws.com/otto.png')
+		if (ottoLogo) {
+			doc.image(ottoLogo, {
+				fit: [40, 40],
+				align: 'center',
+				valign: 'center'
+			})
+		}
 
 		const text = `
 1 Norte 461, of.703 Viña del mar
@@ -282,20 +336,20 @@ contacto@simbiotica.ai`
 		const y = diagnosed(!!report.diagnosisInfo?.diagnosis)
 
 
-		doc.fontSize(12).fillColor('#2D4D5C').text('Consulta presencial con otorrino', margins.left, y)
+		// doc.fontSize(12).fillColor('#2D4D5C').text('Consulta presencial con otorrino', margins.left, y)
 
-		// formCheckbox(margins.left + 20, y3 + 10, false)
+		// // formCheckbox(margins.left + 20, y3 + 10, false)
 
-		doc
-			.fontSize(12)
-			.fillColor('#2D4D5C')
-			.text('Sí', margins.left, y + 30)
-		formCheckbox(margins.left + 18, y + 29, !!report.observations?.requiredFaceToFaceEvaluation?.explanation)
-		doc
-			.fontSize(12)
-			.fillColor('#2D4D5C')
-			.text('No', margins.left + 100, y + 30)
-		formCheckbox(margins.left + 100 + 21, y + 29, !report.observations?.requiredFaceToFaceEvaluation?.explanation)
+		// doc
+		// 	.fontSize(12)
+		// 	.fillColor('#2D4D5C')
+		// 	.text('Sí', margins.left, y + 30)
+		// formCheckbox(margins.left + 18, y + 29, !!report.observations?.requiredFaceToFaceEvaluation?.explanation)
+		// doc
+		// 	.fontSize(12)
+		// 	.fillColor('#2D4D5C')
+		// 	.text('No', margins.left + 100, y + 30)
+		// formCheckbox(margins.left + 100 + 21, y + 29, !report.observations?.requiredFaceToFaceEvaluation?.explanation)
 
 		const y3 = 550;
 		/**
@@ -306,12 +360,12 @@ contacto@simbiotica.ai`
 		 * FIRMA
 		 */
 
-		// if (!!report?.reviewerSignature) {
-		// 	const image = await getImage(report.reviewerSignature)
-		// 	doc.image(image, documentW / 2 - 60, y3 + 50, {
-		// 		fit: [120, 90]
-		// 	})
-		// }
+		if (!!report?.reviewerSignature) {
+			const image = await getImage(report.reviewerSignature)
+			doc.image(image, documentW / 2 - 60, y3 + 50, {
+				fit: [120, 90]
+			})
+		}
 		/**
 		 * FIRMA
 		 * FIRMA
@@ -353,12 +407,12 @@ contacto@simbiotica.ai`
 			.rect(0, documentH - 80, documentW, 80)
 			.fill()
 
-		// const simbioticaLogo = await getImage('https://smb-email-resources.s3.sa-east-1.amazonaws.com/simbiotica.png')
-		// if (simbioticaLogo) {
-		// 	doc.image(simbioticaLogo, documentW - 280 / 2 - margins.right, documentH - 64 / 2 - 25, {
-		// 		fit: [280 / 2, 64 / 2]
-		// 	})
-		// }
+		const simbioticaLogo = await getImage('https://smb-email-resources.s3.sa-east-1.amazonaws.com/simbiotica.png')
+		if (simbioticaLogo) {
+			doc.image(simbioticaLogo, documentW - 280 / 2 - margins.right, documentH - 64 / 2 - 25, {
+				fit: [280 / 2, 64 / 2]
+			})
+		}
 
 		const info = `
 E-mail
