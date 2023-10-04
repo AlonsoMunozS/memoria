@@ -10,8 +10,10 @@ import { Dropdown, DropdownProps } from 'primereact/dropdown';
 import createTender from '../../services/TenderService';
 
 interface dialogProps {
-    setShowDialog: (bool: boolean) => void;
-    setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+    setShowDialog: (bool: boolean) => void,
+    setLoading: React.Dispatch<React.SetStateAction<boolean>>,
+    setType: React.Dispatch<React.SetStateAction<"success" | "info" | "warn" | "error" | undefined>>,
+    setMessage: React.Dispatch<React.SetStateAction<string | undefined>>
 }
 
 interface FormErrors {
@@ -28,7 +30,7 @@ interface FormData {
     safi: string;
 }
 
-export const NewTenderForm: React.FC<dialogProps> = ({ setShowDialog, setLoading }) => {
+export const NewTenderForm: React.FC<dialogProps> = ({ setShowDialog, setLoading, setType, setMessage }) => {
     const [showMessage, setShowMessage] = useState(false);
     const [formData, setFormData] = useState<FormData>({
         name: '',
@@ -110,6 +112,14 @@ export const NewTenderForm: React.FC<dialogProps> = ({ setShowDialog, setLoading
         setShowDialog(false);
     }
 
+    const addNewTender = async (data: any) => {
+        const responseStatus = await createTender(data, setLoading);
+        if (responseStatus === 201) {
+            setType("success");
+            setMessage("Licitación agregada con éxito");
+        }
+    }
+
     const formik = useFormik({
         initialValues: {
             name: '',
@@ -163,7 +173,7 @@ export const NewTenderForm: React.FC<dialogProps> = ({ setShowDialog, setLoading
             setShowMessage(true);
             onHide();
             formik.resetForm();
-            createTender(data, setLoading);
+            addNewTender(data);
         }
     });
 

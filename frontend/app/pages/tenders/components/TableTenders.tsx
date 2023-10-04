@@ -13,8 +13,9 @@ import { stages } from '../../../data/stages';
 
 interface TenderProps {
     tenders: Array<Tender>,
-    loading: boolean,
-    setLoading: React.Dispatch<React.SetStateAction<boolean>>
+    setLoading: React.Dispatch<React.SetStateAction<boolean>>,
+    setType: React.Dispatch<React.SetStateAction<"success" | "info" | "warn" | "error" | undefined>>,
+    setMessage: React.Dispatch<React.SetStateAction<string | undefined>>
 }
 
 /*const stages = {
@@ -22,7 +23,7 @@ interface TenderProps {
     "FirstStage": "PUBLICACIÓN"
 }*/
 
-const TableTenders = ({ tenders, loading, setLoading }: TenderProps) => {
+const TableTenders = ({ tenders, setLoading, setType, setMessage }: TenderProps) => {
 
     const [filters, setFilters] = useState({
         'global': { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -53,7 +54,7 @@ const TableTenders = ({ tenders, loading, setLoading }: TenderProps) => {
                     <Button className="p-button-rounded fullplusbutton-resp" icon="pi pi-plus" label='Agregar Licitación' onClick={() => { setDisplayNewTenderDialog(true) }} />
                     <Button className="p-button-rounded smallplusbutton-resp" icon="pi pi-plus" onClick={() => { setDisplayNewTenderDialog(true) }} />
                     <NewTenderDialog showDialog={displayNewTenderDialog} setShowDialog={setDisplayNewTenderDialog}>
-                        <NewTenderForm setShowDialog={setDisplayNewTenderDialog} setLoading={setLoading} />
+                        <NewTenderForm setShowDialog={setDisplayNewTenderDialog} setLoading={setLoading} setType={setType} setMessage={setMessage} />
                     </NewTenderDialog>
                 </div>
             </div>

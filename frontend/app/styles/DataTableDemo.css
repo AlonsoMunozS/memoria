@@ -113,3 +113,20 @@
     z-index: 9999;
     /* Establece un alto z-index para asegurarte de que esté sobre otros elementos */
 }
+
+.p-toast {
+    z-index: 10000;
+    /* Puedes ajustar este valor según sea necesario */
+}
+
+.toast-demo button {
+    min-width: 10rem;
+    margin-right: .5rem;
+}
+
+@media screen and (max-width: 960px) {
+    .toast-demo button {
+        width: 100%;
+        margin-bottom: .5rem;
+    }
+}
