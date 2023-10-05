@@ -8,12 +8,13 @@ import { stages } from '../../../data/stages';
 import { Tag } from 'primereact/tag';
 import { Dropdown, DropdownProps } from 'primereact/dropdown';
 import createTender from '../../services/TenderService';
+import { ProgressSpinner } from 'primereact/progressspinner';
 
 interface dialogProps {
     setShowDialog: (bool: boolean) => void,
-    setLoading: React.Dispatch<React.SetStateAction<boolean>>,
     setType: React.Dispatch<React.SetStateAction<"success" | "info" | "warn" | "error" | undefined>>,
     setMessage: React.Dispatch<React.SetStateAction<string | undefined>>
+    setShowToast: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 interface FormErrors {
@@ -30,7 +31,7 @@ interface FormData {
     safi: string;
 }
 
-export const NewTenderForm: React.FC<dialogProps> = ({ setShowDialog, setLoading, setType, setMessage }) => {
+export const NewTenderForm: React.FC<dialogProps> = ({ setShowDialog, setType, setMessage, setShowToast }) => {
     const [showMessage, setShowMessage] = useState(false);
     const [formData, setFormData] = useState<FormData>({
         name: '',
@@ -40,6 +41,7 @@ export const NewTenderForm: React.FC<dialogProps> = ({ setShowDialog, setLoading
     const [selectedProvince, setSelectedProvince] = useState<boolean>(false);
     const [provinceSelectRegion, setProvinceSelectRegion] = useState<Array<string>>();
     const [communeSelectProvince, setCommuneSelectProvince] = useState<Array<string>>();
+    const [loading, setLoading] = useState<boolean>(false)
 
     const regions = require('../../../data/regions.json');
     const provinces = require('../../../data/provinces.json');
@@ -115,8 +117,12 @@ export const NewTenderForm: React.FC<dialogProps> = ({ setShowDialog, setLoading
     const addNewTender = async (data: any) => {
         const responseStatus = await createTender(data, setLoading);
         if (responseStatus === 201) {
-            setType("success");
-            setMessage("Licitación agregada con éxito");
+            setType("success")
+            setMessage("Licitación agregada con éxito")
+            onHide();
+            setShowToast(true);
+            formik.resetForm();
+
         }
     }
 
@@ -171,8 +177,6 @@ export const NewTenderForm: React.FC<dialogProps> = ({ setShowDialog, setLoading
         onSubmit: (data) => {
             setFormData(data);
             setShowMessage(true);
-            onHide();
-            formik.resetForm();
             addNewTender(data);
         }
     });
@@ -252,7 +256,15 @@ export const NewTenderForm: React.FC<dialogProps> = ({ setShowDialog, setLoading
                         <div className="confirm-button-container">
                             {/*<Button type="submit" label="Submit" className="mt-2" />*/}
                             <Button type="button" label="Cancelar" icon="pi pi-times" onClick={() => onHide()} className="p-button-text" />
-                            <Button type="submit" label="Guardar" icon="pi pi-check" autoFocus />
+                            <Button
+                                type="submit"
+                                label="Guardar"
+                                icon={loading ? null : 'pi pi-check'}
+                                iconPos="right" // Esto coloca el icono a la derecha del texto del botón 
+                                className={loading ? 'p-button-disabled' : ''}
+                                disabled={loading}
+                            >
+                                {loading && <ProgressSpinner style={{ width: '20px', height: '20px' }} strokeWidth="15" animationDuration=".5s" />}</Button>
                         </div>
                     </form>
                 </div>

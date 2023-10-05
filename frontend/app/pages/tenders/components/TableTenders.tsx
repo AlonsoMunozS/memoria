@@ -10,12 +10,13 @@ import { Tag } from 'primereact/tag';
 import NewTenderDialog from './NewTenderDialog';
 import NewTenderForm from './NewTenderForm';
 import { stages } from '../../../data/stages';
+import InfoMessage from '../../components/InfoMessage';
+import { ProgressSpinner } from 'primereact/progressspinner';
 
 interface TenderProps {
     tenders: Array<Tender>,
     setLoading: React.Dispatch<React.SetStateAction<boolean>>,
-    setType: React.Dispatch<React.SetStateAction<"success" | "info" | "warn" | "error" | undefined>>,
-    setMessage: React.Dispatch<React.SetStateAction<string | undefined>>
+    loading: boolean
 }
 
 /*const stages = {
@@ -23,7 +24,11 @@ interface TenderProps {
     "FirstStage": "PUBLICACIÓN"
 }*/
 
-const TableTenders = ({ tenders, setLoading, setType, setMessage }: TenderProps) => {
+const TableTenders = ({ tenders, loading, setLoading }: TenderProps) => {
+
+    const [type, setType] = useState<"success" | "info" | "warn" | "error" | undefined>();
+    const [message, setMessage] = useState<string | undefined>();
+    const [showToast, setShowToast] = useState<boolean>(false);
 
     const [filters, setFilters] = useState({
         'global': { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -51,11 +56,8 @@ const TableTenders = ({ tenders, setLoading, setType, setMessage }: TenderProps)
                     <InputText style={{ width: '100%' }} value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Búsqueda por palabra clave" />
                 </div>
                 <div>
-                    <Button className="p-button-rounded fullplusbutton-resp" icon="pi pi-plus" label='Agregar Licitación' onClick={() => { setDisplayNewTenderDialog(true) }} />
+                    <Button className="p-button-rounded fullplusbutton-resp" icon="pi pi-plus" label='Agregar Licitación' onClick={() => { setDisplayNewTenderDialog(true); setShowToast(false) }} />
                     <Button className="p-button-rounded smallplusbutton-resp" icon="pi pi-plus" onClick={() => { setDisplayNewTenderDialog(true) }} />
-                    <NewTenderDialog showDialog={displayNewTenderDialog} setShowDialog={setDisplayNewTenderDialog}>
-                        <NewTenderForm setShowDialog={setDisplayNewTenderDialog} setLoading={setLoading} setType={setType} setMessage={setMessage} />
-                    </NewTenderDialog>
                 </div>
             </div>
         )
@@ -90,6 +92,11 @@ const TableTenders = ({ tenders, setLoading, setType, setMessage }: TenderProps)
 
     return (
         <div className="datatable-doc-demo">
+            {loading && (
+                <div className="spinner-container">
+                    <ProgressSpinner style={{ width: '50px', height: '50px' }} strokeWidth="8" fill="var(--surface-ground)" animationDuration=".5s" />
+                </div>
+            )}
             <DataTable value={tenders} paginator className="p-datatable-customers" header={header} rows={5}
                 paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                 dataKey="id" rowHover size="small"
@@ -102,6 +109,12 @@ const TableTenders = ({ tenders, setLoading, setType, setMessage }: TenderProps)
                 <Column header='Ver' headerStyle={{ width: '4rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={actionBodyView} />
                 <Column header='Editar' headerStyle={{ width: '4rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={actionBodyEdit} />
             </DataTable>
+            <NewTenderDialog showDialog={displayNewTenderDialog} setShowDialog={setDisplayNewTenderDialog}>
+                <NewTenderForm setShowDialog={setDisplayNewTenderDialog} setType={setType} setMessage={setMessage} setShowToast={setShowToast} />
+            </NewTenderDialog>
+            <div className='p-toast'>
+                <InfoMessage type={type} message={message} showToast={showToast} />
+            </div>
         </div>
     );
 };
