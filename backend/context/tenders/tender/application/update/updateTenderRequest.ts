@@ -4,6 +4,7 @@ export type UpdateTenderRequest = {
 	id: number,
 	name?: string,
 	safi?: string,
+	region: string,
 	province?: string,
 	commune?: string,
 	address?: string,
