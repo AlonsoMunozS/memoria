@@ -1,4 +1,4 @@
-import { NotificationByUserIdFinder } from "../application/create/notificationByUserFinder";
+import { NotificationByUserIdFinder } from "../application/findByUser/notificationByUserFinder";
 import { FindByUserNotificationController } from "./rest-api/findByUserNotificationController";
 import { MongoNotificationRepository } from "./tender-repository/mongo-notification-repository";
 

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { NotificationByUserIdFinder } from "../../application/create/notificationByUserFinder";
+import { NotificationByUserIdFinder } from "../../application/findByUser/notificationByUserFinder";
 import VerifyToken from "../../../shared/infrastructure/firebase-verify-token";
-import { FindByUserNotificationRequest } from "../../application/create/FindByUserNotificationRequest";
+import { FindByUserNotificationRequest } from "../../application/findByUser/FindByUserNotificationRequest";
 
 export class FindByUserNotificationController {
   constructor(
