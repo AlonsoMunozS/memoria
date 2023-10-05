@@ -1,10 +1,10 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import TableTenders from './components/TableTenders'
 import { Tender } from './tender/models/Tender';
 import Layout from '../components/Layout';
 import HomeBar from '../components/HomeBar';
 
-const Tenders : React.FC = () => {
+const Tenders: React.FC = () => {
   const [tenders, setTenders] = useState<Array<Tender>>([]);
   const [loading, setLoading] = useState(true);
 
@@ -26,10 +26,11 @@ const Tenders : React.FC = () => {
   return (
     <div>
       <Layout>
-        <HomeBar/>
+        <HomeBar />
       </Layout>
-      <TableTenders tenders = {tenders} loading = {loading} ></TableTenders>
+      <TableTenders tenders={tenders} loading={loading} setLoading={setLoading} ></TableTenders>
     </div>
+
   );
 };
 

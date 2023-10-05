@@ -7,11 +7,6 @@ import { UserToken } from '../../domain/UserToken';
 import * as admin from "firebase-admin";
 import { FirebaseError } from 'firebase/app';
 
-const serviceAccount = require("./serviceAccountKey.json");
-
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),
-});
 const authFirebase = getAuth(firebaseAuth);
 
 export class FirebaseUserAuth implements UserAuth {
