@@ -1,0 +1,44 @@
+/* Estilos para la tarjeta */
+.card2 {
+    width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #bcb4cf;
+    /* Cambia el color de fondo de la tarjeta a azul */
+    color: #000000;
+    /* Cambia el color del texto a blanco */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+.div-card2 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 10px;
+
+}
+
+/* Estilos para el título de la tarjeta */
+.card2-title {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+/* Estilos para la descripción de la tarjeta */
+.card2-description {
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+/* Estilos para el estado de la tarjeta */
+.card2-status {
+    font-size: 14px;
+    padding: 8px 12px;
+    border-radius: 5px;
+}

@@ -10,7 +10,7 @@ export type Tender = {
 	address: string
 	createdAt?: number
 	createdBy?: number
-	currentStage?: string
+	currentStage: number
 	mercadoPublicoId: string
 	category?: string
 	companies?: Array<string>

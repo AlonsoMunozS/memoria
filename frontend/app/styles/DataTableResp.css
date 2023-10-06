@@ -1,18 +1,20 @@
 /* Estilos generales para pantallas grandes */
 .fullplusbutton-resp {
-    display: block;
-  }
+  display: block;
+}
+
 .smallplusbutton-resp {
-    display: none;
-  }
-  
+  display: none;
+}
+
 /* Estilos para pantallas pequeñas */
 @media (max-width: 800px) {
-.fullplusbutton-resp {
+  .fullplusbutton-resp {
     display: none;
-    }
-.smallplusbutton-resp {
+  }
+
+  .smallplusbutton-resp {
     display: flex;
     visibility: visible;
-    }
+  }
 }

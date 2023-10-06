@@ -12,6 +12,8 @@ import NewTenderForm from './NewTenderForm';
 import { stages } from '../../../data/stages';
 import InfoMessage from '../../components/InfoMessage';
 import { ProgressSpinner } from 'primereact/progressspinner';
+import { Card } from 'primereact/card';
+import TenderCard from './TenderCard';
 
 interface TenderProps {
     tenders: Array<Tender>,
@@ -43,7 +45,6 @@ const TableTenders = ({ tenders, loading, setLoading }: TenderProps) => {
         const value = e.target.value;
         let _filters = { ...filters };
         _filters['global'].value = value;
-
         setFilters(_filters);
         setGlobalFilterValue(value);
     }
@@ -91,32 +92,49 @@ const TableTenders = ({ tenders, loading, setLoading }: TenderProps) => {
     const header = renderHeader();
 
     return (
-        <div className="datatable-doc-demo">
-            {loading && (
-                <div className="spinner-container">
-                    <ProgressSpinner style={{ width: '50px', height: '50px' }} strokeWidth="8" fill="var(--surface-ground)" animationDuration=".5s" />
+        <div>
+            <div className="datatable-doc-demo">
+                {loading && (
+                    <div className="spinner-container">
+                        <ProgressSpinner style={{ width: '50px', height: '50px' }} strokeWidth="8" fill="var(--surface-ground)" animationDuration=".5s" />
+                    </div>
+                )}
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', margin: '20px 0' }}>
+                    <div className="p-input-icon-left" style={{ flexGrow: 1, marginRight: '10px' }}>
+                        <i className="pi pi-search" />
+                        <InputText style={{ width: '100%' }} value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Búsqueda por palabra clave" />
+                    </div>
+                    <div>
+                        <Button className="p-button-rounded fullplusbutton-resp" icon="pi pi-plus" label='Agregar Licitación' onClick={() => { setDisplayNewTenderDialog(true); setShowToast(false) }} />
+                        <Button className="p-button-rounded smallplusbutton-resp" icon="pi pi-plus" onClick={() => { setDisplayNewTenderDialog(true) }} />
+                    </div>
                 </div>
-            )}
-            <DataTable value={tenders} paginator className="p-datatable-customers" header={header} rows={5}
-                paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-                dataKey="id" rowHover size="small"
-                filters={filters} filterDisplay="menu"
-                globalFilterFields={['name', 'mercadoPublicoId', 'currentStage']} emptyMessage="No se han encontrado licitaciones."
-                currentPageReportTemplate={"Se encontraton {totalRecords} Licitaciones"}>
-                <Column field="name" header="Nombre" sortable filter filterPlaceholder="Búsqueda por nombre" style={{ minWidth: '14rem' }} />
-                <Column field="mercadoPublicoId" header="ID Mercado Público" sortable filter filterPlaceholder="Búsqueda por Id mercado público" style={{ minWidth: '14rem' }} />
-                <Column field="currentStage" header="Etapa" sortable filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '10rem' }} body={currentStageBodyTemplate} filter filterElement={currentStageFilterTemplate} />
-                <Column header='Ver' headerStyle={{ width: '4rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={actionBodyView} />
-                <Column header='Editar' headerStyle={{ width: '4rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={actionBodyEdit} />
-            </DataTable>
-            <NewTenderDialog showDialog={displayNewTenderDialog} setShowDialog={setDisplayNewTenderDialog}>
-                <NewTenderForm setShowDialog={setDisplayNewTenderDialog} setType={setType} setMessage={setMessage} setShowToast={setShowToast} />
-            </NewTenderDialog>
-            <div className='p-toast'>
-                <InfoMessage type={type} message={message} showToast={showToast} />
+                <DataTable value={tenders} paginator className="p-datatable-customers fullplusbutton-resp" rows={5}
+                    paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+                    dataKey="id" rowHover size="small"
+                    filters={filters}
+                    filterDisplay="menu"
+                    globalFilterFields={['safi', 'mercadoPublicoId', 'currentStage']} emptyMessage="No se han encontrado licitaciones."
+                    currentPageReportTemplate={"Se encontraton {totalRecords} Licitaciones"}>
+                    <Column field="name" header="Nombre" sortable filter filterPlaceholder="Búsqueda por nombre" style={{ minWidth: '14rem' }} />
+                    <Column field="mercadoPublicoId" header="ID Mercado Público" sortable filter filterPlaceholder="Búsqueda por Id mercado público" style={{ minWidth: '14rem' }} />
+                    <Column field="currentStage" header="Etapa" sortable filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '10rem' }} body={currentStageBodyTemplate} filter filterElement={currentStageFilterTemplate} />
+                    <Column header='Ver' headerStyle={{ width: '4rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={actionBodyView} />
+                    <Column header='Editar' headerStyle={{ width: '4rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={actionBodyEdit} />
+                </DataTable>
             </div>
-        </div>
-    );
+            <div className='div-card2'>
+                {tenders && tenders.map((tender, index) => (
+                    <TenderCard key={index} name={tender.name} mercadoPublicoId={tender.mercadoPublicoId} currentStage={tender.currentStage} />
+                ))}
+                <NewTenderDialog showDialog={displayNewTenderDialog} setShowDialog={setDisplayNewTenderDialog}>
+                    <NewTenderForm setShowDialog={setDisplayNewTenderDialog} setType={setType} setMessage={setMessage} setShowToast={setShowToast} />
+                </NewTenderDialog>
+                <div className='p-toast'>
+                    <InfoMessage type={type} message={message} showToast={showToast} />
+                </div>
+            </div>
+        </div>);
 };
 
 export default TableTenders;
