@@ -1,6 +1,22 @@
-/*marginBottom: '2em', textAlign: 'center', position: 'relative', zIndex: 1*/
-/* @media (max-width: 800px) {
-    .card-resp {
-        width: '15rem';
-    }
-} */
+ @media (max-width: 800px) {
+     .background .card-body {
+         width: 20rem;
+     }
+ }
+
+ .background {
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     background-color: rgba(0, 0, 0, 0.3);
+     position: absolute;
+     top: 0;
+     left: 0;
+     right: 0;
+     bottom: 0;
+ }
+
+ .card-body {
+     width: 28rem;
+     text-align: center
+ }
