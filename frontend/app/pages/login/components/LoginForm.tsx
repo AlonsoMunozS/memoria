@@ -8,6 +8,22 @@ import { classNames } from 'primereact/utils';
 
 export const LoginForm = () => {
     const [formData, setFormData] = useState({});
+<<<<<<< Updated upstream
+=======
+    const [loading, setLoading] = useState<boolean>(false)
+
+    const loginUser = async (data: any) => {
+        setLoading(true)
+        const responseStatus = await login(data, setLoading);
+        console.log(responseStatus);
+
+        if (await responseStatus === 200) {
+            console.log('Login successful');
+            setLoading(false)
+            formik.resetForm();
+        }
+    }
+>>>>>>> Stashed changes
 
     const formik = useFormik({
         initialValues: {
