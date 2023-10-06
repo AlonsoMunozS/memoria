@@ -12,6 +12,8 @@ const login = async (body: User, setLoading: React.Dispatch<React.SetStateAction
             },
             body: JSON.stringify(body)
         });
+        const infoBody = await response.json()
+        localStorage['authToken'] = infoBody.accessToken;
         setLoading(false);
         return response.status
     }
