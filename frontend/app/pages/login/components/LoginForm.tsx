@@ -5,29 +5,55 @@ import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { Password } from 'primereact/password';
 import { classNames } from 'primereact/utils';
+import login from '../../services/LoginService';
+import { ProgressSpinner } from 'primereact/progressspinner';
+
+interface FormErrors {
+    email?: string,
+    password?: string
+}
 
 export const LoginForm = () => {
     const [formData, setFormData] = useState({});
+    const [loading, setLoading] = useState<boolean>(false)
+
+    const loginUser = async (data: any) => {
+        const responseStatus = await login(data, setLoading);
+        if (responseStatus === 201) {
+            formik.resetForm();
+
+        }
+    }
 
     const formik = useFormik({
         initialValues: {
-            name: '',
             email: '',
             password: ''
         },
         validate: (data) => {
-            let errors = {};
+            let errors: FormErrors = {};
+
+            if (!data.email) {
+                errors.email = "Este campo es requerido."
+            }
+
+            else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(data.email)) {
+                errors.email = "Correo electrónico inválido.";
+            }
+
+            if (!data.password) {
+                errors.password = "Este campo es requerido."
+            }
 
             return errors;
         },
         onSubmit: (data) => {
             setFormData(data);
-            formik.resetForm();
+            loginUser(data);
         }
     });
 
     const isFormFieldValid = (name: string) => {
-        // Utiliza type assertion para indicar que estás seguro de que `name` existe en formik.touched y formik.errors
         return !!((formik.touched as any)[name] && (formik.errors as any)[name]);
     };
 
@@ -40,7 +66,7 @@ export const LoginForm = () => {
             <div className="flex justify-content-center">
                 <div className="card">
                     <form onSubmit={formik.handleSubmit} className="p-fluid">
-                        <div className="field">
+                        <div className="field" style={{ textAlign: 'left' }}>
                             <span className="p-float-label p-input-icon-right">
                                 <i className="pi pi-envelope" />
                                 <InputText id="email" name="email" value={formik.values.email} onChange={formik.handleChange} className={classNames({ 'p-invalid': isFormFieldValid('email') })} />
@@ -48,7 +74,7 @@ export const LoginForm = () => {
                             </span>
                             {getFormErrorMessage('email')}
                         </div>
-                        <div className="field">
+                        <div className="field" style={{ textAlign: 'left' }}>
                             <span className="p-float-label">
                                 <Password id="password" name="password" value={formik.values.password} onChange={formik.handleChange} toggleMask feedback={false}
                                     className={classNames({ 'p-invalid': isFormFieldValid('password') })} />
@@ -56,7 +82,15 @@ export const LoginForm = () => {
                             </span>
                             {getFormErrorMessage('password')}
                         </div>
-                        <Button type="submit" label="Ingresar" className="mt-2" />
+                        <Button
+                            type="submit"
+                            label="Ingresar"
+                            icon={loading ? null : ''}
+                            iconPos="right" // Esto coloca el icono a la derecha del texto del botón 
+                            className={loading ? 'p-button-disabled' : ''}
+                            disabled={loading}
+                        >
+                            {loading && <ProgressSpinner style={{ width: '20px', height: '20px' }} strokeWidth="15" animationDuration=".5s" />}</Button>
                     </form>
                 </div>
             </div>
