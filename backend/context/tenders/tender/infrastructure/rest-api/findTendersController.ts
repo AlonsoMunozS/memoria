@@ -10,11 +10,13 @@ export class FindTendersController {
   async findTenders(req: Request, res: Response) {
     const { authorization } = req.headers
     if (!authorization) {
+      console.log("No autorizado")
       res.status(400).send();
       return;
     }
 
     const token = authorization.split(" ")[1]
+    console.log(token)
     const userId = await VerifyToken(token)
 
     if (!userId) {

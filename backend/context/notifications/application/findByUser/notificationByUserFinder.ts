@@ -1,6 +1,6 @@
 import { Notification } from "../../domain/notification";
 import { NotificationRepository } from "../../domain/notificationRepository";
-import { FindByUserNotificationRequest } from "./FindByUserNotificationRequest";
+import { FindByUserNotificationRequest } from "./findByUserNotificationRequest";
 
 
 export class NotificationByUserIdFinder {

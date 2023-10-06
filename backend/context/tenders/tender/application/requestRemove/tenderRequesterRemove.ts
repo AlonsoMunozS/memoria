@@ -1,14 +1,11 @@
-import { RequestRemoveNotification } from "../../../../notifications/domain/notification";
-import { NotificationRepository } from "../../../../notifications/domain/notificationRepository";
-import { UserRepository } from "../../../../users/user/domain/UserRepository";
+import { NotificationSender } from "../../../../notifications/application/send/notificationSenser";
 import { TenderRepository } from "../../domain/tenderRepository";
 import { requestRemoveTenderRequest } from "./requestRemoveTenderRequest";
 
 export class TenderRequesterRemove {
   constructor(
     private readonly tenderRepository: TenderRepository,
-    private readonly notificationRepository: NotificationRepository,
-    private readonly userRepository: UserRepository
+    private readonly notificationSenser: NotificationSender,
   ) { }
 
   async requestRemoveTender(request: requestRemoveTenderRequest): Promise<void> {
@@ -16,13 +13,13 @@ export class TenderRequesterRemove {
     if (!tender) {
       throw new Error("TenderNotFound");
     }
-    const admin = await this.userRepository.findByRole("admin")
-    const today = new Date();
-    const createdAt = today.getTime();
-    const notifications = admin.map(admin => {
-      return new RequestRemoveNotification({ tenderId: tender.id, userId: admin.id, requester: request.userId, createdAt: createdAt })
+
+    await this.notificationSenser.sendNotification({
+      id: tender.id,
+      role: "admin",
+      type: "RequestRemoveNotification",
+      requester: request.userId
     })
-    await this.notificationRepository.create(notifications)
 
   }
 }

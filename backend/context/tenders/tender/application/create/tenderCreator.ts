@@ -1,6 +1,4 @@
-import { AddNotification } from "../../../../notifications/domain/notification";
-import { NotificationRepository } from "../../../../notifications/domain/notificationRepository";
-import { UserRepository } from "../../../../users/user/domain/UserRepository";
+import { NotificationSender } from "../../../../notifications/application/send/notificationSenser";
 import { Tender } from "../../domain/tender";
 import { TenderRepository } from "../../domain/tenderRepository";
 import { CreateTenderRequest } from "./createTenderRequest";
@@ -9,17 +7,17 @@ import { CreateTenderRequest } from "./createTenderRequest";
 export class TenderCreator {
   constructor(
     private readonly tenderRepository: TenderRepository,
-    private readonly notificationRepository: NotificationRepository,
-    private readonly userRepository: UserRepository
+    private readonly notificationSender: NotificationSender,
   ) { }
 
   async createTender(request: CreateTenderRequest): Promise<void> {
     const tender = new Tender(request)
     await this.tenderRepository.create(tender);
-    const users = await this.userRepository.findByRole("licitador")
-    const notifications = users.map(user => {
-      return new AddNotification({ tenderId: request.id, userId: user.id, createdAt: request.createdAt })
+    await this.notificationSender.sendNotification({
+      id: tender.id,
+      role: "admin",
+      type: "createTender"
     })
-    await this.notificationRepository.create(notifications)
+
   }
 }
