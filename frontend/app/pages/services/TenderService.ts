@@ -1,7 +1,6 @@
 import { Tender } from '../tenders/tender/models/Tender';
 
-const createTender = async (body: Tender, setLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
-    setLoading(true);
+const createTender = async (body: Tender) => {
     try {
         const authToken = localStorage.getItem('authToken');
         const response = await fetch('http://localhost:3000/tenders/create', {
@@ -12,14 +11,13 @@ const createTender = async (body: Tender, setLoading: React.Dispatch<React.SetSt
             },
             body: JSON.stringify(body)
         });
-        setLoading(false);
+
         return response.status
     } catch (error) {
-        setLoading(false);
     }
 }
 
-const getTenders = async (setTenders: React.Dispatch<React.SetStateAction<Array<Tender>>>, setLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
+const getTenders = async () => {
     try {
         const authToken = localStorage.getItem('authToken');
         const response = await fetch('http://localhost:3000/tenders/', {
@@ -28,8 +26,7 @@ const getTenders = async (setTenders: React.Dispatch<React.SetStateAction<Array<
             }
         });
         const jsonData = await response.json();
-        setTenders(jsonData);
-        setLoading(false);
+        return jsonData;
     } catch (error) {
         console.error('Error fetching data:', error);
     }

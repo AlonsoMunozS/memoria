@@ -7,6 +7,7 @@ import { Password } from 'primereact/password';
 import { classNames } from 'primereact/utils';
 import login from '../../services/LoginService';
 import { ProgressSpinner } from 'primereact/progressspinner';
+import { useRouter } from 'next/router';
 
 interface FormErrors {
     email?: string,
@@ -16,12 +17,14 @@ interface FormErrors {
 export const LoginForm = () => {
     const [formData, setFormData] = useState({});
     const [loading, setLoading] = useState<boolean>(false)
+    const router = useRouter();
 
     const loginUser = async (data: any) => {
-        const responseStatus = await login(data, setLoading);
-        if (responseStatus === 201) {
-            formik.resetForm();
-
+        setLoading(true);
+        const responseStatus = await login(data);
+        if (responseStatus === 200) {
+            router.push('/');
+            setLoading(false);
         }
     }
 

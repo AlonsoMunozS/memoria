@@ -115,8 +115,10 @@ export const NewTenderForm: React.FC<dialogProps> = ({ setShowDialog, setType, s
     }
 
     const addNewTender = async (data: any) => {
-        const responseStatus = await createTender(data, setLoading);
+        setLoading(true);
+        const responseStatus = await createTender(data);
         if (responseStatus === 201) {
+            setLoading(true);
             setType("success")
             setMessage("Licitación agregada con éxito")
             onHide();

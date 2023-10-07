@@ -2,8 +2,7 @@ interface User {
     email: string,
     password: string
 }
-const login = async (body: User, setLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
-    setLoading(true);
+const login = async (body: User) => {
     try {
         const response = await fetch('http://localhost:3000/users/login', {
             method: 'POST',
@@ -14,11 +13,9 @@ const login = async (body: User, setLoading: React.Dispatch<React.SetStateAction
         });
         const infoBody = await response.json()
         localStorage['authToken'] = infoBody.accessToken;
-        setLoading(false);
         return response.status
     }
     catch (error) {
-        setLoading(false);
     }
 }
 export default login;
