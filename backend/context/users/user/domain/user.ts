@@ -1,3 +1,4 @@
+import { UserPermits } from "./UserPermits"
 import { UserAttributes } from "./UserAttributes"
 
 export class User {
@@ -5,14 +6,14 @@ export class User {
 	readonly rut: string
 	readonly email: string
 	readonly createAt: number
-	readonly userPermits?: Array<string>
+	readonly userPermits?: UserPermits
 
 	constructor({ id, rut, email, createAt, userPermits }: {
 		id: string,
 		rut: string,
 		email: string,
 		createAt: number
-		userPermits?: Array<string>
+		userPermits?: UserPermits
 
 	}) {
 		this.id = id
