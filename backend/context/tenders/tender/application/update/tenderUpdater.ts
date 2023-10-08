@@ -9,6 +9,9 @@ export class TenderUpdater {
 
     async updateTender(request: UpdateTenderRequest): Promise<void> {
         const oldTender = await this.tenderRepository.findById(request.id)
+        if (!oldTender) {
+            throw new Error("TenderNotFound");
+        }
         const updatedTender = new Tender({
             ...oldTender,
             id: request.id,

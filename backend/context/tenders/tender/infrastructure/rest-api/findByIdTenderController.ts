@@ -38,10 +38,8 @@ export class FindByIdTenderController {
       res.json(tender);
     } catch (error) {
       if (error instanceof Error) {
-        if (error.name === 'NotFoundException')
+        if (error.message === 'TenderNotFound')
           res.status(404).send();
-        else if (error.name === 'InvalidArgumentError')
-          res.status(400).send();
       }
       res.status(500).send();
     }
