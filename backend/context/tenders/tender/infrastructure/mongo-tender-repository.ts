@@ -1,7 +1,7 @@
-import { Tender } from "../../domain/tender";
-import { TenderRepository } from "../../domain/tenderRepository";
+import { Tender } from "../domain/tender";
+import { TenderRepository } from "../domain/tenderRepository";
 import { MongoClient, ServerApiVersion } from "mongodb"
-import config from '../../../../shared/infrastructure/config.local'
+import config from '../../../shared/infrastructure/config.local'
 
 const uri = config.mongoUri
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version

@@ -1,7 +1,6 @@
 import express from "express";
 
-import { createUserController, findByIdUserController, loginUserController, updatePasswordController } from "../dependencies";
-import { FindByIdUserController } from "./findByIdUserController";
+import { createUserController, findByIdUserController, loginUserController, updatePasswordController } from "../usersDependencies";
 
 
 const userRouter = express.Router();

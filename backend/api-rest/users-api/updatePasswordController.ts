@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { PasswordUpdater } from "../../application/updatePassword/passwordUpdater";
-import { PasswordUpdateRequest } from "../../application/updatePassword/passwordUpdateRequest";
+import { PasswordUpdater } from "../../context/users/user/application/updatePassword/passwordUpdater";
+import { PasswordUpdateRequest } from "../../context/users/user/application/updatePassword/passwordUpdateRequest";
 
 type updatePasswordBodyRequest = {
     email: string,

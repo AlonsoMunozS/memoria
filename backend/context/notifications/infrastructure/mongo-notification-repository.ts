@@ -1,7 +1,7 @@
 import { MongoClient, ServerApiVersion } from "mongodb"
-import mongoConf from "../../../shared/infrastructure/config.local"
-import { NotificationRepository } from "../../domain/notificationRepository";
-import { Notification } from "../../domain/notification";
+import mongoConf from "../../shared/infrastructure/config.local"
+import { NotificationRepository } from "../domain/notificationRepository";
+import { Notification } from "../domain/notification";
 
 const uri = mongoConf.mongoUri
 const client = new MongoClient(uri, {

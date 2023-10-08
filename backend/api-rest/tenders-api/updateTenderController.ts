@@ -1,8 +1,7 @@
 import { Request, Response } from "express";
-import { RemoveTenderRequest } from "../../application/remove/removeTenderRequest";
-import { TenderUpdater } from "../../application/update/tenderUpdater";
-import { UpdateTenderRequest } from "../../application/update/updateTenderRequest";
-import VerifyToken from "../../../../shared/infrastructure/firebase-verify-token";
+import { TenderUpdater } from "../../context/tenders/tender/application/update/tenderUpdater";
+import VerifyToken from "../../context/shared/infrastructure/firebase-verify-token";
+import { UpdateTenderRequest } from "../../context/tenders/tender/application/update/updateTenderRequest";
 
 
 export class UpdateTenderController {

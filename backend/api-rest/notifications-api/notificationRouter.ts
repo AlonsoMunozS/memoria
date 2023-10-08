@@ -1,5 +1,5 @@
 import express from "express";
-import { findByUserNotificationController } from "../dependencies";
+import { findByUserNotificationController } from "./notificationsDependencies";
 
 
 const notificationRouter = express.Router();

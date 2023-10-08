@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { UserFinder } from "../../application/findById/userFinder";
-import { FindByIdUserRequest } from "../../application/findById/findByIdRequest";
+import { UserFinder } from "../../context/users/user/application/findById/userFinder";
+import { FindByIdUserRequest } from "../../context/users/user/application/findById/findByIdRequest";
 
 
 export class FindByIdUserController {

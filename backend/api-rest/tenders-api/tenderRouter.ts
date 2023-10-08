@@ -1,7 +1,6 @@
 import express from "express";
 
-import { createTenderController, findByIdTenderController, removeTenderController, requestRemoveTenderController, updateTenderController } from "../dependencies";
-import { findTendersController } from "../dependencies";
+import { createTenderController, findTendersController, findByIdTenderController, removeTenderController, requestRemoveTenderController, updateTenderController } from "../tendersDependencies";
 
 const tenderRouter = express.Router();
 

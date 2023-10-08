@@ -2,11 +2,10 @@ import bodyParser from "body-parser";
 import express from "express";
 import cors from 'cors';
 
-import config from "./context/shared/infrastructure/config.local";
-import { tenderRouter } from "./context/tenders/tender/infrastructure/rest-api/tenderRouter";
-import { userRouter } from "./context/users/user/infrastructure/rest-api/userRouter";
-import { pdfRouter } from "./context/reports/infrastructure/rest-api/pdfRouter";
-import { notificationRouter } from "./context/notifications/infrastructure/rest-api/notificationRouter";
+import config from "./config.local";
+import { tenderRouter } from "./tenders-api/tenderRouter";
+import { userRouter } from "./users-api/userRouter";
+import { notificationRouter } from "./notifications-api/notificationRouter";
 
 function API() {
   const app = express();
@@ -22,7 +21,6 @@ function API() {
   app.use(bodyParser.json());
   app.use("/tenders", tenderRouter);
   app.use("/users", userRouter);
-  app.use("/pdf", pdfRouter);
   app.use("/notifications", notificationRouter);
 
   const { port } = config.server;
