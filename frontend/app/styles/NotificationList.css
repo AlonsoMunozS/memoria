@@ -1,0 +1,39 @@
+.card2 {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+    margin: 16px;
+    width: 100%;
+    transition: box-shadow 0.3s ease;
+}
+
+.card2:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.card2 div {
+    margin-bottom: 8px;
+}
+
+.card2 strong {
+    font-weight: bold;
+    margin-right: 8px;
+}
+
+.read2 {
+    color: #4caf50;
+    /* verde para notificaciones leídas */
+}
+
+.unread2 {
+    color: #ff5722;
+    /* naranja para notificaciones no leídas */
+}
+
+.scrollable-content2 {
+    max-height: 10rem;
+    /* Establece la altura máxima para la región scrollable */
+    overflow-y: auto;
+    /* Hace que el contenido sea scrollable verticalmente si se excede la altura máxima */
+}

@@ -7,6 +7,8 @@ import '../styles/DataTableResp.css';
 import '../styles/Form.css';
 import '../styles/LoginResp.css'
 import '../styles/TenderCard.css'
+import '../styles/NotificationList.css'
+
 
 import type { AppProps } from 'next/app';
 
