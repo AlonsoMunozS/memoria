@@ -16,16 +16,24 @@ interface FormErrors {
 
 export const LoginForm = () => {
     const [formData, setFormData] = useState({});
-    const [loading, setLoading] = useState<boolean>(false)
+    const [loading, setLoading] = useState<boolean>(false);
+    const [wrongPassword, setWrongPassword] = useState(false);
+    const [wrongEmail, setWrongEmail] = useState(false);
     const router = useRouter();
 
     const loginUser = async (data: any) => {
         setLoading(true);
+        setWrongPassword(false);
+        setWrongEmail(false);
         const responseStatus = await login(data);
         if (responseStatus === 200) {
             router.push('/');
         }
         else if (responseStatus === 401) {
+            setWrongPassword(true);
+        }
+        else if (responseStatus === 404) {
+            setWrongEmail(true);
         }
         setLoading(false);
     }
@@ -74,14 +82,14 @@ export const LoginForm = () => {
                         <div className="field" style={{ textAlign: 'left' }}>
                             <span className="p-float-label p-input-icon-right">
                                 <i className="pi pi-envelope" />
-                                <InputText id="email" name="email" value={formik.values.email} onChange={formik.handleChange} className={classNames({ 'p-invalid': isFormFieldValid('email') })} />
+                                <InputText id="email" name="email" value={formik.values.email} onChange={formik.handleChange} onBlur={formik.handleBlur} className={classNames({ 'p-invalid': isFormFieldValid('email') })} />
                                 <label htmlFor="email" className={classNames({ 'p-error': isFormFieldValid('email') })}>Correo electrónico*</label>
                             </span>
                             {getFormErrorMessage('email')}
                         </div>
                         <div className="field" style={{ textAlign: 'left' }}>
                             <span className="p-float-label">
-                                <Password id="password" name="password" value={formik.values.password} onChange={formik.handleChange} toggleMask feedback={false}
+                                <Password id="password" name="password" value={formik.values.password} onChange={formik.handleChange} onBlur={formik.handleBlur} toggleMask feedback={false}
                                     className={classNames({ 'p-invalid': isFormFieldValid('password') })} />
                                 <label htmlFor="password" className={classNames({ 'p-error': isFormFieldValid('password') })}>Contraseña*</label>
                             </span>
@@ -96,6 +104,8 @@ export const LoginForm = () => {
                             disabled={loading}
                         >
                             {loading && <ProgressSpinner style={{ width: '20px', height: '20px' }} strokeWidth="15" animationDuration=".5s" />}</Button>
+                        {wrongEmail && <small style={{ textAlign: 'center' }}>Correo electrónico incorrecto</small>}
+                        {wrongPassword && <small style={{ textAlign: 'center' }}>Contraseña incorrecta</small>}
                     </form>
                 </div>
             </div>
