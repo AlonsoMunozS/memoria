@@ -1,7 +1,6 @@
 import express from "express";
 
-import { createUserController, findByIdUserController, loginUserController, updatePasswordController } from "../dependencies";
-import { FindByIdUserController } from "./findByIdUserController";
+import { createUserController, findByIdUserController, loginUserController, updatePasswordController, refreshTokenController } from "../dependencies";
 
 
 const userRouter = express.Router();
@@ -24,6 +23,11 @@ userRouter.get(
 userRouter.put(
   "/updatePassword",
   updatePasswordController.updatePassword.bind(updatePasswordController)
+);
+
+userRouter.get(
+  "/refreshToken",
+  refreshTokenController.refreshToken.bind(refreshTokenController)
 );
 
 export { userRouter };

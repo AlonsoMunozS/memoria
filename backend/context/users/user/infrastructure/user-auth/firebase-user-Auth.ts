@@ -1,7 +1,7 @@
 import { UserAttributes } from '../../domain/UserAttributes';
 import { User } from '../../domain/user';
 import { UserAuth } from '../../domain/userAuth';
-import { getAuth, UserCredential, signInWithEmailAndPassword, Auth, createUserWithEmailAndPassword, updatePassword } from "firebase/auth";
+import { getAuth, UserCredential, signInWithEmailAndPassword, Auth, createUserWithEmailAndPassword, updatePassword, signInWithCustomToken } from "firebase/auth";
 import { firebaseAuth } from './firebase-config'
 import { UserToken } from '../../domain/UserToken';
 import * as admin from "firebase-admin";
@@ -77,6 +77,27 @@ export class FirebaseUserAuth implements UserAuth {
       }
       console.log(error) // Puedes lanzar el error nuevamente para manejarlo en un nivel superior si es necesario
       throw error
+    }
+  }
+  async refreshToken(refreshToken: string): Promise<UserToken> {
+    try {
+      // Usa el refresh token para obtener un nuevo token de acceso
+      const userCredential = await signInWithCustomToken(authFirebase, refreshToken);
+      console.log("credenciales:", userCredential)
+      // El usuarioCredential ahora contiene un nuevo token de acceso en userCredential.user.accessToken
+      // Aquí obtén el token de acceso del usuario autenticado
+      const idTokenResult = await userCredential.user.getIdTokenResult();
+
+      const token = new UserToken({
+        accessToken: idTokenResult.token,
+        expirationTime: new Date(idTokenResult.expirationTime).getTime(),
+        refreshToken: userCredential.user.refreshToken
+      });
+
+      return token;
+    } catch (error) {
+      console.error('Error al actualizar el token:', error);
+      throw error;
     }
   }
 }
