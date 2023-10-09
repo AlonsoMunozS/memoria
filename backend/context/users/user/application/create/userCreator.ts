@@ -14,7 +14,7 @@ export class UserCreator {
   async createUser(request: CreateUserRequest): Promise<any> {
     const rut = request.userAttributes.rut
     const email = request.userAttributes.email
-    const userPermits = request.userAttributes.userPermits
+    const userPermits = request.userAttributes?.userPermits
 
     const userAttributes: UserAttributes = {
       email,
