@@ -9,8 +9,14 @@ const Tenders: React.FC = () => {
   const [tenders, setTenders] = useState<Array<Tender>>([]);
   const [loading, setLoading] = useState(true);
 
+  const getTenderList = async () => {
+    const responseTenders = await getTenders();
+    setTenders(responseTenders);
+    setLoading(false);
+  }
+
   useEffect(() => {
-    getTenders(setTenders, setLoading);
+    getTenderList();
   }, []);
 
   return (

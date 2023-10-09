@@ -2,9 +2,9 @@ interface User {
     email: string,
     password: string
 }
-const login = async (body: User, setLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
+const login = async (body: User) => {
     try {
-        const response = await fetch('http://192.168.1.82:3000/users/login', {
+        const response = await fetch('http://localhost:3000/users/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -16,7 +16,6 @@ const login = async (body: User, setLoading: React.Dispatch<React.SetStateAction
         return response.status
     }
     catch (error) {
-        console.error('Error fetching data:', error);
     }
 }
 export default login;
