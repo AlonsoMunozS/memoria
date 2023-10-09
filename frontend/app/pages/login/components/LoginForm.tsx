@@ -24,8 +24,10 @@ export const LoginForm = () => {
         const responseStatus = await login(data);
         if (responseStatus === 200) {
             router.push('/');
-            setLoading(false);
         }
+        else if (responseStatus === 401) {
+        }
+        setLoading(false);
     }
 
     const formik = useFormik({
