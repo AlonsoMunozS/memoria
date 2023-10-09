@@ -6,14 +6,16 @@ export class User {
 	readonly rut: string
 	readonly email: string
 	readonly createAt: number
-	readonly userPermits?: UserPermits
+	readonly userPermits?: Array<string>
+	readonly role: string
 
-	constructor({ id, rut, email, createAt, userPermits }: {
+	constructor({ id, rut, email, createAt, userPermits, role }: {
 		id: string,
 		rut: string,
 		email: string,
 		createAt: number
-		userPermits?: UserPermits
+		userPermits?: Array<string>
+		role: string
 
 	}) {
 		this.id = id
@@ -21,6 +23,7 @@ export class User {
 		this.email = email
 		this.createAt = createAt
 		this.userPermits = userPermits
+		this.role = role
 	}
 
 	static create({
@@ -34,13 +37,15 @@ export class User {
 		const rut = userAttributes.rut
 		const email = userAttributes.email
 		const userPermits = userAttributes.userPermits
+		const role = userAttributes.role
 
 		const user = new User({
 			id,
 			rut,
 			email,
 			createAt: currentDate,
-			userPermits
+			userPermits,
+			role
 
 		})
 		return user
