@@ -2,7 +2,6 @@ import { UserAttributes } from '../../domain/UserAttributes';
 import { User } from '../../domain/user';
 import { UserAuth } from '../../domain/userAuth';
 import { getAuth, UserCredential, signInWithEmailAndPassword, Auth, createUserWithEmailAndPassword, updatePassword } from "firebase/auth";
-import { MongoClient, ServerApiVersion } from "mongodb"
 import { firebaseAuth } from './firebase-config'
 import { UserToken } from '../../domain/UserToken';
 import * as admin from "firebase-admin";
@@ -14,6 +13,7 @@ export class FirebaseUserAuth implements UserAuth {
 
   async create(email: string, password: string): Promise<string> {
     try {
+      console.log("email:", email, "password:", password)
       const userCredential: UserCredential = await createUserWithEmailAndPassword(authFirebase, email, password);
       const userRegisterToken = await userCredential.user.getIdToken()
       const tokenSections = (userRegisterToken || '').split('.')

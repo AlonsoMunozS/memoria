@@ -1,8 +1,9 @@
 import { Tender } from "../../domain/tender";
 import { TenderRepository } from "../../domain/tenderRepository";
 import { MongoClient, ServerApiVersion } from "mongodb"
+import config from '../../../../shared/infrastructure/config.local'
 
-const uri = "mongodb://Alonso:1234Alonso@ac-ouxjhz4-shard-00-00.q41p8o6.mongodb.net:27017,ac-ouxjhz4-shard-00-01.q41p8o6.mongodb.net:27017,ac-ouxjhz4-shard-00-02.q41p8o6.mongodb.net:27017/?replicaSet=atlas-8gtwdq-shard-0&authSource=admin&tls=true";
+const uri = config.mongoUri
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
   serverApi: {
@@ -54,26 +55,29 @@ export class MongoTenderRepository implements TenderRepository {
     }
   }
 
-  async findById(tenderId: number): Promise<Tender> {
+  async findById(tenderId: number): Promise<Tender | null> {
     try {
       await client.connect();
       const collection = database.collection(collectionName);
       // const document = await collection.findOne({ _id: objectId });
       const tenderFound = await collection.findOne({ id: tenderId });
+      if (!tenderFound) {
+        return null
+      }
       const tender = new Tender({
-        id: tenderFound?.id,
-        name: tenderFound?.name,
-        safi: tenderFound?.safi,
-        region: tenderFound?.region,
-        province: tenderFound?.province,
-        commune: tenderFound?.commune,
-        address: tenderFound?.address,
-        createdAt: tenderFound?.createdAt,
-        createdBy: tenderFound?.createdBy,
-        currentStage: tenderFound?.currentStage,
-        mercadoPublicoId: tenderFound?.mercadoPublicoId,
-        category: tenderFound?.category,
-        companies: tenderFound?.companies
+        id: tenderFound.id,
+        name: tenderFound.name,
+        safi: tenderFound.safi,
+        region: tenderFound.region,
+        province: tenderFound.province,
+        commune: tenderFound.commune,
+        address: tenderFound.address,
+        createdAt: tenderFound.createdAt,
+        createdBy: tenderFound.createdBy,
+        currentStage: tenderFound.currentStage,
+        mercadoPublicoId: tenderFound.mercadoPublicoId,
+        category: tenderFound.category,
+        companies: tenderFound.companies
       });
       return tender;
     } finally {

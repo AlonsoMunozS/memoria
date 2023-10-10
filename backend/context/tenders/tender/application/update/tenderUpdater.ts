@@ -9,11 +9,15 @@ export class TenderUpdater {
 
     async updateTender(request: UpdateTenderRequest): Promise<void> {
         const oldTender = await this.tenderRepository.findById(request.id)
+        if (!oldTender) {
+            throw new Error("TenderNotFound");
+        }
         const updatedTender = new Tender({
             ...oldTender,
             id: request.id,
             name: request.name ? request.name : oldTender.name,
             safi: request.safi ? request.safi : oldTender.safi,
+            region: request.region ? request.region : oldTender.region,
             province: request.province ? request.province : oldTender.province,
             commune: request.commune ? request.commune : oldTender.commune,
             address: request.address ? request.address : oldTender.address,

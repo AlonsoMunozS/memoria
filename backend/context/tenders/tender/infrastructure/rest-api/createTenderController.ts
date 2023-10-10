@@ -2,14 +2,15 @@ import { Request, Response } from "express";
 
 import { TenderCreator } from "../../application/create/tenderCreator";
 import { CreateTenderRequest } from "../../application/create/createTenderRequest";
-import { TenderLocation } from "../../domain/tenderLocation";
+import VerifyToken from "../../../../shared/infrastructure/firebase-verify-token";
 
 type CreateTenderBodyRequest = {
-  name: String,
-  safi: String,
+  name: string,
+  safi: string,
+  region: string
   province: string,
   commune: string,
-  location?: Array<number>,
+  address: string
   createdBy: number,
   mercadoPublicoId: string,
   category?: string,
@@ -27,12 +28,27 @@ export class CreateTenderController {
   ) { }
 
   async createTender(req: Request, res: Response) {
-    const { name, safi, region, province, commune, address, mercadoPublicoId, category } = req.body;
+
+    const { authorization } = req.headers
+    if (!authorization) {
+      res.status(400).send();
+      return;
+    }
+
+    const token = authorization.split(" ")[1]
+
+    const createdBy = await VerifyToken(token)
+    if (!createdBy) {
+      res.status(401).send();
+      return;
+    }
+
+    const { name, safi, region, province, commune, address, mercadoPublicoId, category } = req.body as CreateTenderBodyRequest;
 
     const today = new Date();
-    const timestamp = today.getTime();
+    const createdAt = today.getTime();
 
-    if (!name || !safi || !region || !province || !commune || !address || !mercadoPublicoId || !category) {
+    if (!name || !safi || !region || !province || !commune || !address || !mercadoPublicoId) {
       res.status(400).send();
       return;
     }
@@ -44,8 +60,8 @@ export class CreateTenderController {
       province,
       commune,
       address,
-      createdAt: timestamp,
-      createdBy: "prueba",
+      createdAt,
+      createdBy,
       currentStage: 0,
       mercadoPublicoId,
       category

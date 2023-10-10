@@ -1,11 +1,11 @@
+import { useRouter } from 'next/router';
 import { Button } from 'primereact/button';
 import { Menu } from 'primereact/menu';
-import { Toast } from 'primereact/toast';
 import React, { useRef } from 'react';
 
 const UserPerfil: React.FC = () => {
     const menu = useRef<Menu | null>(null);
-    const toast = useRef<Toast | null>(null);
+    const router = useRouter();
     const items = [
         {
             label: '¡Hola, Usuario!',
@@ -16,7 +16,11 @@ const UserPerfil: React.FC = () => {
                 },
                 {
                     label: 'Cerrar Sesión',
-                    icon: 'pi pi-sign-out'
+                    icon: 'pi pi-sign-out',
+                    command: () => {
+                        localStorage.removeItem('authToken');
+                        router.push('/login');
+                    }
                 }
             ]
         }
@@ -24,7 +28,6 @@ const UserPerfil: React.FC = () => {
 
     return (
         <div>
-            <Toast ref={toast}></Toast>
             <div className="card">
                 <Menu model={items} popup ref={menu} id="popup_menu" />
                 <Button

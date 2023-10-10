@@ -1,14 +1,16 @@
 import bodyParser from "body-parser";
 import express from "express";
+import cors from 'cors';
 
-import { config } from "./context/shared/infrastructure/config";
+import config from "./context/shared/infrastructure/config.local";
 import { tenderRouter } from "./context/tenders/tender/infrastructure/rest-api/tenderRouter";
 import { userRouter } from "./context/users/user/infrastructure/rest-api/userRouter";
 import { pdfRouter } from "./context/reports/infrastructure/rest-api/pdfRouter";
+import { notificationRouter } from "./context/notifications/infrastructure/rest-api/notificationRouter";
 
 function API() {
   const app = express();
-
+  app.use(cors());
   app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers', 'Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method');
@@ -21,6 +23,7 @@ function API() {
   app.use("/tenders", tenderRouter);
   app.use("/users", userRouter);
   app.use("/pdf", pdfRouter);
+  app.use("/notifications", notificationRouter);
 
   const { port } = config.server;
 

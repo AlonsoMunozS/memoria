@@ -7,13 +7,14 @@ import { classNames } from 'primereact/utils';
 import { stages } from '../../../data/stages';
 import { Tag } from 'primereact/tag';
 import { Dropdown, DropdownProps } from 'primereact/dropdown';
-import createTender from '../../services/TenderService';
+import { createTender } from '../../services/TenderService';
 import { ProgressSpinner } from 'primereact/progressspinner';
 
 interface dialogProps {
     setShowDialog: (bool: boolean) => void,
     setType: React.Dispatch<React.SetStateAction<"success" | "info" | "warn" | "error" | undefined>>,
     setMessage: React.Dispatch<React.SetStateAction<string | undefined>>
+    setShowToast: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 interface FormErrors {
@@ -30,7 +31,7 @@ interface FormData {
     safi: string;
 }
 
-export const NewTenderForm: React.FC<dialogProps> = ({ setShowDialog, setType, setMessage }) => {
+export const NewTenderForm: React.FC<dialogProps> = ({ setShowDialog, setType, setMessage, setShowToast }) => {
     const [showMessage, setShowMessage] = useState(false);
     const [formData, setFormData] = useState<FormData>({
         name: '',
@@ -114,10 +115,16 @@ export const NewTenderForm: React.FC<dialogProps> = ({ setShowDialog, setType, s
     }
 
     const addNewTender = async (data: any) => {
-        const responseStatus = await createTender(data, setLoading);
+        setLoading(true);
+        const responseStatus = await createTender(data);
         if (responseStatus === 201) {
-            setType("success");
-            setMessage("Licitación agregada con éxito");
+            setLoading(true);
+            setType("success")
+            setMessage("Licitación agregada con éxito")
+            onHide();
+            setShowToast(true);
+            formik.resetForm();
+
         }
     }
 
@@ -170,10 +177,8 @@ export const NewTenderForm: React.FC<dialogProps> = ({ setShowDialog, setType, s
             return errors;
         },
         onSubmit: (data) => {
-            // setFormData(data);
-            // setShowMessage(true);
-            // onHide();
-            // formik.resetForm();
+            setFormData(data);
+            setShowMessage(true);
             addNewTender(data);
         }
     });
@@ -257,12 +262,11 @@ export const NewTenderForm: React.FC<dialogProps> = ({ setShowDialog, setType, s
                                 type="submit"
                                 label="Guardar"
                                 icon={loading ? null : 'pi pi-check'}
-                                iconPos="right" // Esto coloca el icono a la derecha del texto del botón
+                                iconPos="right" // Esto coloca el icono a la derecha del texto del botón 
                                 className={loading ? 'p-button-disabled' : ''}
                                 disabled={loading}
                             >
                                 {loading && <ProgressSpinner style={{ width: '20px', height: '20px' }} strokeWidth="15" animationDuration=".5s" />}</Button>
-
                         </div>
                     </form>
                 </div>

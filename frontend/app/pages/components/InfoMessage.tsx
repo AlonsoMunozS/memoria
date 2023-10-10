@@ -8,10 +8,13 @@ interface InfoMessageProps {
     showToast: boolean
 }
 const InfoMessage: React.FC<InfoMessageProps> = ({ type, message, showToast }) => {
+    const summary = type == "success" ? "Exitoso" : type == "error" ? "Erróneo" : type == "warn" ? "Permiso Denegado" : undefined
     const msgs = useRef<Toast | null>(null);
     useEffect(() => {
-        msgs.current?.show({ severity: type, summary: 'Success Message', detail: message, life: 3000 });
-    }, [type]);
+        if (showToast == true) {
+            msgs.current?.show({ severity: type, summary: summary, detail: message, life: 3000 });
+        }
+    }, [showToast]);
 
     return (
         showToast &&
@@ -19,9 +22,5 @@ const InfoMessage: React.FC<InfoMessageProps> = ({ type, message, showToast }) =
             <Toast ref={msgs} position="bottom-center" />
         </div>
     )
-
-
-
 }
-
 export default InfoMessage;

@@ -24,7 +24,11 @@ interface TenderProps {
     "FirstStage": "PUBLICACIÓN"
 }*/
 
-const TableTenders = ({ tenders, setLoading, loading }: TenderProps) => {
+const TableTenders = ({ tenders, loading, setLoading }: TenderProps) => {
+
+    const [type, setType] = useState<"success" | "info" | "warn" | "error" | undefined>();
+    const [message, setMessage] = useState<string | undefined>();
+    const [showToast, setShowToast] = useState<boolean>(false);
 
     const [filters, setFilters] = useState({
         'global': { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -34,10 +38,6 @@ const TableTenders = ({ tenders, setLoading, loading }: TenderProps) => {
     });
     const [globalFilterValue, setGlobalFilterValue] = useState('');
     const [displayNewTenderDialog, setDisplayNewTenderDialog] = useState(false);
-
-    const [type, setType] = useState<"success" | "info" | "warn" | "error" | undefined>();
-    const [message, setMessage] = useState<string | undefined>();
-    const [showToast, setShowToast] = useState<boolean>(false);
 
     const onGlobalFilterChange = (e: any) => {
         const value = e.target.value;
@@ -56,7 +56,7 @@ const TableTenders = ({ tenders, setLoading, loading }: TenderProps) => {
                     <InputText style={{ width: '100%' }} value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Búsqueda por palabra clave" />
                 </div>
                 <div>
-                    <Button className="p-button-rounded fullplusbutton-resp" icon="pi pi-plus" label='Agregar Licitación' onClick={() => { setDisplayNewTenderDialog(true) }} />
+                    <Button className="p-button-rounded fullplusbutton-resp" icon="pi pi-plus" label='Agregar Licitación' onClick={() => { setDisplayNewTenderDialog(true); setShowToast(false) }} />
                     <Button className="p-button-rounded smallplusbutton-resp" icon="pi pi-plus" onClick={() => { setDisplayNewTenderDialog(true) }} />
                 </div>
             </div>
@@ -80,12 +80,8 @@ const TableTenders = ({ tenders, setLoading, loading }: TenderProps) => {
         return <Dropdown value={options.value} options={stages.tag} onChange={(e) => options.filterApplyCallback(e.value)} itemTemplate={currentStageItemTemplate} placeholder="Selecciona una Estapa" className="p-column-filter" showClear />
     }
 
-    const actionBodyView = () => {
-        return <Button className="p-button-rounded" icon="pi pi-eye"></Button>;
-    }
-
-    const actionBodyEdit = () => {
-        return <Button className="p-button-rounded" icon="pi pi-pencil"></Button>;
+    const actionBodyView = (rowData: any) => {
+        return <Button className="p-button-rounded" icon="pi pi-eye" onClick={() => { window.open(`http://localhost:3001/tenders/tender/${rowData.id}`, '_blank'); }}></Button>;
     }
     useEffect(() => {
         setShowToast(true)
@@ -94,6 +90,11 @@ const TableTenders = ({ tenders, setLoading, loading }: TenderProps) => {
 
     return (
         <div className="datatable-doc-demo">
+            {loading && (
+                <div className="spinner-container">
+                    <ProgressSpinner style={{ width: '50px', height: '50px' }} strokeWidth="8" fill="var(--surface-ground)" animationDuration=".5s" />
+                </div>
+            )}
             <DataTable value={tenders} paginator className="p-datatable-customers" header={header} rows={5}
                 paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                 dataKey="id" rowHover size="small"
@@ -104,10 +105,9 @@ const TableTenders = ({ tenders, setLoading, loading }: TenderProps) => {
                 <Column field="mercadoPublicoId" header="ID Mercado Público" sortable filter filterPlaceholder="Búsqueda por Id mercado público" style={{ minWidth: '14rem' }} />
                 <Column field="currentStage" header="Etapa" sortable filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '10rem' }} body={currentStageBodyTemplate} filter filterElement={currentStageFilterTemplate} />
                 <Column header='Ver' headerStyle={{ width: '4rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={actionBodyView} />
-                <Column header='Editar' headerStyle={{ width: '4rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={actionBodyEdit} />
             </DataTable>
             <NewTenderDialog showDialog={displayNewTenderDialog} setShowDialog={setDisplayNewTenderDialog}>
-                <NewTenderForm setShowDialog={setDisplayNewTenderDialog} setType={setType} setMessage={setMessage} />
+                <NewTenderForm setShowDialog={setDisplayNewTenderDialog} setType={setType} setMessage={setMessage} setShowToast={setShowToast} />
             </NewTenderDialog>
             <div className='p-toast'>
                 <InfoMessage type={type} message={message} showToast={showToast} />
