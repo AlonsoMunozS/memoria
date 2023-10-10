@@ -80,12 +80,8 @@ const TableTenders = ({ tenders, loading, setLoading }: TenderProps) => {
         return <Dropdown value={options.value} options={stages.tag} onChange={(e) => options.filterApplyCallback(e.value)} itemTemplate={currentStageItemTemplate} placeholder="Selecciona una Estapa" className="p-column-filter" showClear />
     }
 
-    const actionBodyView = () => {
-        return <Button className="p-button-rounded" icon="pi pi-eye"></Button>;
-    }
-
-    const actionBodyEdit = () => {
-        return <Button className="p-button-rounded" icon="pi pi-pencil"></Button>;
+    const actionBodyView = (rowData: any) => {
+        return <Button className="p-button-rounded" icon="pi pi-eye" onClick={() => { window.open(`http://localhost:3001/tenders/tender/${rowData.id}`, '_blank'); }}></Button>;
     }
 
     const header = renderHeader();
@@ -107,7 +103,6 @@ const TableTenders = ({ tenders, loading, setLoading }: TenderProps) => {
                 <Column field="mercadoPublicoId" header="ID Mercado Público" sortable filter filterPlaceholder="Búsqueda por Id mercado público" style={{ minWidth: '14rem' }} />
                 <Column field="currentStage" header="Etapa" sortable filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '10rem' }} body={currentStageBodyTemplate} filter filterElement={currentStageFilterTemplate} />
                 <Column header='Ver' headerStyle={{ width: '4rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={actionBodyView} />
-                <Column header='Editar' headerStyle={{ width: '4rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={actionBodyEdit} />
             </DataTable>
             <NewTenderDialog showDialog={displayNewTenderDialog} setShowDialog={setDisplayNewTenderDialog}>
                 <NewTenderForm setShowDialog={setDisplayNewTenderDialog} setType={setType} setMessage={setMessage} setShowToast={setShowToast} />
