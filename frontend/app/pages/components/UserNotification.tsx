@@ -25,7 +25,6 @@ const UserNotifications: React.FC = () => {
     const getNotifications = async () => {
         try {
             const responseNotifications = await getUserNotifications();
-            console.log('Notificaciones:', responseNotifications);
             setNotifications(responseNotifications);
             setLoading(false);
         } catch (error) {
@@ -43,7 +42,6 @@ const UserNotifications: React.FC = () => {
         label: notification.message,
         icon: 'pi pi-bell', // Puedes cambiar el icono según tus necesidades
         command: () => {
-            console.log('Notificación seleccionada:', notification.message)
         }
     })))
     let items = [

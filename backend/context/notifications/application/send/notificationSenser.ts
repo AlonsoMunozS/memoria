@@ -15,25 +15,26 @@ export class NotificationSender {
         const createdAt = today.getTime();
         const users = await this.byRoleUserFinder.findByRoleUser({ role: request.role })
 
-        if (request.type === "createTender") {
+
+        if (users && request.type === "createTender") {
             const notifications = users.map(user => {
                 return new AddNotification({ id: request.id, userId: user.id, createdAt: createdAt })
             })
             await this.notificationRepository.create(notifications)
         }
-        if (request.type === "removeTender") {
+        if (users && request.type === "removeTender") {
             const notifications = users.map(user => {
                 return new RemoveNotification({ id: request.id, userId: user.id, createdAt: createdAt })
             })
             await this.notificationRepository.create(notifications)
         }
-        if (request.type === "updateTender") {
+        if (users && request.type === "updateTender") {
             const notifications = users.map(user => {
                 return new UpdateNotification({ id: request.id, userId: user.id, createdAt: createdAt })
             })
             await this.notificationRepository.create(notifications)
         }
-        if (request.type === "RequestRemoveNotification") {
+        if (users && request.type === "RequestRemoveNotification") {
             const notifications = users.map(user => {
                 return new RequestRemoveNotification({ id: request.id, userId: user.id, createdAt: createdAt, requester: request.requester })
             })

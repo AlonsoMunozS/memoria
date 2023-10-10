@@ -22,6 +22,10 @@ export class MongoTenderRepository implements TenderRepository {
       await client.connect();
       const collection = database.collection(collectionName);
       await collection.insertOne(tender);
+    } catch (error: any) {
+      console.log(error)
+      const errorMessage: string = error.message;
+      throw errorMessage; // Throw the error to be caught by the caller
     } finally {
       await client.close();
     }
