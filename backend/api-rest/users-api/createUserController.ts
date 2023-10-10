@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { UserCreator } from "../../application/create/userCreator";
-import { CreateUserRequest } from "../../application/create/createUserRequest"
-import { UserAttributes } from "../../domain/UserAttributes";
+import { UserAttributes } from "../../context/users/user/domain/UserAttributes";
+import { UserCreator } from "../../context/users/user/application/create/userCreator";
+import { CreateUserRequest } from "../../context/users/user/application/create/createUserRequest";
 
 type CreateUserBodyRequest = {
   userAttributes: UserAttributes,

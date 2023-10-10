@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import VerifyToken from "../../../../shared/infrastructure/firebase-verify-token";
-import { TendersFinder } from "../../application/find/tendersFinder";
+import { TendersFinder } from "../../context/tenders/tender/application/find/tendersFinder";
+import VerifyToken from "../../context/shared/infrastructure/firebase-verify-token";
 
 export class FindTendersController {
   constructor(

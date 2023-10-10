@@ -1,8 +1,8 @@
 import { MongoClient, ServerApiVersion } from "mongodb"
-import { UserRepository } from "../../domain/UserRepository";
-import { User } from "../../domain/user";
-import { UserAttributes } from "../../domain/UserAttributes";
-import config from '../../../../shared/infrastructure/config.local'
+import { UserRepository } from "../domain/UserRepository";
+import { User } from "../domain/user";
+import { UserAttributes } from "../domain/UserAttributes";
+import config from '../../../shared/infrastructure/config.local'
 
 const uri = config.mongoUri
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version

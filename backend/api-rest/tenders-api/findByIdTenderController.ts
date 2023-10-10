@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { TenderByIdFinder } from "../../application/findById/tenderByIdFinder";
-import { findByIdTenderRequest } from "../../application/findById/findByIdTenderRequest";
-import VerifyToken from "../../../../shared/infrastructure/firebase-verify-token";
+import { TenderByIdFinder } from "../../context/tenders/tender/application/findById/tenderByIdFinder";
+import VerifyToken from "../../context/shared/infrastructure/firebase-verify-token";
+import { findByIdTenderRequest } from "../../context/tenders/tender/application/findById/findByIdTenderRequest";
 
 
 export class FindByIdTenderController {

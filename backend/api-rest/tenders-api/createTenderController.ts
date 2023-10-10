@@ -1,8 +1,7 @@
 import { Request, Response } from "express";
-
-import { TenderCreator } from "../../application/create/tenderCreator";
-import { CreateTenderRequest } from "../../application/create/createTenderRequest";
-import VerifyToken from "../../../../shared/infrastructure/firebase-verify-token";
+import { TenderCreator } from "../../context/tenders/tender/application/create/tenderCreator";
+import VerifyToken from "../../context/shared/infrastructure/firebase-verify-token";
+import { CreateTenderRequest } from "../../context/tenders/tender/application/create/createTenderRequest";
 
 type CreateTenderBodyRequest = {
   name: string,

@@ -1,12 +1,12 @@
-import { UserAttributes } from '../../domain/UserAttributes';
-import { User } from '../../domain/user';
-import { UserAuth } from '../../domain/userAuth';
+import { UserAuth } from '../domain/userAuth';
 import { getAuth, UserCredential, signInWithEmailAndPassword, Auth, createUserWithEmailAndPassword, updatePassword } from "firebase/auth";
-import { firebaseAuth } from './firebase-config'
-import { UserToken } from '../../domain/UserToken';
-import * as admin from "firebase-admin";
-import { FirebaseError } from 'firebase/app';
+import { UserToken } from '../domain/UserToken';
+import { FirebaseError, initializeApp } from 'firebase/app';
+import config from '../../../shared/infrastructure/config.local'
 
+const firebaseConfig = config.firebaseConfig
+
+const firebaseAuth = initializeApp(firebaseConfig);
 const authFirebase = getAuth(firebaseAuth);
 
 export class FirebaseUserAuth implements UserAuth {
