@@ -4,7 +4,7 @@ interface User {
 }
 const login = async (body: User) => {
     let status = null;
-    await fetch('http://localhost:3000/users/login', {
+    await fetch('http://52.255.142.208:3000/users/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
