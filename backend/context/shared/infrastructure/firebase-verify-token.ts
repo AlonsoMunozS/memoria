@@ -16,6 +16,15 @@ async function VerifyToken(token: string): Promise<string | undefined> {
   }
 }
 
-export default VerifyToken;
+async function refreshToken1(id: string): Promise<string | undefined> {
+  try {
+    const customToken = await admin.auth().createCustomToken(id);
+    console.log("customToken", customToken)
+    return customToken
+  } catch (error) {
+    return undefined
+  }
+}
+export { VerifyToken, refreshToken1 }
 
 

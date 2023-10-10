@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
 import { TokenRefresher } from "../../application/refreshToken/tokenRefresher";
+import { refreshToken1 } from "../../../../shared/infrastructure/firebase-verify-token"
 
 type RefreshTokenBodyRequest = {
-    refreshtoken: string
+    refreshToken: string
 }
 
 export class RefreshTokenController {
@@ -12,11 +13,17 @@ export class RefreshTokenController {
 
     async refreshToken(req: Request, res: Response) {
 
+        console.log('refreshTokenController')
         const body = req.body as RefreshTokenBodyRequest
-        const { refreshtoken } = body;
+        const { refreshToken } = body;
 
+        if (!refreshToken) {
+            res.status(400).send();
+            return;
+        }
+        const tok = await refreshToken1("bvtHHlK7MLPXyhrHJLNZ7bBLwDf1")
         const request: RefreshTokenBodyRequest = {
-            refreshtoken
+            refreshToken
         }
 
         try {

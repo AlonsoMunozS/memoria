@@ -1,3 +1,3 @@
-export type RefreshtokenRequest = {
-	refreshtoken: string
+export type RefreshTokenRequest = {
+	refreshToken: string
 }

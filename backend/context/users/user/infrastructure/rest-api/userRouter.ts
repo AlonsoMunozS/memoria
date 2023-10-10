@@ -25,7 +25,7 @@ userRouter.put(
   updatePasswordController.updatePassword.bind(updatePasswordController)
 );
 
-userRouter.get(
+userRouter.put(
   "/refreshToken",
   refreshTokenController.refreshToken.bind(refreshTokenController)
 );

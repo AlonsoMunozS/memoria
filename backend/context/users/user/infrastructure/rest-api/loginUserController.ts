@@ -15,6 +15,7 @@ export class LoginUserController {
     async loginUser(req: Request, res: Response) {
 
         const body = req.body as LoginUserBodyRequest
+        console.log(body)
         const { email, password } = body;
 
         const request: LoginUserRequest = {
