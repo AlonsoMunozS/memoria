@@ -15,11 +15,13 @@ export class UserCreator {
     const rut = request.userAttributes.rut
     const email = request.userAttributes.email
     const userPermits = request.userAttributes?.userPermits
+    const role = request.userAttributes.role
 
     const userAttributes: UserAttributes = {
       email,
       rut,
-      userPermits
+      userPermits,
+      role
     }
     const userId = await this.userAuth.create(userAttributes.email, request.password);
     await this.userRepository.create(userId, userAttributes);

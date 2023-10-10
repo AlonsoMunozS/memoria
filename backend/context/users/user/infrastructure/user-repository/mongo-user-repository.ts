@@ -46,9 +46,32 @@ export class MongoUserRepository implements UserRepository {
         createAt: userFound?.createAt,
         email: userFound?.email,
         rut: userFound?.rut,
-        userPermits: userFound?.userPermits
+        userPermits: userFound?.userPermits,
+        role: userFound?.role
       });
       return user;
+    } finally {
+      await client.close();
+    }
+  }
+  async findByRole(role: string): Promise<Array<User>> {
+    try {
+      await client.connect();
+      const collection = database.collection(collectionName);
+      // const document = await collection.findOne({ _id: objectId });
+      const usersCursor = collection.find({ role: role });
+      const usersArray = await usersCursor.toArray();
+      const mappedUser: User[] = usersArray.map((userDoc: any) => {
+        return new User({
+          id: userDoc?.id,
+          email: userDoc?.email,
+          createAt: userDoc?.createAt,
+          role: userDoc?.role,
+          rut: userDoc?.rut,
+          userPermits: userDoc?.userPermits
+        });
+      });
+      return mappedUser;
     } finally {
       await client.close();
     }

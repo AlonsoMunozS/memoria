@@ -1,24 +1,25 @@
 import { NotificationSender } from "../../../../notifications/application/send/notificationSenser";
 import { TenderRepository } from "../../domain/tenderRepository";
-import { RemoveTenderRequest } from "./removeTenderRequest";
+import { requestRemoveTenderRequest } from "./requestRemoveTenderRequest";
 
-export class TenderRemover {
+export class TenderRequesterRemove {
   constructor(
     private readonly tenderRepository: TenderRepository,
     private readonly notificationSenser: NotificationSender,
   ) { }
 
-  async removeTender(request: RemoveTenderRequest): Promise<void> {
-    const tender = await this.tenderRepository.findById(request.id)
+  async requestRemoveTender(request: requestRemoveTenderRequest): Promise<void> {
+    const tender = await this.tenderRepository.findById(request.tenderId)
     if (!tender) {
       throw new Error("TenderNotFound");
     }
-    await this.tenderRepository.remove(tender.id)
 
     await this.notificationSenser.sendNotification({
       id: tender.id,
       role: "admin",
-      type: "removeTender"
+      type: "RequestRemoveNotification",
+      requester: request.userId
     })
+
   }
 }
