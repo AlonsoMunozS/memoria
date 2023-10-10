@@ -104,7 +104,7 @@ export const LoginForm = () => {
                             disabled={loading}
                         >
                             {loading && <ProgressSpinner style={{ width: '20px', height: '20px' }} strokeWidth="15" animationDuration=".5s" />}</Button>
-                        {wrongEmail && <small style={{ textAlign: 'center' }}>Correo electrónico incorrecto</small>}
+                        {wrongEmail && <small style={{ textAlign: 'center' }}>Correo electrónico no registrado</small>}
                         {wrongPassword && <small style={{ textAlign: 'center' }}>Contraseña incorrecta</small>}
                     </form>
                 </div>
