@@ -15,5 +15,125 @@
             "Diguillín",
             "Itata"
         ]
+    },
+    {
+        "region": "Región de Arica y Parinacota",
+        "provinces": [
+            "Arica",
+            "Parinacota"
+        ]
+    },
+    {
+        "region": "Región de Tarapacá",
+        "provinces": [
+            "Iquique",
+            "Tamarugal"
+        ]
+    },
+    {
+        "region": "Región de Antofagasta",
+        "provinces": [
+            "Antofagasta",
+            "El Loa",
+            "Tocopilla"
+        ]
+    },
+    {
+        "region": "Región de Atacama",
+        "provinces": [
+            "Copiapó",
+            "Chañaral",
+            "Huasco"
+        ]
+    },
+    {
+        "region": "Región de Coquimbo",
+        "provinces": [
+            "Elqui",
+            "Limarí",
+            "Choapa"
+        ]
+    },
+    {
+        "region": "Región de Valparaíso",
+        "provinces": [
+            "Valparaíso",
+            "Isla de Pascua",
+            "Los Andes",
+            "Petorca",
+            "Quillota",
+            "San Antonio",
+            "San Felipe de Aconcagua",
+            "Marga Marga"
+        ]
+    },
+    {
+        "region": "Metropolitana de Santiago",
+        "provinces": [
+            "Santiago",
+            "Cordillera",
+            "Chacabuco",
+            "Maipo",
+            "Melipilla",
+            "Talagante"
+        ]
+    },
+    {
+        "region": "Región del Libertador General Bernardo O'Higgins",
+        "provinces": [
+            "Cachapoal",
+            "Cardenal Caro",
+            "Colchagua"
+        ]
+    },
+    {
+        "region": "Región del Maule",
+        "provinces": [
+            "Talca",
+            "Cauquenes",
+            "Curicó",
+            "Linares"
+        ]
+    },
+    {
+        "region": "Región del Biobío",
+        "provinces": [
+            "Concepción",
+            "Ñuble",
+            "Biobío",
+            "Arauco"
+        ]
+    },
+    {
+        "region": "Región de La Araucanía",
+        "provinces": [
+            "Cautín",
+            "Malleco"
+        ]
+    },
+    {
+        "region": "Región de Aysén del General Carlos Ibáñez del Campo",
+        "provinces": [
+            "Coyhaique",
+            "Aysén",
+            "Capitán Prat",
+            "General Carrera"
+        ]
+    },
+    {
+        "region": "Región de Magallanes y de la Antártica Chilena",
+        "provinces": [
+            "Magallanes",
+            "Antártica Chilena",
+            "Tierra del Fuego",
+            "Última Esperanza"
+        ]
+    },
+    {
+        "region": "Región de Los Ríos",
+        "provinces": [
+            "Valdivia",
+            "Ranco"
+        ]
     }
 ]
