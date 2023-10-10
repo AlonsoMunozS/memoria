@@ -27,8 +27,8 @@ export class FindByUserNotificationController {
       userId
     }
     try {
-      const tender = await this.notificationByUserFinder.findByUserIdNotification(request)
-      res.json(tender);
+      const notifications = await this.notificationByUserFinder.findByUserIdNotification(request)
+      res.json(notifications?.reverse());
     } catch (error) {
       if (error instanceof Error) {
         if (error.name === 'NotFoundException')
