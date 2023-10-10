@@ -1,6 +1,7 @@
 import { Tender } from '../tenders/tender/models/Tender';
-
+import { refreshLogin } from './LoginService';
 const createTender = async (body: Tender) => {
+    refreshLogin();
     try {
         const authToken = localStorage.getItem('authToken');
         const response = await fetch('http://localhost:3000/tenders/create', {
@@ -18,6 +19,7 @@ const createTender = async (body: Tender) => {
 }
 
 const getTenders = async () => {
+    refreshLogin();
     try {
         const authToken = localStorage.getItem('authToken');
         const response = await fetch('http://localhost:3000/tenders/', {

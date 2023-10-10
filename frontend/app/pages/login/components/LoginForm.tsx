@@ -5,7 +5,7 @@ import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { Password } from 'primereact/password';
 import { classNames } from 'primereact/utils';
-import login from '../../services/LoginService';
+import { login } from '../../services/LoginService';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import { useRouter } from 'next/router';
 

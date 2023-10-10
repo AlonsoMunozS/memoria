@@ -19,6 +19,8 @@ const UserPerfil: React.FC = () => {
                     icon: 'pi pi-sign-out',
                     command: () => {
                         localStorage.removeItem('authToken');
+                        localStorage.removeItem('refreshToken');
+                        localStorage.removeItem('expirationTime');
                         router.push('/login');
                     }
                 }
