@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { UserLoginer } from "../../context/users/user/application/singIn/userLoginer";
-import { LoginUserRequest } from "../../context/users/user/application/singIn/loginUserRequest";
+import { UserLoginer } from "../../context/users/user/application/signIn/userLoginer";
+import { LoginUserRequest } from "../../context/users/user/application/signIn/loginUserRequest";
 
 type LoginUserBodyRequest = {
     email: string
