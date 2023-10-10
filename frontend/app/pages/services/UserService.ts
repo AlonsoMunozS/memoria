@@ -2,7 +2,6 @@
 const getUserNotifications = async () => {
     try {
         const authToken = localStorage.getItem('authToken');
-        console.log("Token: ", authToken);
 
         const response = await fetch('http://localhost:3000/notifications/findByUser/', {
             method: 'GET',

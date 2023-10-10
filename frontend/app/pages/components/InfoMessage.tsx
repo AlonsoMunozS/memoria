@@ -12,6 +12,7 @@ const InfoMessage: React.FC<InfoMessageProps> = ({ type, message, showToast }) =
     const msgs = useRef<Toast | null>(null);
     useEffect(() => {
         if (showToast == true) {
+            console.log('showToast:', showToast);
             msgs.current?.show({ severity: type, summary: summary, detail: message, life: 3000 });
         }
     }, [showToast]);

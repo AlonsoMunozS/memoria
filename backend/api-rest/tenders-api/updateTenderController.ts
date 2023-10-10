@@ -49,7 +49,6 @@ export class UpdateTenderController {
             res.status(201).send();
             return;
         } catch (error) {
-            console.log(error)
             res.status(500).send();
         }
 

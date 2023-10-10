@@ -13,7 +13,6 @@ export class FirebaseUserAuth implements UserAuth {
 
   async create(email: string, password: string): Promise<string> {
     try {
-      console.log("email:", email, "password:", password)
       const userCredential: UserCredential = await createUserWithEmailAndPassword(authFirebase, email, password);
       const userRegisterToken = await userCredential.user.getIdToken()
       const tokenSections = (userRegisterToken || '').split('.')
@@ -23,7 +22,6 @@ export class FirebaseUserAuth implements UserAuth {
       return userId
     } catch (error: any) {
       const errorMessage: string = error.message;
-      console.log(error)
       throw errorMessage; // Throw the error to be caught by the caller
     }
   }
@@ -44,7 +42,6 @@ export class FirebaseUserAuth implements UserAuth {
     } catch (error) {
       if (error instanceof FirebaseError) {
         const errorCode = error.code;
-        console.log(errorCode)
         throw new Error(errorCode);
       } // Puedes lanzar el error nuevamente para manejarlo en un nivel superior si es necesario
       throw error
@@ -59,10 +56,8 @@ export class FirebaseUserAuth implements UserAuth {
     } catch (error) {
       if (error instanceof FirebaseError) {
         const errorCode = error.code;
-        console.log(errorCode)
         throw new Error(errorCode);
       }
-      console.log(error) // Puedes lanzar el error nuevamente para manejarlo en un nivel superior si es necesario
       throw error
     }
   }

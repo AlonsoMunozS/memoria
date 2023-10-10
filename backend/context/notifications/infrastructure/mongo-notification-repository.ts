@@ -21,6 +21,9 @@ export class MongoNotificationRepository implements NotificationRepository {
       await client.connect();
       const collection = database.collection(collectionName);
       await collection.insertMany(notifications);
+    } catch (error: any) {
+      const errorMessage: string = error.message;
+      throw errorMessage; // Throw the error to be caught by the caller
     } finally {
       await client.close();
     }
