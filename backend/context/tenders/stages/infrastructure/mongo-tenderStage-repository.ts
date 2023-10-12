@@ -42,4 +42,34 @@ export class MongoTenderStagesRepository implements TenderStageRepository {
     }
   }
 
+  async findStageByTender(tenderId: number, stageName: string): Promise<TenderStage | null> {
+    try {
+      await client.connect();
+      const collection = database.collection(collectionName);
+      const tenderStageFound = await collection.findOne({ tenderId: tenderId, name: stageName });
+      if (!tenderStageFound) {
+        throw new Error("TenderStageNotFound");
+      }
+      const tenderStage = new TenderStage({
+        id: tenderStageFound.id,
+        tenderId: tenderStageFound.tenderId,
+        name: tenderStageFound.name,
+        toDate: tenderStageFound.toDate,
+        files: tenderStageFound?.files,
+        lastModifiedBy: tenderStageFound?.lastModifiedBy,
+        lastModifiedAt: tenderStageFound?.lastModifiedAt,
+        createdAt: tenderStageFound.createdAt,
+        createdBy: tenderStageFound.createdBy,
+        comments: tenderStageFound?.comments,
+      })
+      return tenderStage;
+    } catch (error: any) {
+      console.log(error)
+      const errorMessage: string = error.message;
+      throw errorMessage; // Throw the error to be caught by the caller
+    } finally {
+      await client.close();
+    }
+  }
+
 }
