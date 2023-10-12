@@ -3,9 +3,10 @@ import express from "express";
 import cors from 'cors';
 
 import config from "./config.local";
-import { tenderRouter } from "./tenders-api/tenderRouter";
+import { tenderRouter } from "./tenders-api/Tender/tenderRouter";
 import { userRouter } from "./users-api/userRouter";
 import { notificationRouter } from "./notifications-api/notificationRouter";
+import { tenderStagesRouters } from "./tenders-api/Stages/tendersStagesRouter";
 
 function API() {
   const app = express();
@@ -19,7 +20,8 @@ function API() {
   });
 
   app.use(bodyParser.json());
-  app.use("/tenders", tenderRouter);
+  app.use("/tenders/tender", tenderRouter);
+  app.use("/tenders/tender/stage", tenderStagesRouters);
   app.use("/users", userRouter);
   app.use("/notifications", notificationRouter);
 

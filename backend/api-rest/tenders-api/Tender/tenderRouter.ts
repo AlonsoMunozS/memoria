@@ -5,7 +5,7 @@ import { createTenderController, findTendersController, findByIdTenderController
 const tenderRouter = express.Router();
 
 tenderRouter.post(
-  "/create",
+  "tender/create",
   createTenderController.createTender.bind(createTenderController)
 );
 
@@ -33,5 +33,11 @@ tenderRouter.post(
   "/tender/requestRemove/:tenderId",
   requestRemoveTenderController.requestRemoveTender.bind(requestRemoveTenderController)
 );
+
+tenderRouter.get(
+  "/",
+  findTendersController.findTenders.bind(findTendersController)
+);
+
 
 export { tenderRouter };
