@@ -1,18 +1,28 @@
 /* Estilos generales para pantallas grandes */
 .fullplusbutton-resp {
-    display: block;
-  }
+  display: block;
+}
+
 .smallplusbutton-resp {
-    display: none;
-  }
-  
+  display: none;
+}
+
+.dialogForm-resp {
+  width: 50vw;
+}
+
 /* Estilos para pantallas pequeñas */
 @media (max-width: 800px) {
-.fullplusbutton-resp {
+  .fullplusbutton-resp {
     display: none;
-    }
-.smallplusbutton-resp {
+  }
+
+  .smallplusbutton-resp {
     display: flex;
     visibility: visible;
-    }
+  }
+
+  .dialogForm-resp {
+    width: 70vw;
+  }
 }

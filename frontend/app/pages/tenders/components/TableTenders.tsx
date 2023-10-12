@@ -83,9 +83,6 @@ const TableTenders = ({ tenders, loading, setLoading }: TenderProps) => {
     const actionBodyView = (rowData: any) => {
         return <Button className="p-button-rounded" icon="pi pi-eye" onClick={() => { window.open(`http://localhost:3001/tenders/tender/${rowData.id}`, '_blank'); }}></Button>;
     }
-    useEffect(() => {
-        setShowToast(true)
-    }, [type]);
     const header = renderHeader();
 
     return (

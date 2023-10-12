@@ -2,7 +2,7 @@ import { Badge } from 'primereact/badge';
 import { Button } from 'primereact/button';
 import { Menu } from 'primereact/menu';
 import React, { useEffect, useRef, useState } from 'react';
-import getUserNotifications from '../services/UserService';
+import getUserNotifications from '../../services/UserService';
 import { MenuItem } from 'primereact/menuitem';
 
 
@@ -21,7 +21,6 @@ const UserNotifications: React.FC = () => {
     const [loading, setLoading] = useState(true);
     const menu = useRef<Menu | null>(null);
 
-
     const getNotifications = async () => {
         try {
             const responseNotifications = await getUserNotifications();
@@ -36,14 +35,13 @@ const UserNotifications: React.FC = () => {
         getNotifications();
     }, [loading]);
 
-    const notificationitems: MenuItem[] = notifications.length == 0 ? [{
-        label: "Sin notificaciones"
-    }] : (notifications.map((notification) => ({
-        label: notification.message,
-        icon: 'pi pi-bell', // Puedes cambiar el icono según tus necesidades
-        command: () => {
-        }
-    })))
+    const notificationitems: MenuItem[] = notifications?.length == 0 ? [{ label: "Sin notificaciones" }]
+        : (notifications.map((notification) => ({
+            label: notification.message,
+            icon: 'pi pi-bell', // Puedes cambiar el icono según tus necesidades
+            command: () => {
+            }
+        })))
     let items = [
         ...notificationitems,
         {
@@ -61,6 +59,8 @@ const UserNotifications: React.FC = () => {
     }]
     const refreshClick = () => {
         setLoading(true);
+
+
     };
     return (
         <div>
@@ -76,7 +76,7 @@ const UserNotifications: React.FC = () => {
                 aria-haspopup
             >
                 <i className="pi pi-bell p-overlay-badge" style={{ fontSize: '1.3rem' }}>
-                    {!loading && notifications.length != 0 && (<Badge value={notifications.length} severity="danger"></Badge>)}
+                    {!loading && notifications?.length != 0 && (<Badge value={notifications.length} severity="danger"></Badge>)}
                 </i>
             </Button>
 

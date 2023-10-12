@@ -7,7 +7,7 @@ import { classNames } from 'primereact/utils';
 import { stages } from '../../../data/stages';
 import { Tag } from 'primereact/tag';
 import { Dropdown, DropdownProps } from 'primereact/dropdown';
-import { createTender } from '../../services/TenderService';
+import { createTender } from '../../../services/TenderService';
 import { ProgressSpinner } from 'primereact/progressspinner';
 
 interface dialogProps {
@@ -202,21 +202,21 @@ export const NewTenderForm: React.FC<dialogProps> = ({ setShowDialog, setType, s
                     <form onSubmit={formik.handleSubmit} className="p-fluid">
                         <div className="field">
                             <span className="p-float-label">
-                                <InputText id="name" name="name" value={formik.values.name} onChange={formik.handleChange} autoFocus className={classNames({ 'p-invalid': isFormFieldValid('name') })} />
+                                <InputText id="name" name="name" value={formik.values.name} onChange={formik.handleChange} onBlur={formik.handleBlur} autoFocus className={classNames({ 'p-invalid': isFormFieldValid('name') })} />
                                 <label htmlFor="name" className={classNames({ 'p-error': isFormFieldValid('name') })}>Nombre de la Licitación*</label>
                             </span>
                             {getFormErrorMessage('name')}
                         </div>
                         <div className="field">
                             <span className="p-float-label">
-                                <InputText id="safi" name="safi" value={formik.values.safi} onChange={formik.handleChange} className={classNames({ 'p-invalid': isFormFieldValid('safi') })} />
+                                <InputText id="safi" name="safi" value={formik.values.safi} onChange={formik.handleChange} onBlur={formik.handleBlur} className={classNames({ 'p-invalid': isFormFieldValid('safi') })} />
                                 <label htmlFor="safi" className={classNames({ 'p-error': isFormFieldValid('safi') })}>Safi*</label>
                             </span>
                             {getFormErrorMessage('safi')}
                         </div>
                         <div className="field">
                             <span className="p-float-label">
-                                <InputText id="mercadoPublicoId" name="mercadoPublicoId" value={formik.values.mercadoPublicoId} onChange={formik.handleChange} className={classNames({ 'p-invalid': isFormFieldValid('mercadoPublicoId') })} />
+                                <InputText id="mercadoPublicoId" name="mercadoPublicoId" value={formik.values.mercadoPublicoId} onChange={formik.handleChange} onBlur={formik.handleBlur} className={classNames({ 'p-invalid': isFormFieldValid('mercadoPublicoId') })} />
                                 <label htmlFor="mercadoPublicoId" className={classNames({ 'p-error': isFormFieldValid('mercadoPublicoId') })}>Id de Mercado Público*</label>
                             </span>
                             {getFormErrorMessage('mercadoPublicoId')}
@@ -244,7 +244,7 @@ export const NewTenderForm: React.FC<dialogProps> = ({ setShowDialog, setType, s
                         </div>
                         <div className="field">
                             <span className="p-float-label">
-                                <InputText id="address" name="address" value={formik.values.address} onChange={formik.handleChange} className={classNames({ 'p-invalid': isFormFieldValid('address') })} />
+                                <InputText id="address" name="address" value={formik.values.address} onChange={formik.handleChange} onBlur={formik.handleBlur} className={classNames({ 'p-invalid': isFormFieldValid('address') })} />
                                 <label htmlFor="address" className={classNames({ 'p-error': isFormFieldValid('address') })}>Dirección*</label>
                             </span>
                             {getFormErrorMessage('address')}

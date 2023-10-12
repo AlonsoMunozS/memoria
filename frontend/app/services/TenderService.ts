@@ -1,4 +1,4 @@
-import { Tender } from '../tenders/tender/models/Tender';
+import { Tender } from '../pages/tenders/tender/models/Tender';
 
 const createTender = async (body: Tender) => {
     try {

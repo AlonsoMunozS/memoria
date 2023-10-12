@@ -13,7 +13,7 @@ const NewTenderDialog: React.FC<dialogProps> = ({ showDialog, setShowDialog, chi
 
     return (
         <div>
-            <Dialog header="Nueva Licitación" visible={showDialog} onHide={() => onHide()} style={{ width: '50vw' }} >
+            <Dialog className='dialogForm-resp' header="Nueva Licitación" visible={showDialog} onHide={() => onHide()} >
                 <div>
                     {children}
                 </div>
