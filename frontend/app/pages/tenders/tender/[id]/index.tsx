@@ -5,19 +5,29 @@ import HomeBar from "../../../components/HomeBar";
 import GeneralInfo from "./components/GeneralInfo";
 import { Card } from "primereact/card";
 import StagesInfo from "./components/StagesInfo";
+import { getTender } from "../../../../services/TenderService";
+import { Tender } from "../models/Tender";
 const Tender = () => {
-    const [loggedUser, setLoggedUser] = useState(false);
+    const [loggedUser, setLoggedUser] = useState<boolean>(false);
+    const [tender, setTender] = useState<Tender>();
     const router = useRouter();
-    const { id } = router.query;
+
+    const getTenderInfo = async (id: number) => {
+        const responseTenders = await getTender(id);
+        setTender(responseTenders);
+    }
 
     useEffect(() => {
         if (localStorage.getItem('authToken') == null) {
             router.push('/login');
         }
         else {
+            if (typeof (router.query.id) == "string") {
+                getTenderInfo(parseInt(router.query.id));
+            }
             setLoggedUser(true);
         }
-    }, []);
+    }, [router.query.id]);
     return (
         <div>
             {loggedUser && (
@@ -25,11 +35,10 @@ const Tender = () => {
                     <Layout>
                         <HomeBar />
                     </Layout>
-                    <Card title={`Licitación N°: ${id}`}>
-                        <GeneralInfo />
+                    <Card title={`Licitación N°: ${router.query.id ? router.query.id : ''}`}>
+                        <GeneralInfo tender={tender} />
                         <StagesInfo />
                     </Card>
-
                 </div>
             )}
 

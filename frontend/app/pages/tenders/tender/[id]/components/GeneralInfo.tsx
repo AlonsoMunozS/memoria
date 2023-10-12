@@ -1,12 +1,35 @@
 import { Accordion, AccordionTab } from "primereact/accordion";
-const GeneralInfo = () => {
+import { Tender } from "../../models/Tender";
+import { Divider } from "primereact/divider";
+import { InputText } from "primereact/inputtext";
+interface tenderProps {
+    tender: Tender | undefined
+}
+const GeneralInfo = ({ tender }: tenderProps) => {
     return (
         <div>
             <Accordion>
                 <AccordionTab header="Ver información general" >
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                        ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                    {tender && <div className="contenedor-tenderInfo">
+                        <div className="part1"><p><strong>ID:</strong> {tender.id}</p>
+                            <p><strong>Nombre:</strong>{tender.name}</p>
+                            <p><strong>SAFI:</strong> {tender.safi}</p>
+                            <p><strong>Provincia:</strong> {tender.province}</p>
+                            <p><strong>Comuna:</strong> {tender.commune}</p>
+                            <p><strong>Dirección:</strong> {tender.address}</p>
+                        </div>
+                        <div className="part2">
+                            <Divider layout="vertical" />
+                        </div>
+                        <div className="part3">
+                            <p><strong>Fecha de Creación:</strong> {tender.createdAt}</p>
+                            <p><strong>Creado Por:</strong> {tender.createdBy}</p>
+                            <p><strong>Etapa Actual:</strong> {tender.currentStage}</p>
+                            <p><strong>ID en Mercado Público:</strong> {tender.mercadoPublicoId}</p>
+                            <p><strong>Categoría:</strong> {tender.category}</p>
+                            <p><strong>Empresas Asociadas:</strong> {tender.companies ? tender.companies : "Ninguna"}</p>
+                        </div>
+                    </div>}
                 </AccordionTab>
             </Accordion>
 

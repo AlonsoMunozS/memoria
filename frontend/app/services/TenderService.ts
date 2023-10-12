@@ -31,7 +31,24 @@ const getTenders = async () => {
         console.error('Error fetching data:', error);
     }
 }
+
+const getTender = async (id: number) => {
+    try {
+        const authToken = localStorage.getItem('authToken');
+        const response = await fetch(`http://localhost:3000/tenders/tender/${id}`, {
+            headers: {
+                'Authorization': `Bearer ${authToken}`
+            }
+        });
+        const jsonData = await response.json();
+        return jsonData;
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
+}
+
 export {
     createTender,
-    getTenders
+    getTenders,
+    getTender
 };
