@@ -2,7 +2,7 @@ import { Badge } from 'primereact/badge';
 import { Button } from 'primereact/button';
 import { Menu } from 'primereact/menu';
 import React, { useEffect, useRef, useState } from 'react';
-import getUserNotifications from '../services/UserService';
+import getUserNotifications from '../../services/UserService';
 import { MenuItem } from 'primereact/menuitem';
 
 
