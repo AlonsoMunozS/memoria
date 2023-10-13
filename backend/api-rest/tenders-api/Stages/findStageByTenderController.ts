@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import VerifyToken from "../../../context/shared/infrastructure/firebase-verify-token";
-import { StageByTenderFinder } from "../../../context/tenders/stages/application/findByTender/StageByTenderFinder";
-import { findStageByTenderRequest } from "../../../context/tenders/stages/application/findByTender/findStageByTenderRequest";
+import { StageByTenderFinder } from "../../../context/tenders/stages/stage/application/findByTender/StageByTenderFinder";
+import { findStageByTenderRequest } from "../../../context/tenders/stages/stage/application/findByTender/findStageByTenderRequest";
 
 
 export class FindStageByTenderController {

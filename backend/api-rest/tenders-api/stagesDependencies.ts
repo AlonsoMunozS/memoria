@@ -1,5 +1,5 @@
-import { TenderStageCreator } from "../../context/tenders/stages/application/create/tenderStageCreator";
-import { StageByTenderFinder } from "../../context/tenders/stages/application/findByTender/StageByTenderFinder";
+import { TenderStageCreator } from "../../context/tenders/stages/stage/application/create/tenderStageCreator";
+import { StageByTenderFinder } from "../../context/tenders/stages/stage/application/findByTender/StageByTenderFinder";
 import { MongoTenderStagesRepository } from "../../context/tenders/stages/infrastructure/mongo-tenderStage-repository";
 import { CreateTenderStageController } from "./Stages/createTenderStageController";
 import { FindStageByTenderController } from "./Stages/findStageByTenderController";

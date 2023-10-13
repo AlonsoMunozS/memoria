@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import VerifyToken from "../../../context/shared/infrastructure/firebase-verify-token";
-import { TenderStageCreator } from "../../../context/tenders/stages/application/create/tenderStageCreator";
-import { CreateTenderStageRequest } from "../../../context/tenders/stages/application/create/createTenderStageRequest";
+import { TenderStageCreator } from "../../../context/tenders/stages/stage/application/create/tenderStageCreator";
+import { CreateTenderStageRequest } from "../../../context/tenders/stages/stage/application/create/createTenderStageRequest";
 
 type CreateTenderStageBodyRequest = {
   name: string

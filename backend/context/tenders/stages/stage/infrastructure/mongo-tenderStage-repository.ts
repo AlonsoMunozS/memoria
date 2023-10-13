@@ -1,6 +1,6 @@
 import { TenderStageRepository } from "../domain/tenderStageRepository";
 import { MongoClient, ServerApiVersion } from "mongodb"
-import config from '../../../shared/infrastructure/config.local'
+import config from '../../../../shared/infrastructure/config.local'
 import { TenderStage } from "../domain/TenderStage";
 
 const uri = config.mongoUri
