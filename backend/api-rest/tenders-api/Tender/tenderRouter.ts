@@ -19,7 +19,7 @@ tenderRouter.get(
   findByIdTenderController.findByIdTender.bind(findByIdTenderController)
 );
 
-tenderRouter.put(
+tenderRouter.post(
   "/tender/update/:tenderId",
   updateTenderController.updateTender.bind(updateTenderController)
 );
@@ -33,11 +33,5 @@ tenderRouter.post(
   "/tender/requestRemove/:tenderId",
   requestRemoveTenderController.requestRemoveTender.bind(requestRemoveTenderController)
 );
-
-tenderRouter.get(
-  "/",
-  findTendersController.findTenders.bind(findTendersController)
-);
-
 
 export { tenderRouter };
