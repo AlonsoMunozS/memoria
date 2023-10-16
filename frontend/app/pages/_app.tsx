@@ -6,6 +6,7 @@ import '../styles/HomeBarResp.css';
 import '../styles/DataTableResp.css';
 import '../styles/Form.css';
 import '../styles/LoginResp.css';
+import '../styles/tenderInfo.css'
 
 import type { AppProps } from 'next/app';
 
