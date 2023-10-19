@@ -112,8 +112,8 @@ const StageCard = ({ stage, currentStage }: StageCardProps) => {
                         </ScrollPanel>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        {currentStage == stage.name ? <Button label="Cierre Anticipado" icon="pi pi-times" iconPos="right" className="p-button-danger" /> : null}
-                        {(currentStage == stage.name && stage.name != stages.tag[stage.length - 1]) ? <Button label="Agregar Siguiente Etapa" icon="pi pi-chevron-right" iconPos="right" onClick={onClickAddNextStage} /> : <span style={{ marginRight: '10px', marginLeft: 'auto' }}><strong>ETAPA FINALIZADA</strong></span>}
+                        {currentStage == stage.name && stages.tag[stage.name] != 'CONSULTAS' && stages.tag[stage.name] != 'RESPUESTAS' ? <Button label="Cierre Anticipado" icon="pi pi-times" iconPos="right" className="p-button-danger" /> : null}
+                        {(currentStage == stage.name && stage.name != stages.tag[stage.length - 1]) ? <Button label="Agregar Siguiente Etapa" icon="pi pi-chevron-right" iconPos="right" onClick={onClickAddNextStage} style={{ marginLeft: 'auto' }} /> : <span style={{ marginLeft: 'auto' }}><strong>ETAPA FINALIZADA</strong></span>}
                     </div>
                 </div>
 
