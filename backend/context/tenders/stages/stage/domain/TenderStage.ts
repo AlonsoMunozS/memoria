@@ -4,7 +4,7 @@ import { File } from "./File"
 export class TenderStage {
         readonly id: number
         readonly tenderId: number
-        readonly name: string
+        readonly name: number
         readonly toDate: number
         readonly files?: Array<File>
         readonly lastModifiedBy?: string
@@ -27,7 +27,7 @@ export class TenderStage {
         }: {
                 id: number
                 tenderId: number
-                name: string
+                name: number
                 toDate: number
                 files?: Array<File>
                 lastModifiedBy?: string

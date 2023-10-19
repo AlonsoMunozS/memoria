@@ -4,7 +4,7 @@ import { File } from "../../domain/File"
 export type CreateTenderStageRequest = {
 	id: number
 	tenderId: number,
-	name: string
+	name: number
 	toDate: number
 	files?: Array<File>
 	lastModifiedBy?: string

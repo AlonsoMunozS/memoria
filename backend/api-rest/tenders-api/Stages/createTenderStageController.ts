@@ -40,8 +40,7 @@ export class CreateTenderStageController {
 
     const today = new Date();
     const createdAt = today.getTime();
-
-    if (!name || !tenderId || !toDate) {
+    if (!name == undefined || !tenderId || !toDate) {
       res.status(400).send();
       return;
     }
@@ -49,7 +48,7 @@ export class CreateTenderStageController {
     const request: CreateTenderStageRequest = {
       id: Math.floor(getRandomNumber(1000, 999999)),
       tenderId,
-      name,
+      name: parseInt(name),
       toDate,
       createdAt,
       createdBy

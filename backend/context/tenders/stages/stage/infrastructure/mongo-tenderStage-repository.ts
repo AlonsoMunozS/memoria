@@ -42,27 +42,30 @@ export class MongoTenderStagesRepository implements TenderStageRepository {
     }
   }
 
-  async findStageByTender(tenderId: number, stageName: string): Promise<TenderStage | null> {
+  async findStageByTender(tenderId: number): Promise<Array<TenderStage> | null> {
     try {
       await client.connect();
       const collection = database.collection(collectionName);
-      const tenderStageFound = await collection.findOne({ tenderId: tenderId, name: stageName });
+      const tenderStageFound = await collection.find({ tenderId: tenderId });
       if (!tenderStageFound) {
         throw new Error("TenderStageNotFound");
       }
-      const tenderStage = new TenderStage({
-        id: tenderStageFound.id,
-        tenderId: tenderStageFound.tenderId,
-        name: tenderStageFound.name,
-        toDate: tenderStageFound.toDate,
-        files: tenderStageFound?.files,
-        lastModifiedBy: tenderStageFound?.lastModifiedBy,
-        lastModifiedAt: tenderStageFound?.lastModifiedAt,
-        createdAt: tenderStageFound.createdAt,
-        createdBy: tenderStageFound.createdBy,
-        comments: tenderStageFound?.comments,
-      })
-      return tenderStage;
+      const tenderStagesArray = await tenderStageFound.toArray();
+      const mappedTenderStages: TenderStage[] = tenderStagesArray.map((tenderStageDoc: any) => {
+        return new TenderStage({
+          id: tenderStageDoc.id,
+          tenderId: tenderStageDoc.tenderId,
+          name: tenderStageDoc.name,
+          toDate: tenderStageDoc.toDate,
+          files: tenderStageDoc?.files,
+          lastModifiedBy: tenderStageDoc?.lastModifiedBy,
+          lastModifiedAt: tenderStageDoc?.lastModifiedAt,
+          createdAt: tenderStageDoc.createdAt,
+          createdBy: tenderStageDoc.createdBy,
+          comments: tenderStageDoc?.comments,
+        })
+      });
+      return mappedTenderStages;
     } catch (error: any) {
       console.log(error)
       const errorMessage: string = error.message;

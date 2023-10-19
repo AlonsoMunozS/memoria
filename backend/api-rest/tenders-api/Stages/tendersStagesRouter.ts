@@ -10,8 +10,8 @@ tenderStagesRouters.post(
 );
 
 tenderStagesRouters.get(
-  "/:tenderId/:stageName",
-  findStageByTenderController.findStageByTender.bind(findStageByTenderController)
+  "/:tenderId/",
+  findStageByTenderController.findStagesByTender.bind(findStageByTenderController)
 );
 
 export { tenderStagesRouters };

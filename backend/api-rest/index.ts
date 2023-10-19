@@ -3,10 +3,10 @@ import express from "express";
 import cors from 'cors';
 
 import config from "./config.local";
-import { tenderRouter } from "./tenders-api/tender/tenderRouter";
+import { tenderRouter } from "./tenders-api/Tender/tenderRouter";
 import { userRouter } from "./users-api/userRouter";
 import { notificationRouter } from "./notifications-api/notificationRouter";
-import { tenderStagesRouters } from "./tenders-api/stages/tendersStagesRouter";
+import { tenderStagesRouters } from "./tenders-api/Stages/tendersStagesRouter";
 import { tenderFilesRouters } from "./tenders-api/tender-files/tenderFileRouter";
 
 function API() {

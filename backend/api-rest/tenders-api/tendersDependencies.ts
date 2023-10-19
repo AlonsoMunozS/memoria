@@ -6,12 +6,12 @@ import { TenderRequesterRemove } from "../../context/tenders/tender/application/
 import { TenderUpdater } from "../../context/tenders/tender/application/update/tenderUpdater";
 import { MongoTenderRepository } from "../../context/tenders/tender/infrastructure/mongo-tender-repository";
 import { notificationSender } from "../notifications-api/notificationsDependencies";
-import { CreateTenderController } from "./tender/createTenderController";
-import { FindByIdTenderController } from "./tender/findByIdTenderController";
-import { FindTendersController } from "./tender/findTendersController";
-import { RemoveTenderController } from "./tender/removerTenderController";
-import { RequestRemoveTenderController } from "./tender/requestRemoveTenderController";
-import { UpdateTenderController } from "./tender/updateTenderController";
+import { CreateTenderController } from "./Tender/createTenderController";
+import { FindByIdTenderController } from "./Tender/findByIdTenderController";
+import { FindTendersController } from "./Tender/findTendersController";
+import { RemoveTenderController } from "./Tender/removerTenderController";
+import { RequestRemoveTenderController } from "./Tender/requestRemoveTenderController";
+import { UpdateTenderController } from "./Tender/updateTenderController";
 
 const tenderRepository = new MongoTenderRepository();
 
