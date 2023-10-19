@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { TenderCreator } from "../../context/tenders/tender/application/create/tenderCreator";
-import VerifyToken from "../../context/shared/infrastructure/firebase-verify-token";
-import { CreateTenderRequest } from "../../context/tenders/tender/application/create/createTenderRequest";
+import { TenderCreator } from "../../../context/tenders/tender/application/create/tenderCreator";
+import VerifyToken from "../../../context/shared/infrastructure/firebase-verify-token";
+import { CreateTenderRequest } from "../../../context/tenders/tender/application/create/createTenderRequest";
 
 type CreateTenderBodyRequest = {
   name: string,
@@ -30,7 +30,7 @@ export class CreateTenderController {
 
     const { authorization } = req.headers
     if (!authorization) {
-      res.status(400).send();
+      res.status(401).send();
       return;
     }
 

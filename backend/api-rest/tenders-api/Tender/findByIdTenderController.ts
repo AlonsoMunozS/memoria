@@ -1,15 +1,15 @@
 import { Request, Response } from "express";
-import { TenderRemover } from "../../context/tenders/tender/application/remove/tenderRemover";
-import VerifyToken from "../../context/shared/infrastructure/firebase-verify-token";
-import { RemoveTenderRequest } from "../../context/tenders/tender/application/remove/removeTenderRequest";
+import { TenderByIdFinder } from "../../../context/tenders/tender/application/findById/tenderByIdFinder";
+import VerifyToken from "../../../context/shared/infrastructure/firebase-verify-token";
+import { findByIdTenderRequest } from "../../../context/tenders/tender/application/findById/findByIdTenderRequest";
 
 
-export class RemoveTenderController {
+export class FindByIdTenderController {
   constructor(
-    private readonly tenderRemover: TenderRemover,
+    private readonly tenderByIdFinder: TenderByIdFinder,
   ) { }
 
-  async removeTender(req: Request, res: Response) {
+  async findByIdTender(req: Request, res: Response) {
     const { authorization } = req.headers
     if (!authorization) {
       res.status(400).send();
@@ -30,13 +30,12 @@ export class RemoveTenderController {
       return;
     }
 
-    const request: RemoveTenderRequest = {
+    const request: findByIdTenderRequest = {
       id: tenderId
     }
     try {
-      await this.tenderRemover.removeTender(request)
-      res.status(201).send();
-      return;
+      const tender = await this.tenderByIdFinder.findByIdTender(request)
+      res.json(tender);
     } catch (error) {
       if (error instanceof Error) {
         if (error.message === 'TenderNotFound')

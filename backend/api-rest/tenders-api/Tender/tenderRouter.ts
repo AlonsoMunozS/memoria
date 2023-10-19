@@ -5,7 +5,7 @@ import { createTenderController, findTendersController, findByIdTenderController
 const tenderRouter = express.Router();
 
 tenderRouter.post(
-  "/create",
+  "tender/create",
   createTenderController.createTender.bind(createTenderController)
 );
 
@@ -19,7 +19,7 @@ tenderRouter.get(
   findByIdTenderController.findByIdTender.bind(findByIdTenderController)
 );
 
-tenderRouter.put(
+tenderRouter.post(
   "/tender/update/:tenderId",
   updateTenderController.updateTender.bind(updateTenderController)
 );
