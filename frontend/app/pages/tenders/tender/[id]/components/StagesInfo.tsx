@@ -1,16 +1,39 @@
 import { Accordion, AccordionTab } from "primereact/accordion";
-const StagesInfo = () => {
-    return (
-        <div>
-            <Accordion activeIndex={0}>
-                <AccordionTab header="Ver Etapas" >
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                        ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                </AccordionTab>
-            </Accordion>
+import { Button } from "primereact/button";
+import { useEffect, useState } from "react";
+import StageCard from "./StageCard";
+interface StagesInfoProps {
+    tenderStages?: Array<any>
+    currentStage?: number;
+    stagesLoading: boolean;
+}
+const StagesInfo = ({ tenderStages, currentStage, stagesLoading }: StagesInfoProps) => {
 
-        </div>
+    const [activeIndex, setActiveIndex] = useState<number>(0);
+    const stagesTemp = [{ name: 0 }, { name: 1 }, { name: 2 }, { name: 3 }, { name: 4 }, { name: 5 }, { name: 6 }, { name: 7 }, { name: 8 }, { name: 9 }, { name: 10 }, { name: 11 }, { name: 12 }]
+
+
+
+    useEffect(() => {
+        if (currentStage)
+            setActiveIndex(currentStage)
+    }, [currentStage]);
+    return (
+        <Accordion activeIndex={stagesLoading ? -1 : 0}>
+            <AccordionTab header="Ver Etapas" >
+                <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}>
+                        {stagesTemp.map((stage, index) => (
+                            <Button className="p-button-rounded p-button-text p-button-raised" style={{ color: "#545454" }} label={index.toString()} />
+                        ))}
+                    </div>
+                    <div>
+                        <StageCard /></div>
+                </div>
+            </AccordionTab>
+        </Accordion>
+
+
     );
 
 

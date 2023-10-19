@@ -1,7 +1,7 @@
 import { TenderLocation } from "./TenderLocation";
 
 export type Tender = {
-	id?: number
+	id: number
 	name: string
 	safi: string
 	region?: string
@@ -10,7 +10,7 @@ export type Tender = {
 	address: string
 	createdAt?: number
 	createdBy?: number
-	currentStage?: number
+	currentStage: number
 	mercadoPublicoId: string
 	category?: string
 	companies?: Array<string>

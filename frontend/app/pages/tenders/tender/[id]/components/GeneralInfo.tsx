@@ -7,15 +7,17 @@ import { Button } from "primereact/button";
 import { Dropdown } from 'primereact/dropdown';
 import { Tag } from 'primereact/tag';
 import { stages } from '../../../../../data/stages';
+import { UpdateTenderValue, updateTender } from '../../../../../services/TenderService';
 interface tenderProps {
+    tenderLoading: boolean,
     tender: Tender | undefined
 }
-const GeneralInfo = ({ tender }: tenderProps) => {
-    const [name, setName] = useState('');
+const GeneralInfo = ({ tender, tenderLoading }: tenderProps) => {
+    const [tenderName, setTenderName] = useState('');
     const [safi, setSafi] = useState('');
-    const [region, setRegion] = useState<string | null>();
-    const [province, setProvince] = useState<string | null>();
-    const [commune, setCommune] = useState<string | null>();
+    const [region, setRegion] = useState<string>();
+    const [province, setProvince] = useState<string>();
+    const [commune, setCommune] = useState<string>();
     const [address, setAddress] = useState('');
     const [mercadoPublicoId, setMercadoPublicoId] = useState('');
     const [category, setCategory] = useState('');
@@ -35,6 +37,8 @@ const GeneralInfo = ({ tender }: tenderProps) => {
     const [provinceSelectRegion, setProvinceSelectRegion] = useState<Array<string>>(['']);
     const [communeSelectProvince, setCommuneSelectProvince] = useState<Array<string>>(['']);
 
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+
     const regions = require('../../../../../data/regions.json');
     const provinces = require('../../../../../data/provinces.json');
     const communes = require('../../../../../data/communes.json');
@@ -51,16 +55,20 @@ const GeneralInfo = ({ tender }: tenderProps) => {
 
     useEffect(() => {
         //setId(tender?.id ? tender?.id.toString() : '');
-        setName(tender?.name || '');
+        setTenderName(tender?.name || '');
         setSafi(tender?.safi || '');
-        setRegion(tender?.region || null);
-        setProvince(tender?.province || null);
-        setCommune(tender?.commune || null);
+        setRegion(tender?.region);
+        setProvince(tender?.province);
+        setCommune(tender?.commune);
         setAddress(tender?.address || '');
         setMercadoPublicoId(tender?.mercadoPublicoId || '');
         setCategory(tender?.category || '');
     }, [tender]);
 
+    const updateTenderInfo = async (body: UpdateTenderValue) => {
+        if (tender) await updateTender(tender.id, body);
+        setIsLoading(false);
+    }
     const findProvince = (searchedRegion: string) => {
         if (searchedRegion) {
             const findRegion = provinces.find((region: any) =>
@@ -129,38 +137,76 @@ const GeneralInfo = ({ tender }: tenderProps) => {
         }
     };
 
-    const handleSaveClick = (name: string) => {
+    const handleExitClick = (name: string) => {
         if (name == 'Nombre') {
+            setTenderName(tender?.name || '');
             setEditName(false);
         }
         if (name == 'SAFI') {
+            setSafi(tender?.safi || '');
             setEditSafi(false);
         }
-        if (name == 'Región') {
-
-        }
-        if (name == 'Provincia') {
-
-        }
         if (name == 'Comuna') {
+            setRegion(tender?.region);
+            setProvince(tender?.province);
+            setCommune(tender?.commune);
             setEditRegion(false);
             setEditProvince(false);
             setEditCommune(false);
         }
         if (name == 'Dirección') {
+            setAddress(tender?.address || '');
             setEditAddress(false);
         }
         if (name == 'ID en Mercado Público') {
+            setMercadoPublicoId(tender?.mercadoPublicoId || '');
             setEditMercadoPublicoId(false);
         }
         if (name == 'Categoría') {
+            setCategory(tender?.category || '');
+            setEditCategory(false);
+        }
+    };
+
+    const handleSaveClick = async (name: string) => {
+        if (name == 'Nombre') {
+            setIsLoading(true);
+            await updateTenderInfo({ name: tenderName })
+            setEditName(false);
+        }
+        if (name == 'SAFI') {
+            setIsLoading(true);
+            await updateTenderInfo({ safi: safi })
+            setEditSafi(false);
+        }
+        if (name == 'Comuna') {
+            setIsLoading(true);
+            await updateTenderInfo({ region: region, province: province, commune: commune })
+            setEditRegion(false);
+            setEditProvince(false);
+            setEditCommune(false);
+        }
+        if (name == 'Dirección') {
+            setIsLoading(true);
+            await updateTenderInfo({ address: address })
+            setEditAddress(false);
+        }
+        if (name == 'ID en Mercado Público') {
+            setIsLoading(true);
+            await updateTenderInfo({ mercadoPublicoId: mercadoPublicoId })
+            setEditMercadoPublicoId(false);
+        }
+        if (name == 'Categoría') {
+            setIsLoading(true);
+            await updateTenderInfo({ category: category })
             setEditCategory(false);
         }
     };
 
     const handleChange = (e: any, name: string) => {
         if (name == 'Nombre') {
-            setName(e.target.value);
+            console.log(e.target.value);
+            setTenderName(e.target.value);
         }
         if (name == 'SAFI') {
             setSafi(e.target.value);
@@ -170,8 +216,8 @@ const GeneralInfo = ({ tender }: tenderProps) => {
             if (e.target.value) {
                 setSelectedRegion(true);
                 setSelectedProvince(false);
-                setProvince(null);
-                setCommune(null);
+                setProvince("");
+                setCommune("");
                 findProvince(e.target.value);
             }
             else {
@@ -183,7 +229,7 @@ const GeneralInfo = ({ tender }: tenderProps) => {
             setProvince(e.target.value);
             if (e.target.value) {
                 setSelectedProvince(true);
-                setCommune(null);
+                setCommune("");
                 findCommune(e.target.value);
             }
             else {
@@ -211,7 +257,15 @@ const GeneralInfo = ({ tender }: tenderProps) => {
                     <div>
                         <span><strong>{name}: </strong></span>
                         <InputText value={value} onChange={(e) => { handleChange(e, name) }} />
-                        <Button icon='pi pi-save' className="p-button-rounded p-button-text" onClick={() => { handleSaveClick(name) }} />
+                        <Button icon={!isLoading ? 'pi pi-save' : 'pi pi-spinner pi-spin'} className="p-button-text" style={{
+                            outline: 'none',
+                            boxShadow: 'none'
+                        }} onClick={() => { handleSaveClick(name) }} />
+                        {!isLoading && <Button icon='pi pi-times' className="p-button-text" style={{
+                            outline: 'none',
+                            boxShadow: 'none'
+                        }} onClick={() => { handleExitClick(name) }} />}
+
                     </div>
                 ) : (
 
@@ -231,7 +285,18 @@ const GeneralInfo = ({ tender }: tenderProps) => {
                     <div>
                         <span><strong>{name}: </strong></span>
                         <Dropdown value={value} options={options} onChange={(e) => { handleChange(e, name) }} filter showClear placeholder="Seleccionar" emptyFilterMessage="No se encontraron coincidencias" />
-                        {!noShowButton && <Button icon='pi pi-save' className="p-button-rounded p-button-text" onClick={() => { handleSaveClick(name) }} />}
+                        {!noShowButton &&
+                            <div>
+                                <Button icon={!isLoading ? 'pi pi-save' : 'pi pi-spinner pi-spin'} className="p-button-text" style={{
+                                    outline: 'none',
+                                    boxShadow: 'none'
+                                }} onClick={() => { handleSaveClick(name) }} />
+                                {!isLoading && <Button icon='pi pi-times' className="p-button-text" style={{
+                                    outline: 'none',
+                                    boxShadow: 'none'
+                                }} onClick={() => { handleExitClick(name) }} />}
+                            </div>
+                        }
                     </div>
 
                 ) : (
@@ -247,13 +312,25 @@ const GeneralInfo = ({ tender }: tenderProps) => {
             </>
         )
     }
+    const generalInfoHeader = () => {
+        return (
+            <div style={{ display: 'flex', gap: "1rem" }}>
+                <div >
+                    Ver información general
+                </div>
+                {tenderLoading && <div >
+                    <i className="pi pi-spinner pi-spin"></i>
+                </div>}
+            </div>
+        )
+    }
     return (
         <div>
             <Accordion>
-                <AccordionTab header="Ver información general" >
-                    {tender && <div className="contenedor-tenderInfo">
+                <AccordionTab header={generalInfoHeader()}>
+                    <div className="contenedor-tenderInfo">
                         <div className="part1">
-                            {editing(editName, name, 'Nombre')}
+                            {editing(editName, tenderName, 'Nombre')}
                             {editing(editSafi, safi, 'SAFI')}
                             {editingDrop(editRegion, region, 'Región', regions.regions, true)}
                             {editingDrop(editProvince, province, 'Provincia', provinceSelectRegion, true)}
@@ -267,20 +344,20 @@ const GeneralInfo = ({ tender }: tenderProps) => {
                             {editing(editMercadoPublicId, mercadoPublicoId, 'ID en Mercado Público')}
                             {editingDrop(editCategory, category, 'Categoría', categories.categories)}
                             <div>
-                                <p><strong>Fecha de creación:</strong> {convertDate(tender.createdAt)}</p>
+                                <p><strong>Fecha de creación:</strong> {convertDate(tender?.createdAt)}</p>
                             </div>
                             <div>
-                                <p><strong>Creado por:</strong> {tender.createdBy}</p>
+                                <p><strong>Creado por:</strong> {tender?.createdBy}</p>
                             </div>
                             <div style={{ display: 'flex', alignItems: 'center' }}>
                                 <p style={{ marginRight: '5px' }}><strong>Etapa actual:</strong> </p>
-                                {tender.currentStage != null && <Tag id="currentStage" className={`tender-status stage${tender.currentStage} justify-content-end`}>{stages.tag[tender.currentStage]}</Tag>}
+                                {tender?.currentStage != null && <Tag id="currentStage" className={`tender-status stage${tender.currentStage} justify-content-end`}>{stages.tag[tender.currentStage]}</Tag>}
                             </div>
                             <div>
-                                <p><strong>Empresas asociadas:</strong> {tender.companies ? tender.companies : "Ninguna"}</p>
+                                <p><strong>Empresas asociadas:</strong> {tender?.companies ? tender?.companies : "Ninguna"}</p>
                             </div>
                         </div>
-                    </div>}
+                    </div>
                 </AccordionTab>
             </Accordion>
 

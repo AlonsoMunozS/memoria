@@ -1,8 +1,8 @@
 import { Tender } from '../pages/tenders/tender/models/Tender';
-type UpdateTenderValue = {
+export type UpdateTenderValue = {
     name?: string,
     safi?: string,
-    region: string,
+    region?: string,
     province?: string,
     commune?: string,
     address?: string,
@@ -58,7 +58,7 @@ const getTender = async (id: number) => {
     }
 }
 
-const updateTender = async (id: string, body: UpdateTenderValue) => {
+const updateTender = async (id: number, body: UpdateTenderValue) => {
     try {
         const authToken = localStorage.getItem('authToken');
         const response = await fetch(`http://localhost:3000/tenders/tender/update/${id}`, {
