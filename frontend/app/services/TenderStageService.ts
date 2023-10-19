@@ -1,8 +1,10 @@
-type CommentBody = {
+
+type StageComment = {
     stageId: number
+    createdBy: string
+    createdAt: number
     post: string
 }
-
 const getTenderStages = async (tenderId: number) => {
     try {
         const authToken = localStorage.getItem('authToken');
@@ -17,7 +19,40 @@ const getTenderStages = async (tenderId: number) => {
         console.error('Error fetching data:', error);
     }
 }
+const uploadFile = async (tenderId: number, stageId: number, file: File) => {
+    try {
+        const formData = new FormData();
+        formData.append("file", file);
+        const authToken = localStorage.getItem('authToken');
+        const response = await fetch(`http://localhost:3000/tenders/tender/stage/file/upload/${tenderId}/${stageId}`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${authToken}`
+            },
+            body: formData,
+        });
+        return response.status
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
+}
+const getStageComments = async (stageId: number) => {
+    try {
+        const authToken = localStorage.getItem('authToken');
+        const response = await fetch(`http://localhost:3000/tenders/tender/stage/comment/${stageId}`, {
+            headers: {
+                'Authorization': `Bearer ${authToken}`
+            }
+        });
+        const jsonData = await response.json();
+        return jsonData;
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
+}
 
 export {
-    getTenderStages
+    getTenderStages,
+    uploadFile,
+    getStageComments
 };
