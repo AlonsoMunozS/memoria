@@ -1,5 +1,5 @@
-import { Comment } from "../../domain/Comment"
-import { File } from "../../domain/File"
+import { Comment } from "../../../stages-comments/domain/Comment"
+import { File } from "../../../../../shared/domain/File"
 
 export type CreateTenderStageRequest = {
 	id: number

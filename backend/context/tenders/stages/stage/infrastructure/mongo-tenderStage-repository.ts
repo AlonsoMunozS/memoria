@@ -57,12 +57,10 @@ export class MongoTenderStagesRepository implements TenderStageRepository {
           tenderId: tenderStageDoc.tenderId,
           name: tenderStageDoc.name,
           toDate: tenderStageDoc.toDate,
-          files: tenderStageDoc?.files,
           lastModifiedBy: tenderStageDoc?.lastModifiedBy,
           lastModifiedAt: tenderStageDoc?.lastModifiedAt,
           createdAt: tenderStageDoc.createdAt,
           createdBy: tenderStageDoc.createdBy,
-          comments: tenderStageDoc?.comments,
         })
       });
       return mappedTenderStages;

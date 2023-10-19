@@ -8,6 +8,7 @@ import { userRouter } from "./users-api/userRouter";
 import { notificationRouter } from "./notifications-api/notificationRouter";
 import { tenderStagesRouters } from "./tenders-api/Stages/tendersStagesRouter";
 import { stageFilesRouters } from "./tenders-api/Stages-files/stagesFilesRouter";
+import { stageCommentsRouter } from "./tenders-api/Stages-comments/stageCommentsRouter";
 
 function API() {
   const app = express();
@@ -24,6 +25,7 @@ function API() {
   app.use("/tenders", tenderRouter);
   app.use("/tenders/tender/stage", tenderStagesRouters);
   app.use("/tenders/tender/stage/file", stageFilesRouters);
+  app.use("/tenders/tender/stage/comment", stageCommentsRouter);
   app.use("/users", userRouter);
   app.use("/notifications", notificationRouter);
 
