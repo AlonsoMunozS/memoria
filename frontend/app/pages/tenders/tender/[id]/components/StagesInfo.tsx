@@ -9,23 +9,7 @@ interface StagesInfoProps {
     stagesLoading: boolean;
 }
 const StagesInfo = ({ tenderStages, currentStage, stagesLoading }: StagesInfoProps) => {
-
-    const stagesTemp = [
-        { name: 0, toDate: 1634644800000 },
-        { name: 1, toDate: 1634644800000 },
-        { name: 2, toDate: 1634644800000 },
-        { name: 3, toDate: 1634644800000 },
-        { name: 4, toDate: 1634644800000 },
-        { name: 5, toDate: 1634644800000 },
-        { name: 6, toDate: 1634644800000 },
-        { name: 7, toDate: 1634644800000 },
-        { name: 8, toDate: 1634644800000 },
-        { name: 9, toDate: 1634644800000 },
-        { name: 10, toDate: 1634644800000 },
-        { name: 11, toDate: 1634644800000 },
-        { name: 12, toDate: 1634644800000 }]
     const [selectedStage, setSelectedStage] = useState<{ name?: number, toDate?: number }>();
-    console.log(selectedStage)
     const onClickHandle = (stage: any) => {
         setSelectedStage(stage);
     }
@@ -55,10 +39,10 @@ const StagesInfo = ({ tenderStages, currentStage, stagesLoading }: StagesInfoPro
                     <div style={{ display: "flex", justifyContent: "center", gap: "1rem", position: "relative" }}>
                         <div style={{ position: "absolute", top: "50%", left: 0, right: 0, borderBottom: "1px solid #d8d6d6" }}></div>
                         {tenderStages && tenderStages.map((stage, index) => (
-                            <Button key={index} id={`${stage.name}`} name={stages.tag[stage.name]} tooltip={stages.tag[stage.name]} tooltipOptions={{ position: "top", style: { fontSize: '10px', padding: '4px 8px' } }} className="buttonStage p-button-rounded p-button-text p-button-raised" style={{ color: selectedStage?.name == stage.name ? 'white' : '#545454', backgroundColor: selectedStage?.name == stage.name ? '#6366F1' : 'white' }} label={index.toString()} onClick={() => { onClickHandle(stage) }} />
+                            <Button key={index} id={`${stage.name}`} name={stages.tag[stage.name]} tooltip={stages.tag[stage.name]} tooltipOptions={{ position: "top", style: { fontSize: '10px', padding: '4px 8px' } }} className="buttonStage p-button-rounded p-button-text p-button-raised" style={{ color: selectedStage?.name == stage.name ? 'white' : '#545454', backgroundColor: selectedStage?.name == stage.name ? '#6366F1' : 'white' }} label={(index + 1).toString()} onClick={() => { onClickHandle(stage) }} />
                         ))}
                     </div>
-                    {selectedStage && <StageCard stage={selectedStage} />}
+                    {selectedStage && <StageCard stage={selectedStage} currentStage={currentStage} />}
                 </div>}
             </AccordionTab>
         </Accordion>

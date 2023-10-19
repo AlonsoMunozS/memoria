@@ -35,5 +35,22 @@
     border-radius: 3px;
     margin: .3rem;
     padding: 1rem 0;
-    width: 100%;
+}
+
+.stageCard .container {
+    margin: 1rem;
+}
+
+.p-scrollpanel.custombar .p-scrollpanel-wrapper {
+    border-right: 10px solid var(--surface-b);
+}
+
+.p-scrollpanel.custombar .p-scrollpanel-bar {
+    background-color: var(--primary-color);
+    opacity: 1;
+    transition: background-color .2s;
+}
+
+.p-scrollpanel.custombar .p-scrollpanel-bar:hover {
+    background-color: #007ad9;
 }
