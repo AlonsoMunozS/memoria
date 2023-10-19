@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import StageCard from "./StageCard";
 import { stages } from "../../../../../data/stages";
 interface StagesInfoProps {
-    tenderStages?: Array<any>
+    tenderStages: Array<any>
     currentStage?: number;
     stagesLoading: boolean;
 }
@@ -24,23 +24,41 @@ const StagesInfo = ({ tenderStages, currentStage, stagesLoading }: StagesInfoPro
         { name: 10, toDate: 1634644800000 },
         { name: 11, toDate: 1634644800000 },
         { name: 12, toDate: 1634644800000 }]
-    const [selectedStage, setSelectedStage] = useState<{ name: number, toDate: number }>(stagesTemp[stagesTemp.length - 1]);
-
+    const [selectedStage, setSelectedStage] = useState<{ name?: number, toDate?: number }>();
+    console.log(selectedStage)
     const onClickHandle = (stage: any) => {
         setSelectedStage(stage);
     }
+    const viewStagesHeader = () => {
+        return (
+            <div style={{ display: 'flex', gap: "1rem" }}>
+                <div >
+                    Ver Etapas
+                </div>
+                {stagesLoading && <div >
+                    <i className="pi pi-spinner pi-spin"></i>
+                </div>}
+            </div>
+        )
+    }
+    useEffect(() => {
+        if (!stagesLoading) {
+            setSelectedStage(tenderStages[tenderStages.length - 1])
+        }
+    }
+        , [stagesLoading])
 
     return (
-        <Accordion activeIndex={stagesLoading ? -1 : 0}>
-            <AccordionTab header="Ver Etapas" >
-                <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
-                    <div style={{ display: "flex", justifyContent: "space-between" }}>
-                        {stagesTemp.map((stage, index) => (
-                            <Button key={index} id={`${stage.name}`} name={stages.tag[stage.name]} tooltip={stages.tag[stage.name]} tooltipOptions={{ position: "top", style: { fontSize: '10px', padding: '4px 8px' } }} className="buttonStage p-button-rounded p-button-text p-button-raised" style={{ color: selectedStage.name == stage.name ? 'white' : '#545454', backgroundColor: selectedStage.name == stage.name ? '#6366F1' : 'white' }} label={index.toString()} onClick={() => { onClickHandle(stage) }} />
+        <Accordion activeIndex={stagesLoading ? 0 : -1}>
+            <AccordionTab header={viewStagesHeader()} >
+                {!stagesLoading && <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
+                    <div style={{ display: "flex", justifyContent: "center", gap: "1rem" }}>
+                        {tenderStages && tenderStages.map((stage, index) => (
+                            <Button key={index} id={`${stage.name}`} name={stages.tag[stage.name]} tooltip={stages.tag[stage.name]} tooltipOptions={{ position: "top", style: { fontSize: '10px', padding: '4px 8px' } }} className="buttonStage p-button-rounded p-button-text p-button-raised" style={{ color: selectedStage?.name == stage.name ? 'white' : '#545454', backgroundColor: selectedStage?.name == stage.name ? '#6366F1' : 'white' }} label={index.toString()} onClick={() => { onClickHandle(stage) }} />
                         ))}
                     </div>
                     {selectedStage && <StageCard stage={selectedStage} />}
-                </div>
+                </div>}
             </AccordionTab>
         </Accordion>
 
@@ -50,3 +68,7 @@ const StagesInfo = ({ tenderStages, currentStage, stagesLoading }: StagesInfoPro
 
 }
 export default StagesInfo;
+
+
+
+

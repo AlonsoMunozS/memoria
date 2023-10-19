@@ -24,7 +24,7 @@ export class UpdateTenderController {
             return;
         }
         const tenderId = parseInt(req.params.tenderId)
-
+        console.log(tenderId)
         if (!tenderId) {
             res.status(404).send();
             return;

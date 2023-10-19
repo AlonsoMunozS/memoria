@@ -19,7 +19,7 @@ tenderRouter.get(
   findByIdTenderController.findByIdTender.bind(findByIdTenderController)
 );
 
-tenderRouter.post(
+tenderRouter.put(
   "/tender/update/:tenderId",
   updateTenderController.updateTender.bind(updateTenderController)
 );

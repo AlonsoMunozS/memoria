@@ -24,6 +24,7 @@ const StageCard = ({ stage }: StageCardProps) => {
                     <span><strong>Plazo máximo: </strong>{converDate(stage.toDate)}</span>
                 </div>
             </div>
+
         </div>
     );
 

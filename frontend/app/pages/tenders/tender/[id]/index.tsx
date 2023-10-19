@@ -10,18 +10,28 @@ import { Tender } from "../models/Tender";
 import { Tag } from "primereact/tag";
 import { Button } from "primereact/button";
 import { Carousel } from "primereact/carousel";
+import { getTenderStages } from "../../../../services/TenderStageService";
 const Tender = () => {
     const [loggedUser, setLoggedUser] = useState<boolean>(false);
     const [tender, setTender] = useState<Tender>();
+    const [tenderStages, setTenderStages] = useState<any>([]);
     const router = useRouter();
-    const [tenderLoading, setTenderLoading] = useState<boolean>(false);
-    const [stagesLoading, setStagesLoading] = useState<boolean>(false);
+    const [tenderLoading, setTenderLoading] = useState<boolean>(true);
+    const [stagesLoading, setStagesLoading] = useState<boolean>(true);
+    const [currentStage, setCurrentStage] = useState<number>(0);
 
+    const getStages = async (tenderId: number) => {
+        const responseTenders = await getTenderStages(tenderId);
+        setTenderStages(responseTenders);
+        setStagesLoading(false);
+    }
 
     const getTenderInfo = async (id: number) => {
-        const responseTenders = await getTender(id);
-        setTender(responseTenders);
+        const responseTender = await getTender(id);
+        setTender(responseTender);
+        setCurrentStage(responseTender.currentStage);
         setTenderLoading(false);
+        getStages(responseTender.id)
     }
 
     useEffect(() => {
@@ -30,7 +40,6 @@ const Tender = () => {
         }
         else {
             if (typeof (router.query.id) == "string") {
-                setTenderLoading(true);
                 getTenderInfo(parseInt(router.query.id));
             }
             setLoggedUser(true);
@@ -47,7 +56,7 @@ const Tender = () => {
                     </Layout>
                     <Card title={`Licitación N°: ${router.query.id ? router.query.id : ''}`}>
                         <GeneralInfo tenderLoading={tenderLoading} tender={tender} />
-                        <StagesInfo stagesLoading={stagesLoading} currentStage={tender?.currentStage} />
+                        <StagesInfo stagesLoading={stagesLoading} tenderStages={tenderStages} currentStage={currentStage} />
                     </Card>
                 </div>
             )}
