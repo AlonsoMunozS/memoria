@@ -40,7 +40,7 @@ export class CreateTenderStageController {
 
     const today = new Date();
     const createdAt = today.getTime();
-    if (!name == undefined || !tenderId || !toDate) {
+    if (name == undefined || !tenderId || !toDate) {
       res.status(400).send();
       return;
     }

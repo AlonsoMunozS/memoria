@@ -1,6 +1,6 @@
 import { getStorage, ref, uploadBytes } from "firebase/storage";
 import * as admin from "firebase-admin";
-import { TenderFilesStorage } from "../domain/TenderFilesStorage";
+import { StagesFilesStorage } from "../domain/StagesFilesStorage";
 const serviceAccount = require("./serviceAccountKey.json");
 
 admin.initializeApp({
@@ -9,11 +9,11 @@ admin.initializeApp({
 
 const storage = getStorage();
 
-export class FirebaseStageTenderStorage implements TenderFilesStorage {
+export class FirebaseStageFilesStorage implements StagesFilesStorage {
 
-    async upload(tenderId: number, fileName: string, file: Buffer): Promise<void> {
+    async upload(tenderId: number, stageName: number, fileName: string, file: Buffer): Promise<void> {
         try {
-            const storageRef = ref(storage, tenderId.toString() + "/" + fileName);
+            const storageRef = ref(storage, tenderId.toString() + "/" + stageName.toString() + "/" + fileName);
             await uploadBytes(storageRef, file).then((snapshot) => {
                 console.log('Uploaded a blob or file!');
             });

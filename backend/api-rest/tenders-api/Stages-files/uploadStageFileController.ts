@@ -1,14 +1,14 @@
 import { Request, Response } from "express";
 import VerifyToken from "../../../context/shared/infrastructure/firebase-verify-token";
-import { TenderFilesUploader } from "../../../context/tenders/stages/stages-files/application/upload/tenderFilesUploader";
-import { TenderFilesUploadRequest } from "../../../context/tenders/stages/stages-files/application/upload/tenderFilesUploadRequest";
+import { StageFileUploader } from "../../../context/tenders/stages/stages-files/application/upload/stageFileUploader";
+import { StageFileUploadRequest } from "../../../context/tenders/stages/stages-files/application/upload/stageFilesUploadRequest";
 
-export class UploadTenderFileController {
+export class UploadStageFileController {
     constructor(
-        private readonly tenderFileUploader: TenderFilesUploader,
+        private readonly stageFileUploader: StageFileUploader,
     ) { }
 
-    async uploadTenderFile(req: Request, res: Response) {
+    async uploadStageFile(req: Request, res: Response) {
 
         const { authorization } = req.headers
         if (!authorization) {
@@ -25,23 +25,26 @@ export class UploadTenderFileController {
         // }
 
         const tenderId = parseInt(req.params.tenderId)
+        const stageName = parseInt(req.params.stageName)
+
 
         const file = req.file?.buffer;
         const fileName = req.file?.originalname;
 
 
-        if (!tenderId || !file || !fileName) {
+        if (!tenderId || !file || !fileName || stageName == undefined) {
             res.status(400).send();
             return;
         }
-        const request: TenderFilesUploadRequest = {
+        const request: StageFileUploadRequest = {
             tenderId,
+            stageName,
             fileName,
             file
         }
 
         try {
-            await this.tenderFileUploader.uploadTenderFile(request)
+            await this.stageFileUploader.uploadStageFile(request)
             res.status(201).send();
             return;
         } catch (error) {
