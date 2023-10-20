@@ -24,9 +24,7 @@ const Companies: React.FC = () => {
           <Layout>
             <HomeBar />
           </Layout>
-
-          <h1>Empresas</h1>
-          <Button label="Boton de prueba" />
+          <h1>Próximamente Empresas...</h1>
         </div>
       )}
 

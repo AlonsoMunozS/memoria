@@ -9,12 +9,16 @@ import { Tag } from 'primereact/tag';
 import { Dropdown, DropdownProps } from 'primereact/dropdown';
 import { createTender } from '../../../services/TenderService';
 import { ProgressSpinner } from 'primereact/progressspinner';
+import { getTenders } from '../../../services/TenderService';
+import { Tender } from '../tender/models/Tender';
 
 interface dialogProps {
     setShowDialog: (bool: boolean) => void,
     setType: React.Dispatch<React.SetStateAction<"success" | "info" | "warn" | "error" | undefined>>,
     setMessage: React.Dispatch<React.SetStateAction<string | undefined>>
-    setShowToast: React.Dispatch<React.SetStateAction<boolean>>
+    setShowToast: React.Dispatch<React.SetStateAction<boolean>>,
+    setTenders: React.Dispatch<React.SetStateAction<Array<Tender>>>,
+    setLoadingTenders: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 interface FormErrors {
@@ -31,7 +35,7 @@ interface FormData {
     safi: string;
 }
 
-export const NewTenderForm: React.FC<dialogProps> = ({ setShowDialog, setType, setMessage, setShowToast }) => {
+export const NewTenderForm: React.FC<dialogProps> = ({ setShowDialog, setType, setMessage, setShowToast, setTenders, setLoadingTenders }) => {
     const [showMessage, setShowMessage] = useState(false);
     const [formData, setFormData] = useState<FormData>({
         name: '',
@@ -114,16 +118,24 @@ export const NewTenderForm: React.FC<dialogProps> = ({ setShowDialog, setType, s
         setShowDialog(false);
     }
 
+    const getTenderList = async () => {
+        setLoadingTenders(true);
+        const responseTenders = await getTenders();
+        setTenders(responseTenders);
+        setLoadingTenders(false);
+    }
+
     const addNewTender = async (data: any) => {
         setLoading(true);
         const responseStatus = await createTender(data);
         if (responseStatus === 201) {
-            setLoading(true);
             setType("success")
             setMessage("Licitación agregada con éxito")
             onHide();
             setShowToast(true);
             formik.resetForm();
+            setLoading(false);
+            getTenderList();
 
         }
     }

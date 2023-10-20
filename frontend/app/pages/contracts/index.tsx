@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { Button } from 'primereact/button';
 import Layout from '../components/Layout';
 import HomeBar from '../components/HomeBar';
 
@@ -23,8 +22,7 @@ const Contracts: React.FC = () => {
           <Layout>
             <HomeBar />
           </Layout>
-          <h1>Contratos</h1>
-          <Button label="Boton de prueba" />
+          <h1>Próximamente Contratos en ejecución...</h1>
         </div>
       )}
 

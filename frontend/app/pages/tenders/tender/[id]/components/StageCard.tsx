@@ -68,6 +68,8 @@ const StageCard = ({ stage, currentStage, setCurrentStage }: StageCardProps) => 
         getStageCommentsHandler()
 
     }
+
+
     const getStageCommentsHandler = async () => {
         const comments = await getStageComments(stage.id)
         setStageComments(comments)
@@ -113,7 +115,7 @@ const StageCard = ({ stage, currentStage, setCurrentStage }: StageCardProps) => 
     }, [stage])
     return (
         <div style={{ width: "100%" }}>
-            <AddComment showDialog={showDialogAddComment} setShowDialog={setShowDialogAddComment} stage={stage} />
+            <AddComment showDialog={showDialogAddComment} setShowDialog={setShowDialogAddComment} stage={stage} setStageCommentsLoading={setStageCommentsLoading} setStageComments={setStageComments} />
             <AddNextStageDialog showDialog={showDialogAddNextStage} setShowDialog={setShowDialogAddNextStage} stage={stage} setCurrentStage={setCurrentStage} />
             <Toast ref={msgs} position="bottom-center" />
             <div className="stageCard">

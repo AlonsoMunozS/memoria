@@ -16,7 +16,8 @@ import { ProgressSpinner } from 'primereact/progressspinner';
 interface TenderProps {
     tenders: Array<Tender>,
     setLoading: React.Dispatch<React.SetStateAction<boolean>>,
-    loading: boolean
+    loading: boolean,
+    setTenders: React.Dispatch<React.SetStateAction<Array<Tender>>>
 }
 
 /*const stages = {
@@ -24,7 +25,7 @@ interface TenderProps {
     "FirstStage": "PUBLICACIÓN"
 }*/
 
-const TableTenders = ({ tenders, loading, setLoading }: TenderProps) => {
+const TableTenders = ({ tenders, loading, setLoading, setTenders }: TenderProps) => {
 
     const [type, setType] = useState<"success" | "info" | "warn" | "error" | undefined>();
     const [message, setMessage] = useState<string | undefined>();
@@ -92,7 +93,7 @@ const TableTenders = ({ tenders, loading, setLoading }: TenderProps) => {
                     <ProgressSpinner style={{ width: '50px', height: '50px' }} strokeWidth="8" fill="var(--surface-ground)" animationDuration=".5s" />
                 </div>
             )}
-            <DataTable value={tenders} paginator className="p-datatable-customers" header={header} rows={5}
+            <DataTable value={tenders.reverse()} paginator className="p-datatable-customers" header={header} rows={5}
                 paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                 dataKey="id" rowHover size="small"
                 filters={filters} filterDisplay="menu"
@@ -104,7 +105,7 @@ const TableTenders = ({ tenders, loading, setLoading }: TenderProps) => {
                 <Column header='Ver' headerStyle={{ width: '4rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={actionBodyView} />
             </DataTable>
             <NewTenderDialog showDialog={displayNewTenderDialog} setShowDialog={setDisplayNewTenderDialog}>
-                <NewTenderForm setShowDialog={setDisplayNewTenderDialog} setType={setType} setMessage={setMessage} setShowToast={setShowToast} />
+                <NewTenderForm setShowDialog={setDisplayNewTenderDialog} setType={setType} setMessage={setMessage} setShowToast={setShowToast} setTenders={setTenders} setLoadingTenders={setLoading} />
             </NewTenderDialog>
             <div className='p-toast'>
                 <InfoMessage type={type} message={message} showToast={showToast} />
