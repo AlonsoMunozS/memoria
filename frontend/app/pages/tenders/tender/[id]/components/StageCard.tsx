@@ -159,8 +159,8 @@ const StageCard = ({ stage, currentStage, setCurrentStage }: StageCardProps) => 
                         {stageComments && !stageCommentsLoading && stageComments.map(item => (
                             <div className="p-col-12 p-md-6 p-lg-4" key={item.stageId} style={{ width: "100%" }}>
                                 <Card >
-                                    <div><strong>Creado por:</strong> {item.createdBy}</div>
-                                    <div><strong>Fecha de creacion:</strong> {item.createdAt}</div>
+                                    <div><strong>Creado por:</strong> Admin</div>
+                                    <div><strong>Fecha de creacion:</strong> {converDate(item.createdAt)}</div>
                                     <div><strong>Comentario:</strong> {item.post}</div>
                                 </Card>
 

@@ -23,9 +23,9 @@ const HomePage = () => {
           <Layout>
             <HomeBar />
           </Layout>
+          <img style={{ width: "100%", position: 'absolute' }} src="https://firebasestorage.googleapis.com/v0/b/memoria-9bc6e.appspot.com/o/Home.jpg?alt=media&token=73939307-ad60-48d8-b721-eda7f8cc79c0&_gl=1*a83g0p*_ga*MjgxMTgwNzcwLjE2OTI4NTEyNjk.*_ga_CW55HF8NVT*MTY5NzgyMjczMC41OS4xLjE2OTc4MjI3MzUuNTUuMC4w" />
         </div>
       )}
-
     </div>
   );
 };

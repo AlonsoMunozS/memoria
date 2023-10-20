@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Dialog } from "primereact/dialog";
 import { useFormik } from 'formik';
 import { Button } from "primereact/button";
@@ -6,6 +6,7 @@ import { classNames } from 'primereact/utils';
 import { InputTextarea } from "primereact/inputtextarea";
 import { createStageComments, getStageComments } from "../../../../../services/TenderStageService";
 import { ProgressSpinner } from "primereact/progressspinner";
+import { Toast } from "primereact/toast";
 
 
 type StageComment = {
@@ -29,6 +30,7 @@ interface FormErrors {
 
 const AddComment = ({ showDialog, setShowDialog, stage, setStageCommentsLoading, setStageComments }: AddNextStage) => {
     const [loading, setLoading] = useState(false);
+    const msgs = useRef<Toast | null>(null);
 
     const getStageCommentsHandler = async () => {
         setStageCommentsLoading(true);
@@ -50,6 +52,9 @@ const AddComment = ({ showDialog, setShowDialog, stage, setStageCommentsLoading,
             formik.resetForm();
             setLoading(false);
             getStageCommentsHandler()
+            msgs.current?.show({ severity: "success", summary: "Exitoso", detail: "Comentario añadido correctamente", life: 3000 });
+
+
         }
 
     }
@@ -89,6 +94,7 @@ const AddComment = ({ showDialog, setShowDialog, stage, setStageCommentsLoading,
 
     return (
         <div>
+            <Toast ref={msgs} position="bottom-center" />
             <Dialog className='dialogForm-resp' header="Nuevo Comentario" visible={showDialog} onHide={() => onHideDialog()} >
                 <div className="form-demo">
                     <div className="flex justify-content-center">

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Dialog } from "primereact/dialog";
 import { Tag } from "primereact/tag";
 import { stages } from "../../../../../data/stages";
@@ -12,6 +12,7 @@ import { createNewStage } from "../../../../../services/TenderStageService";
 import { updateTender } from "../../../../../services/TenderService";
 import { useRouter } from "next/router";
 import { ProgressSpinner } from "primereact/progressspinner";
+import { Toast } from "primereact/toast";
 
 interface AddNextStage {
     showDialog: boolean,
@@ -28,7 +29,7 @@ interface FormErrors {
 const AddNextStageDialog = ({ showDialog, setShowDialog, stage, setCurrentStage }: AddNextStage) => {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
-
+    const msgs = useRef<Toast | null>(null);
     const addNewNextStage = async (data: any) => {
         setLoading(true);
         var date = new Date(data.toDate)
@@ -50,6 +51,8 @@ const AddNextStageDialog = ({ showDialog, setShowDialog, stage, setCurrentStage 
                 onHideDialog();
                 formik.resetForm();
                 setLoading(false);
+                msgs.current?.show({ severity: "success", summary: "Exitoso", detail: "Etapa creada correctamente", life: 3000 });
+
             }
         }
     }
@@ -129,6 +132,7 @@ const AddNextStageDialog = ({ showDialog, setShowDialog, stage, setCurrentStage 
 
     return (
         <div>
+            <Toast ref={msgs} position="bottom-center" />
             <Dialog className='dialogForm-resp' header="Nueva Etapa" visible={showDialog} onHide={() => onHideDialog()} >
                 <div className="form-demo">
                     <div className="flex justify-content-center">
