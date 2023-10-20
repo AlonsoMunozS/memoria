@@ -1,6 +1,6 @@
 import express from "express";
 import multer from 'multer';
-import { uploadStageFileController } from "../stagesFilesDependencies";
+import { findFileNameByStageController, uploadStageFileController } from "../stagesFilesDependencies";
 
 const stageFilesRouters = express.Router();
 
@@ -11,6 +11,10 @@ stageFilesRouters.post(
     "/upload/:tenderId/:stageName",
     upload.single('file'),
     uploadStageFileController.uploadStageFile.bind(uploadStageFileController)
+);
+stageFilesRouters.get(
+    "/find/:tenderId/:stageName",
+    findFileNameByStageController.findFileNameByStage.bind(findFileNameByStageController)
 );
 
 export { stageFilesRouters };

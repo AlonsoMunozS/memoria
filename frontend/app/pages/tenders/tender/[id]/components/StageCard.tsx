@@ -1,5 +1,5 @@
 import { FileUpload } from "primereact/fileupload";
-import { getStageComments, getStageFiles, uploadFile } from "../../../../../services/TenderStageService";
+import { createStageComments, getStageComments, getStageFiles, uploadFile } from "../../../../../services/TenderStageService";
 import { useRef, useState, useEffect } from "react";
 import { stages } from "../../../../../data/stages";
 import { Tag } from "primereact/tag";
@@ -12,6 +12,7 @@ import { OrderList } from 'primereact/orderlist';
 import { Menu } from "primereact/menu";
 import { ProgressSpinner } from "primereact/progressspinner";
 import { Calendar } from "primereact/calendar";
+import { Card } from "primereact/card";
 
 type StageComment = {
     stageId: number
@@ -40,12 +41,14 @@ const StageCard = ({ stage, currentStage }: StageCardProps) => {
     const [stageComments, setStageComments] = useState<Array<StageComment>>();
     const [stageCommentsLoading, setStageCommentsLoading] = useState<boolean>(true);
     const fileInputRef = useRef<HTMLInputElement | null>(null);
-    const [files, setFiles] = useState<any>([]);
+    const [files, setFiles] = useState<Array<{ fileName: string, downloadUrl: string }>>([]);
     const [filesLoading, setFilesLoading] = useState<boolean>(true);
 
     const getFiles = async () => {
-        await getStageFiles(stage.tenderId, stage.id);
-        //setFiles(files)
+        setFilesLoading(true);
+        const filesName = await getStageFiles(stage.tenderId, stage.name);
+        setFiles(filesName)
+        console.log(filesName)
         setFilesLoading(false);
     }
 
@@ -56,6 +59,15 @@ const StageCard = ({ stage, currentStage }: StageCardProps) => {
         setFileUploading(false);
         setFileSelected(undefined);
         msgs.current?.show({ severity: "success", summary: "Exitoso", detail: "Archivo subido correctamente", life: 3000 });
+        getFiles()
+
+    }
+    const createCommentHandler = async (post: string) => {
+        setStageCommentsLoading(true);
+        await createStageComments({ stageId: stage.id, post })
+        setStageCommentsLoading(false);
+        msgs.current?.show({ severity: "success", summary: "Exitoso", detail: "Archivo subido correctamente", life: 3000 });
+        getStageCommentsHandler()
 
     }
     const getStageCommentsHandler = async () => {
@@ -79,7 +91,6 @@ const StageCard = ({ stage, currentStage }: StageCardProps) => {
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files && event.target.files[0];
-        console.log("hola")
         if (file) {
             setFileSelected(file)
         }
@@ -87,20 +98,22 @@ const StageCard = ({ stage, currentStage }: StageCardProps) => {
     const handleCancelFile = () => {
         setFileSelected(undefined)
     };
-    let items = [
-        { label: 'New', icon: 'pi pi-fw pi-plus' },
-        { label: 'Delete', icon: 'pi pi-fw pi-trash' },
-        { label: 'Delete', icon: 'pi pi-fw pi-trash' },
-        { label: 'Delete', icon: 'pi pi-fw pi-trash' },
-        { label: 'Delete', icon: 'pi pi-fw pi-trash' },
-        { label: 'Delete', icon: 'pi pi-fw pi-trash' },
-        { label: 'Delete', icon: 'pi pi-fw pi-trash' }
-    ];
+    let items = files.map((file) => ({
+        label: file.fileName,
+        icon: 'pi pi-file', // Puedes cambiar el icono según tus necesidades
+        command: () => {
+            window.location.href = file.downloadUrl
+        }
+    }))
+
     useEffect(() => {
+        setFilesLoading(true)
+        setStageCommentsLoading(true)
+        getStageCommentsHandler();
         getFiles();
-    }, [])
+    }, [stage])
     return (
-        <div>
+        <div style={{ width: "100%" }}>
             <Toast ref={msgs} position="bottom-center" />
             <Dialog className='dialogForm-resp' header="Nueva Etapa" visible={showDialog} onHide={() => onHideDialog()} >
                 <div>
@@ -130,29 +143,26 @@ const StageCard = ({ stage, currentStage }: StageCardProps) => {
                         {fileSelected && <Button className="p-button-text" icon={"pi pi-times"} onClick={handleCancelFile} />}
 
                     </div>
-                    {filesLoading && <Menu model={items} style={{ width: '100%', maxHeight: '150px', overflowY: 'auto' }} />}
+                    {!filesLoading && <Menu model={items} style={{ width: '100%', maxHeight: '150px', overflowY: 'auto' }} />}
                     <div style={{ display: "flex", justifyContent: "center", width: '100%', maxHeight: '150px', border: '1px solid var(--surface-d)', borderRadius: '3px' }}>
-                        {!filesLoading && <ProgressSpinner style={{ width: '50px', height: '50px' }} strokeWidth="8" fill="var(--surface-ground)" animationDuration=".5s" />}
+                        {filesLoading && <ProgressSpinner style={{ width: '50px', height: '50px' }} strokeWidth="8" fill="var(--surface-ground)" animationDuration=".5s" />}
                     </div>
-                    <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', marginTop: '1rem', marginBottom: '1rem' }}>
                         <span style={{ marginRight: '10px' }}><strong>Comentarios: </strong></span>
                         <Button icon="pi pi-plus" className="p-button-rounded p-button-sm p-button-outlined" disabled={!(currentStage == stage.name)}></Button>
                     </div>
-                    <div className="stageCard">
-                        <ScrollPanel style={{ width: '100%', height: '150px' }} className="custombar">
-                            <div style={{ padding: '1em', lineHeight: '1.5' }}>
-                                The story begins as Don Vito Corleone, the head of a New York Mafia family, oversees his daughter's wedding. His beloved
-                                son Michael has just come home from the war, but does not intend to become part of his father's business. Through
-                                Michael's life the nature of the family business becomes clear. The business of the family is just like the head
-                                of the family, kind and benevolent to those who give respect, but given to ruthless violence whenever anything stands
-                                against the good of the family.
-                                The story begins as Don Vito Corleone, the head of a New York Mafia family, oversees his daughter's wedding. His beloved
-                                son Michael has just come home from the war, but does not intend to become part of his father's business. Through Michael's
-                                life the nature of the family business becomes clear. The business of the family is just like the head of the family, kind
-                                and benevolent to those who give respect, but given to ruthless violence whenever anything stands against the good of the
-                                family.
+                    <div style={{ width: '100%', maxHeight: '150px', overflowY: 'auto', border: '1px solid var(--surface-d)', borderRadius: '3px' }}>
+                        {stageComments && stageComments.map(item => (
+                            <div className="p-col-12 p-md-6 p-lg-4" key={item.stageId}>
+                                <Card >
+                                    <div><strong>Creado por:</strong> {item.createdBy}</div>
+                                    <div><strong>Fecha de creacion:</strong> {item.createdAt}</div>
+                                    <div><strong>Comentario:</strong> {item.post}</div>
+                                </Card>
+
                             </div>
-                        </ScrollPanel>
+
+                        ))}
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                         {currentStage == stage.name ? <Button label="Cierre Anticipado" icon="pi pi-times" iconPos="right" className="p-button-danger" /> : null}
@@ -161,10 +171,7 @@ const StageCard = ({ stage, currentStage }: StageCardProps) => {
                 </div>
 
             </div >
-            <div >
-                <Button label="hola" onClick={getStageCommentsHandler} />
-                {stageComments && <div>{stageComments[0].post}, </div>}
-            </div>
+
         </div >
     );
 
