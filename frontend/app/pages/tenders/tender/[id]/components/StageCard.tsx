@@ -1,18 +1,14 @@
-import { FileUpload } from "primereact/fileupload";
 import { createStageComments, getStageComments, getStageFiles, uploadFile } from "../../../../../services/TenderStageService";
 import { useRef, useState, useEffect } from "react";
 import { stages } from "../../../../../data/stages";
 import { Tag } from "primereact/tag";
-import { ScrollPanel } from "primereact/scrollpanel";
 import { Dialog } from "primereact/dialog";
 import { Button } from "primereact/button";
-import { forEachLeadingCommentRange } from "typescript";
 import { Toast } from "primereact/toast";
-import { OrderList } from 'primereact/orderlist';
 import { Menu } from "primereact/menu";
 import { ProgressSpinner } from "primereact/progressspinner";
-import { Calendar } from "primereact/calendar";
 import { Card } from "primereact/card";
+import AddNextStageDialog from "./AddNextStageDialog";
 
 type StageComment = {
     stageId: number
@@ -114,6 +110,7 @@ const StageCard = ({ stage, currentStage }: StageCardProps) => {
     }, [stage])
     return (
         <div style={{ width: "100%" }}>
+            <AddNextStageDialog showDialog={showDialog} setShowDialog={setShowDialog} stage={stage} />
             <Toast ref={msgs} position="bottom-center" />
             <Dialog className='dialogForm-resp' header="Nueva Etapa" visible={showDialog} onHide={() => onHideDialog()} >
                 <div>
@@ -165,8 +162,8 @@ const StageCard = ({ stage, currentStage }: StageCardProps) => {
                         ))}
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        {currentStage == stage.name ? <Button label="Cierre Anticipado" icon="pi pi-times" iconPos="right" className="p-button-danger" /> : null}
-                        {(currentStage == stage.name && stage.name != stages.tag[stage.length - 1]) ? <Button label="Agregar Siguiente Etapa" icon="pi pi-chevron-right" iconPos="right" onClick={onClickAddNextStage} /> : <span style={{ marginRight: '10px', marginLeft: 'auto' }}><strong>ETAPA FINALIZADA</strong></span>}
+                        {currentStage == stage.name && stages.tag[stage.name] != 'CONSULTAS' && stages.tag[stage.name] != 'RESPUESTAS' ? <Button label="Cierre Anticipado" icon="pi pi-times" iconPos="right" className="p-button-danger" /> : null}
+                        {(currentStage == stage.name && stage.name != (stages.tag.length - 2)) ? <Button label="Agregar Siguiente Etapa" icon="pi pi-chevron-right" iconPos="right" onClick={onClickAddNextStage} style={{ marginLeft: 'auto' }} /> : stage.name != (stages.tag.length - 2) ? <span style={{ marginLeft: 'auto' }}><strong>ETAPA FINALIZADA</strong></span> : <Button label="Crear Contrato" icon="pi pi-chevron-right" iconPos="right" style={{ marginLeft: 'auto' }} className="p-button-success" />}
                     </div>
                 </div>
 
