@@ -52,8 +52,6 @@ const StageCard = ({ stage, currentStage }: StageCardProps) => {
         setShowDialog(true);
     }
 
-
-
     return (
         <div>
             <AddNextStageDialog showDialog={showDialog} setShowDialog={setShowDialog} stage={stage} />
@@ -108,7 +106,7 @@ const StageCard = ({ stage, currentStage }: StageCardProps) => {
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                         {currentStage == stage.name && stages.tag[stage.name] != 'CONSULTAS' && stages.tag[stage.name] != 'RESPUESTAS' ? <Button label="Cierre Anticipado" icon="pi pi-times" iconPos="right" className="p-button-danger" /> : null}
-                        {(currentStage == stage.name && stage.name != stages.tag[stage.length - 1]) ? <Button label="Agregar Siguiente Etapa" icon="pi pi-chevron-right" iconPos="right" onClick={onClickAddNextStage} style={{ marginLeft: 'auto' }} /> : <span style={{ marginLeft: 'auto' }}><strong>ETAPA FINALIZADA</strong></span>}
+                        {(currentStage == stage.name && stage.name != (stages.tag.length - 2)) ? <Button label="Agregar Siguiente Etapa" icon="pi pi-chevron-right" iconPos="right" onClick={onClickAddNextStage} style={{ marginLeft: 'auto' }} /> : stage.name != (stages.tag.length - 2) ? <span style={{ marginLeft: 'auto' }}><strong>ETAPA FINALIZADA</strong></span> : <Button label="Crear Contrato" icon="pi pi-chevron-right" iconPos="right" style={{ marginLeft: 'auto' }} className="p-button-success" />}
                     </div>
                 </div>
 

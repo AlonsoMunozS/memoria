@@ -5,6 +5,12 @@ type StageComment = {
     createdAt: number
     post: string
 }
+
+type newStage = {
+    tenderId: number,
+    name: number,
+    toDate: number
+}
 const getTenderStages = async (tenderId: number) => {
     try {
         const authToken = localStorage.getItem('authToken');
@@ -51,8 +57,27 @@ const getStageComments = async (stageId: number) => {
     }
 }
 
+const createNewStage = async (body: newStage) => {
+    try {
+        const authToken = localStorage.getItem('authToken');
+        const response = await fetch('http://localhost:3000/tenders/tender/stage/create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${authToken}`
+            },
+            body: JSON.stringify(body)
+        });
+        return response.status
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
+
+}
+
 export {
     getTenderStages,
     uploadFile,
-    getStageComments
+    getStageComments,
+    createNewStage
 };

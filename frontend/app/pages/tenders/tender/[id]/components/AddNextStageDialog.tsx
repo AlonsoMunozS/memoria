@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Dialog } from "primereact/dialog";
 import { Tag } from "primereact/tag";
 import { stages } from "../../../../../data/stages";
@@ -8,6 +8,9 @@ import { Dropdown, DropdownProps } from "primereact/dropdown";
 import { classNames } from 'primereact/utils';
 import { Calendar } from "primereact/calendar";
 import { addLocale } from "primereact/api";
+import { createNewStage } from "../../../../../services/TenderStageService";
+import { updateTender } from "../../../../../services/TenderService";
+import { useRouter } from "next/router";
 
 interface AddNextStage {
     showDialog: boolean,
@@ -21,6 +24,34 @@ interface FormErrors {
 }
 
 const AddNextStageDialog = ({ showDialog, setShowDialog, stage }: AddNextStage) => {
+    const router = useRouter();
+    const [loading, setLoading] = useState(false);
+
+    const addNewNextStage = async (data: any) => {
+        setLoading(true);
+        var date = new Date(data.toDate)
+        console.log(data);
+        if (typeof (router.query.id) == "string") {
+
+            const body = {
+                tenderId: parseInt(router.query.id, 10),
+                name: data.newCurrentStage,
+                toDate: date.getTime()
+            }
+            const updateCurrentStage = {
+                currentStage: data.newCurrentStage
+            }
+            const responseStatus = await createNewStage(body);
+            const responseStatusCurrentStage = await updateTender(parseInt(router.query.id, 10), updateCurrentStage);
+
+            if (responseStatus === 201) {
+                setLoading(true);
+                onHideDialog();
+                formik.resetForm();
+            }
+        }
+    }
+
     const treeOne = ["6", "7"];
     const treeTwo = ["9", "10"];
 
@@ -65,7 +96,7 @@ const AddNextStageDialog = ({ showDialog, setShowDialog, stage }: AddNextStage) 
 
     const formik = useFormik({
         initialValues: {
-            newCurrentStage: undefined,
+            newCurrentStage: (stage.name == 6 || stage.name == 9) ? stage.name + 2 : stage.name == 5 || stage.name == 8 ? undefined : stage.name + 1,
             toDate: undefined
         },
         validate: (data) => {
@@ -80,19 +111,16 @@ const AddNextStageDialog = ({ showDialog, setShowDialog, stage }: AddNextStage) 
             return errors;
         },
         onSubmit: (data) => {
-
-
+            addNewNextStage(data);
         }
     });
 
     const isFormFieldValid = (name: string) => {
         // Utiliza type assertion para indicar que estás seguro de que `name` existe en formik.touched y formik.errors
-        console.log(formik.errors)
         return !!((formik.touched as any)[name] && (formik.errors as any)[name]);
     };
 
     const getFormErrorMessage = (name: string) => {
-        console.log(isFormFieldValid(name), name)
         return isFormFieldValid(name) && <small className="p-error">{(formik.errors as any)[name]}</small>;
     };
 
@@ -104,14 +132,14 @@ const AddNextStageDialog = ({ showDialog, setShowDialog, stage }: AddNextStage) 
                     <div className="flex justify-content-center">
                         <div className="tagstage">
                             {stage.name != 5 && stage.name != 6 && stage.name != 8 && stage.name != 9 && <Tag id="stage.name" className={`tender-status stage${stage.name + 1}`}>{stages.tag[stage.name + 1]}</Tag>}
-                            {stage.name == 6 || stage.name == 9 && <Tag id="stage.name" className={`tender-status stage${stage.name + 2}`}>{stages.tag[stage.name + 2]}</Tag>}
+                            {(stage.name == 6 || stage.name == 9) && <Tag id="stage.name" className={`tender-status stage${stage.name + 2}`}>{stages.tag[stage.name + 2]}</Tag>}
                         </div>
                         <div className="card">
                             <form onSubmit={formik.handleSubmit} className="p-fluid">
-                                {stage.name == 5 || stage.name == 8 &&
+                                {(stage.name == 5 || stage.name == 8) &&
                                     <div className="field">
                                         <span>
-                                            <Dropdown id="newCurrentStage" name="newCurrentStage" value={formik.values.newCurrentStage} options={stage.name == 0 ? treeOne : treeTwo} onChange={formik.handleChange} valueTemplate={dropSelectedTemplate} itemTemplate={dropOptionTemplate} showClear placeholder="Seleccionar Nueva Etapa" emptyFilterMessage="No se encontraron coincidencias" className={classNames({ 'p-error': isFormFieldValid("newCurrentStage") })} onBlur={formik.handleBlur} />
+                                            <Dropdown id="newCurrentStage" name="newCurrentStage" value={formik.values.newCurrentStage} options={stage.name == 5 ? treeOne : treeTwo} onChange={formik.handleChange} valueTemplate={dropSelectedTemplate} itemTemplate={dropOptionTemplate} showClear placeholder="Seleccionar Nueva Etapa" emptyFilterMessage="No se encontraron coincidencias" className={classNames({ 'p-error': isFormFieldValid("newCurrentStage") })} onBlur={formik.handleBlur} />
                                             <label htmlFor="newCurrentStage" className={classNames({ 'p-error': isFormFieldValid('newCurrentStage') })}></label>
                                             {getFormErrorMessage("newCurrentStage")}
                                         </span>
