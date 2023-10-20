@@ -142,19 +142,21 @@ const StageCard = ({ stage, currentStage }: StageCardProps) => {
                         {fileSelected && <Button className="p-button-text" icon={"pi pi-times"} onClick={handleCancelFile} />}
 
                     </div>
-                    {!filesLoading && files.length != 0 && <div>
-                        <Menu model={items} style={{ width: '100%', maxHeight: '150px', overflowY: 'auto' }} />
-                    </div>}
-                    <div style={{ display: "flex", justifyContent: "flex-start", width: '100%', maxHeight: '150px', border: '1px solid var(--surface-d)', borderRadius: '3px' }}>
-                        {filesLoading ? <ProgressSpinner style={{ width: '50px', height: '50px' }} strokeWidth="8" fill="var(--surface-ground)" animationDuration=".5s" /> : files.length == 0 && <span>No hay archivos</span>}
+                    <div style={{ marginBottom: '5vh' }}>
+                        {!filesLoading && files.length != 0 && <div>
+                            <Menu model={items} style={{ width: '100%', maxHeight: '150px', overflowY: 'auto' }} />
+                        </div>}
+                        <div style={{ display: "flex", justifyContent: "flex-start", width: '100%', maxHeight: '150px', border: '1px solid var(--surface-d)', borderRadius: '3px' }}>
+                            {filesLoading ? <ProgressSpinner style={{ width: '50px', height: '50px' }} strokeWidth="8" fill="var(--surface-ground)" animationDuration=".5s" /> : files.length == 0 && <span>No hay archivos</span>}
 
+                        </div>
                     </div>
 
-                    <div style={{ display: 'flex', alignItems: 'center', marginTop: '1rem', marginBottom: '1rem' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
                         <span style={{ marginRight: '10px' }}><strong>Comentarios: </strong></span>
                         <Button icon="pi pi-plus" className="p-button-rounded p-button-sm p-button-outlined" disabled={!(currentStage == stage.name)} onClick={onClickAddComment}></Button>
                     </div>
-                    <div style={{ display: "flex", justifyContent: "flex-start", width: '100%', maxHeight: '150px', border: '1px solid var(--surface-d)', borderRadius: '3px' }}>
+                    <div style={{ display: "flex", justifyContent: "flex-start", width: '100%', maxHeight: '150px', border: '1px solid var(--surface-d)', borderRadius: '3px', marginBottom: '3vh' }}>
                         {stageComments && !stageCommentsLoading && stageComments.map(item => (
                             <div className="p-col-12 p-md-6 p-lg-4" key={item.stageId} style={{ width: "100%" }}>
                                 <Card >
