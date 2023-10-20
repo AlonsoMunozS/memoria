@@ -134,23 +134,27 @@ const StageCard = ({ stage, currentStage }: StageCardProps) => {
                             onChange={handleFileChange}
                             style={{ display: 'none' }} // Oculta el input de tipo file
                         />
-                        <Button className="p-button-rounded p-button-sm p-button-outlined" label={"Subir archivo"} icon={"pi pi-upload"} onClick={handleButtonClick} />
+                        <Button className="p-button-rounded p-button-sm p-button-outlined" label={"Subir archivo"} icon={"pi pi-upload"} onClick={handleButtonClick} disabled={!(currentStage == stage.name)} />
                         {fileSelected && <p style={{ fontSize: "14px", marginLeft: "10px" }}>{fileSelected.name}</p>}
                         {fileSelected && <Button className="p-button-text" icon={!fileUploading ? "pi pi-upload" : "pi pi-spinner pi-spin"} onClick={uploadFileHandler} />}
                         {fileSelected && <Button className="p-button-text" icon={"pi pi-times"} onClick={handleCancelFile} />}
 
                     </div>
-                    {!filesLoading && <Menu model={items} style={{ width: '100%', maxHeight: '150px', overflowY: 'auto' }} />}
-                    <div style={{ display: "flex", justifyContent: "center", width: '100%', maxHeight: '150px', border: '1px solid var(--surface-d)', borderRadius: '3px' }}>
-                        {filesLoading && <ProgressSpinner style={{ width: '50px', height: '50px' }} strokeWidth="8" fill="var(--surface-ground)" animationDuration=".5s" />}
+                    {!filesLoading && files.length != 0 && <div>
+                        <Menu model={items} style={{ width: '100%', maxHeight: '150px', overflowY: 'auto' }} />
+                    </div>}
+                    <div style={{ display: "flex", justifyContent: "flex-start", width: '100%', maxHeight: '150px', border: '1px solid var(--surface-d)', borderRadius: '3px' }}>
+                        {filesLoading ? <ProgressSpinner style={{ width: '50px', height: '50px' }} strokeWidth="8" fill="var(--surface-ground)" animationDuration=".5s" /> : files.length == 0 && <span>No hay archivos</span>}
+
                     </div>
+
                     <div style={{ display: 'flex', alignItems: 'center', marginTop: '1rem', marginBottom: '1rem' }}>
                         <span style={{ marginRight: '10px' }}><strong>Comentarios: </strong></span>
                         <Button icon="pi pi-plus" className="p-button-rounded p-button-sm p-button-outlined" disabled={!(currentStage == stage.name)}></Button>
                     </div>
-                    <div style={{ width: '100%', maxHeight: '150px', overflowY: 'auto', border: '1px solid var(--surface-d)', borderRadius: '3px' }}>
-                        {stageComments && stageComments.map(item => (
-                            <div className="p-col-12 p-md-6 p-lg-4" key={item.stageId}>
+                    <div style={{ display: "flex", justifyContent: "flex-start", width: '100%', maxHeight: '150px', border: '1px solid var(--surface-d)', borderRadius: '3px' }}>
+                        {stageComments && !stageCommentsLoading && stageComments.map(item => (
+                            <div className="p-col-12 p-md-6 p-lg-4" key={item.stageId} style={{ width: "100%" }}>
                                 <Card >
                                     <div><strong>Creado por:</strong> {item.createdBy}</div>
                                     <div><strong>Fecha de creacion:</strong> {item.createdAt}</div>
@@ -160,6 +164,9 @@ const StageCard = ({ stage, currentStage }: StageCardProps) => {
                             </div>
 
                         ))}
+                        {stageCommentsLoading && <ProgressSpinner style={{ width: '50px', height: '50px' }} strokeWidth="8" fill="var(--surface-ground)" animationDuration=".5s" />}
+                        {stageComments?.length == 0 && !stageCommentsLoading && <span>No hay comentarios</span>}
+
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                         {currentStage == stage.name && stages.tag[stage.name] != 'CONSULTAS' && stages.tag[stage.name] != 'RESPUESTAS' ? <Button label="Cierre Anticipado" icon="pi pi-times" iconPos="right" className="p-button-danger" /> : null}
