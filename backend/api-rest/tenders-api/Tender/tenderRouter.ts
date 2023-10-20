@@ -5,7 +5,7 @@ import { createTenderController, findTendersController, findByIdTenderController
 const tenderRouter = express.Router();
 
 tenderRouter.post(
-  "/create",
+  "tender/create",
   createTenderController.createTender.bind(createTenderController)
 );
 

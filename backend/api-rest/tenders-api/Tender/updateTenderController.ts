@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { TenderUpdater } from "../../context/tenders/tender/application/update/tenderUpdater";
-import VerifyToken from "../../context/shared/infrastructure/firebase-verify-token";
-import { UpdateTenderRequest } from "../../context/tenders/tender/application/update/updateTenderRequest";
+import { TenderUpdater } from "../../../context/tenders/tender/application/update/tenderUpdater";
+import VerifyToken from "../../../context/shared/infrastructure/firebase-verify-token";
+import { UpdateTenderRequest } from "../../../context/tenders/tender/application/update/updateTenderRequest";
 
 
 export class UpdateTenderController {
@@ -24,7 +24,7 @@ export class UpdateTenderController {
             return;
         }
         const tenderId = parseInt(req.params.tenderId)
-
+        console.log(tenderId)
         if (!tenderId) {
             res.status(404).send();
             return;

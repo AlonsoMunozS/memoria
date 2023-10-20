@@ -3,7 +3,8 @@ const serviceAccount = require("./serviceAccountKey.json");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),
-});
+
+}, "TokenVerifier");
 
 async function VerifyToken(token: string): Promise<string | undefined> {
   try {

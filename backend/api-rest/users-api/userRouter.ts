@@ -1,6 +1,6 @@
 import express from "express";
 
-import { createUserController, findByIdUserController, loginUserController, updatePasswordController } from "../usersDependencies";
+import { createUserController, findByIdUserController, loginUserController, updatePasswordController } from "./usersDependencies";
 
 
 const userRouter = express.Router();

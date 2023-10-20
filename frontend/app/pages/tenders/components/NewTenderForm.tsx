@@ -7,7 +7,7 @@ import { classNames } from 'primereact/utils';
 import { stages } from '../../../data/stages';
 import { Tag } from 'primereact/tag';
 import { Dropdown, DropdownProps } from 'primereact/dropdown';
-import { createTender } from '../../services/TenderService';
+import { createTender } from '../../../services/TenderService';
 import { ProgressSpinner } from 'primereact/progressspinner';
 
 interface dialogProps {
