@@ -50,9 +50,24 @@ const getStageComments = async (stageId: number) => {
         console.error('Error fetching data:', error);
     }
 }
+const getStageFiles = async (tenderId: number, stageName: number) => {
+    try {
+        const authToken = localStorage.getItem('authToken');
+        const response = await fetch(`http://localhost:3000/tenders/tender/stage/file/${tenderId}/${stageName}`, {
+            headers: {
+                'Authorization': `Bearer ${authToken}`
+            }
+        });
+        const jsonData = await response.json();
+        return jsonData;
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
+}
 
 export {
     getTenderStages,
     uploadFile,
-    getStageComments
+    getStageComments,
+    getStageFiles
 };
