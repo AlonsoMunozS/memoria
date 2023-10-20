@@ -14,7 +14,7 @@ export type UpdateTenderValue = {
 const createTender = async (body: Tender) => {
     try {
         const authToken = localStorage.getItem('authToken');
-        const response = await fetch('http://localhost:3000/tenders/create', {
+        const response = await fetch('http://localhost:3000/tenders/tender/create', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
