@@ -6,6 +6,7 @@ import { Tag } from "primereact/tag";
 import { ScrollPanel } from "primereact/scrollpanel";
 import { Dialog } from "primereact/dialog";
 import { Button } from "primereact/button";
+import AddNextStageDialog from "./AddNextStageDialog";
 
 type StageComment = {
     stageId: number
@@ -51,17 +52,11 @@ const StageCard = ({ stage, currentStage }: StageCardProps) => {
         setShowDialog(true);
     }
 
-    const onHideDialog = () => {
-        setShowDialog(false);
-    }
+
 
     return (
         <div>
-            <Dialog className='dialogForm-resp' header="Nueva Etapa" visible={showDialog} onHide={() => onHideDialog()} >
-                <div>
-                    <Tag id="stage.name" style={{ textAlign: 'right', fontSize: '16px' }} className={`tender-status stage${stage.name + 1}`}>{stages.tag[stage.name + 1]}</Tag>
-                </div>
-            </Dialog>
+            <AddNextStageDialog showDialog={showDialog} setShowDialog={setShowDialog} stage={stage} />
             <div className="stageCard">
                 <div className='container'>
                     <div style={{ marginBottom: '3rem' }}>
