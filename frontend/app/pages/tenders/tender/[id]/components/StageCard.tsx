@@ -9,6 +9,7 @@ import { Menu } from "primereact/menu";
 import { ProgressSpinner } from "primereact/progressspinner";
 import { Card } from "primereact/card";
 import AddNextStageDialog from "./AddNextStageDialog";
+import AddComment from "./AddComment";
 
 type StageComment = {
     stageId: number
@@ -21,7 +22,8 @@ interface StageCardProps {
     currentStage?: number
 }
 const StageCard = ({ stage, currentStage }: StageCardProps) => {
-    const [showDialog, setShowDialog] = useState(false);
+    const [showDialogAddNextStage, setShowDialogAddNextStage] = useState(false);
+    const [showDialogAddComment, setShowDialogAddComment] = useState(false);
     const [fileSelected, setFileSelected] = useState<File>();
     const msgs = useRef<Toast | null>(null);
     const converDate = (date: number) => {
@@ -73,11 +75,15 @@ const StageCard = ({ stage, currentStage }: StageCardProps) => {
     }
 
     const onClickAddNextStage = () => {
-        setShowDialog(true);
+        setShowDialogAddNextStage(true);
+    }
+
+    const onClickAddComment = () => {
+        setShowDialogAddComment(true);
     }
 
     const onHideDialog = () => {
-        setShowDialog(false);
+        setShowDialogAddNextStage(false);
     }
     const handleButtonClick = () => {
         if (fileInputRef.current) {
@@ -110,13 +116,9 @@ const StageCard = ({ stage, currentStage }: StageCardProps) => {
     }, [stage])
     return (
         <div style={{ width: "100%" }}>
-            <AddNextStageDialog showDialog={showDialog} setShowDialog={setShowDialog} stage={stage} />
+            <AddComment showDialog={showDialogAddComment} setShowDialog={setShowDialogAddComment} stage={stage} />
+            <AddNextStageDialog showDialog={showDialogAddNextStage} setShowDialog={setShowDialogAddNextStage} stage={stage} />
             <Toast ref={msgs} position="bottom-center" />
-            <Dialog className='dialogForm-resp' header="Nueva Etapa" visible={showDialog} onHide={() => onHideDialog()} >
-                <div>
-                    <Tag id="stage.name" style={{ textAlign: 'right', fontSize: '16px' }} className={`tender-status stage${stage.name + 1}`}>{stages.tag[stage.name + 1]}</Tag>
-                </div>
-            </Dialog>
             <div className="stageCard">
                 <div className='container'>
                     <div style={{ marginBottom: '3rem' }}>
@@ -150,7 +152,7 @@ const StageCard = ({ stage, currentStage }: StageCardProps) => {
 
                     <div style={{ display: 'flex', alignItems: 'center', marginTop: '1rem', marginBottom: '1rem' }}>
                         <span style={{ marginRight: '10px' }}><strong>Comentarios: </strong></span>
-                        <Button icon="pi pi-plus" className="p-button-rounded p-button-sm p-button-outlined" disabled={!(currentStage == stage.name)}></Button>
+                        <Button icon="pi pi-plus" className="p-button-rounded p-button-sm p-button-outlined" disabled={!(currentStage == stage.name)} onClick={onClickAddComment}></Button>
                     </div>
                     <div style={{ display: "flex", justifyContent: "flex-start", width: '100%', maxHeight: '150px', border: '1px solid var(--surface-d)', borderRadius: '3px' }}>
                         {stageComments && !stageCommentsLoading && stageComments.map(item => (
