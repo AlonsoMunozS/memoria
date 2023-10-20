@@ -11,6 +11,7 @@ import { addLocale } from "primereact/api";
 import { createNewStage } from "../../../../../services/TenderStageService";
 import { updateTender } from "../../../../../services/TenderService";
 import { useRouter } from "next/router";
+import { ProgressSpinner } from "primereact/progressspinner";
 
 interface AddNextStage {
     showDialog: boolean,
@@ -46,9 +47,9 @@ const AddNextStageDialog = ({ showDialog, setShowDialog, stage, setCurrentStage 
 
             if (responseStatus === 201) {
                 setCurrentStage(data.newCurrentStage);
-                setLoading(true);
                 onHideDialog();
                 formik.resetForm();
+                setLoading(false);
             }
         }
     }
@@ -155,7 +156,15 @@ const AddNextStageDialog = ({ showDialog, setShowDialog, stage, setCurrentStage 
 
                                 <div className="confirm-button-container">
                                     <Button type="button" label="Cancelar" icon="pi pi-times" className="p-button-text" onClick={() => { onHideDialog() }} />
-                                    <Button type="submit" label="Guardar" icon="pi pi-check" iconPos="right" />
+                                    <Button
+                                        type="submit"
+                                        label="Guardar"
+                                        icon={loading ? null : 'pi pi-check'}
+                                        iconPos="right" // Esto coloca el icono a la derecha del texto del botón 
+                                        className={loading ? 'p-button-disabled' : ''}
+                                        disabled={loading}
+                                    >
+                                        {loading && <ProgressSpinner style={{ width: '20px', height: '20px' }} strokeWidth="15" animationDuration=".5s" />}</Button>
                                 </div>
                             </form>
                         </div>

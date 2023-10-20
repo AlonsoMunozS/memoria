@@ -4,22 +4,41 @@ import { useFormik } from 'formik';
 import { Button } from "primereact/button";
 import { classNames } from 'primereact/utils';
 import { InputTextarea } from "primereact/inputtextarea";
-import { createStageComments } from "../../../../../services/TenderStageService";
+import { createStageComments, getStageComments } from "../../../../../services/TenderStageService";
+import { ProgressSpinner } from "primereact/progressspinner";
+
+
+type StageComment = {
+    stageId: number
+    createdBy: string
+    createdAt: number
+    post: string
+}
 
 interface AddNextStage {
     showDialog: boolean,
     setShowDialog: React.Dispatch<React.SetStateAction<boolean>>,
-    stage: any
+    stage: any,
+    setStageCommentsLoading: React.Dispatch<React.SetStateAction<boolean>>,
+    setStageComments: React.Dispatch<React.SetStateAction<Array<StageComment> | undefined>>
 }
 
 interface FormErrors {
     post?: string,
 }
 
-const AddComment = ({ showDialog, setShowDialog, stage }: AddNextStage) => {
+const AddComment = ({ showDialog, setShowDialog, stage, setStageCommentsLoading, setStageComments }: AddNextStage) => {
+    const [loading, setLoading] = useState(false);
 
+    const getStageCommentsHandler = async () => {
+        setStageCommentsLoading(true);
+        const comments = await getStageComments(stage.id)
+        setStageComments(comments)
+        setStageCommentsLoading(false);
+    }
 
     const addNewComment = async (data: any) => {
+        setLoading(true);
         const body = {
             stageId: stage.id,
             post: data.post
@@ -29,6 +48,8 @@ const AddComment = ({ showDialog, setShowDialog, stage }: AddNextStage) => {
         if (responseStatus === 201) {
             onHideDialog();
             formik.resetForm();
+            setLoading(false);
+            getStageCommentsHandler()
         }
 
     }
@@ -83,7 +104,16 @@ const AddComment = ({ showDialog, setShowDialog, stage }: AddNextStage) => {
 
                                 <div className="confirm-button-container">
                                     <Button type="button" label="Cancelar" icon="pi pi-times" className="p-button-text" onClick={() => { onHideDialog() }} />
-                                    <Button type="submit" label="Guardar" icon="pi pi-check" iconPos="right" />
+                                    <Button
+                                        type="submit"
+                                        label="Guardar"
+                                        icon={loading ? null : 'pi pi-check'}
+                                        iconPos="right" // Esto coloca el icono a la derecha del texto del botón 
+                                        className={loading ? 'p-button-disabled' : ''}
+                                        disabled={loading}
+                                    >
+                                        {loading && <ProgressSpinner style={{ width: '20px', height: '20px' }} strokeWidth="15" animationDuration=".5s" />}</Button>
+
                                 </div>
                             </form>
                         </div>
