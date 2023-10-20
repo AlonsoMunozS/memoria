@@ -19,9 +19,10 @@ type StageComment = {
 }
 interface StageCardProps {
     stage?: any,
-    currentStage?: number
+    currentStage?: number,
+    setCurrentStage: React.Dispatch<React.SetStateAction<number>>
 }
-const StageCard = ({ stage, currentStage }: StageCardProps) => {
+const StageCard = ({ stage, currentStage, setCurrentStage }: StageCardProps) => {
     const [showDialogAddNextStage, setShowDialogAddNextStage] = useState(false);
     const [showDialogAddComment, setShowDialogAddComment] = useState(false);
     const [fileSelected, setFileSelected] = useState<File>();
@@ -46,7 +47,6 @@ const StageCard = ({ stage, currentStage }: StageCardProps) => {
         setFilesLoading(true);
         const filesName = await getStageFiles(stage.tenderId, stage.name);
         setFiles(filesName)
-        console.log(filesName)
         setFilesLoading(false);
     }
 
@@ -82,9 +82,6 @@ const StageCard = ({ stage, currentStage }: StageCardProps) => {
         setShowDialogAddComment(true);
     }
 
-    const onHideDialog = () => {
-        setShowDialogAddNextStage(false);
-    }
     const handleButtonClick = () => {
         if (fileInputRef.current) {
             fileInputRef.current.click()
@@ -117,7 +114,7 @@ const StageCard = ({ stage, currentStage }: StageCardProps) => {
     return (
         <div style={{ width: "100%" }}>
             <AddComment showDialog={showDialogAddComment} setShowDialog={setShowDialogAddComment} stage={stage} />
-            <AddNextStageDialog showDialog={showDialogAddNextStage} setShowDialog={setShowDialogAddNextStage} stage={stage} />
+            <AddNextStageDialog showDialog={showDialogAddNextStage} setShowDialog={setShowDialogAddNextStage} stage={stage} setCurrentStage={setCurrentStage} />
             <Toast ref={msgs} position="bottom-center" />
             <div className="stageCard">
                 <div className='container'>

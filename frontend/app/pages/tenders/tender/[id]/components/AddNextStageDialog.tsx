@@ -15,7 +15,8 @@ import { useRouter } from "next/router";
 interface AddNextStage {
     showDialog: boolean,
     setShowDialog: React.Dispatch<React.SetStateAction<boolean>>,
-    stage: any
+    stage: any,
+    setCurrentStage: React.Dispatch<React.SetStateAction<number>>
 }
 
 interface FormErrors {
@@ -23,14 +24,13 @@ interface FormErrors {
     toDate?: any
 }
 
-const AddNextStageDialog = ({ showDialog, setShowDialog, stage }: AddNextStage) => {
+const AddNextStageDialog = ({ showDialog, setShowDialog, stage, setCurrentStage }: AddNextStage) => {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
 
     const addNewNextStage = async (data: any) => {
         setLoading(true);
         var date = new Date(data.toDate)
-        console.log(data);
         if (typeof (router.query.id) == "string") {
 
             const body = {
@@ -45,6 +45,7 @@ const AddNextStageDialog = ({ showDialog, setShowDialog, stage }: AddNextStage) 
             const responseStatusCurrentStage = await updateTender(parseInt(router.query.id, 10), updateCurrentStage);
 
             if (responseStatus === 201) {
+                setCurrentStage(data.newCurrentStage);
                 setLoading(true);
                 onHideDialog();
                 formik.resetForm();

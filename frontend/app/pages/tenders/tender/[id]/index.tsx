@@ -7,9 +7,6 @@ import { Card } from "primereact/card";
 import StagesInfo from "./components/StagesInfo";
 import { getTender } from "../../../../services/TenderService";
 import { Tender } from "../models/Tender";
-import { Tag } from "primereact/tag";
-import { Button } from "primereact/button";
-import { Carousel } from "primereact/carousel";
 import { getTenderStages } from "../../../../services/TenderStageService";
 const Tender = () => {
     const [loggedUser, setLoggedUser] = useState<boolean>(false);
@@ -21,12 +18,14 @@ const Tender = () => {
     const [currentStage, setCurrentStage] = useState<number>(0);
 
     const getStages = async (tenderId: number) => {
+        setStagesLoading(true);
         const responseTenders = await getTenderStages(tenderId);
         setTenderStages(responseTenders);
         setStagesLoading(false);
     }
 
     const getTenderInfo = async (id: number) => {
+        setTenderLoading(true);
         const responseTender = await getTender(id);
         setTender(responseTender);
         setCurrentStage(responseTender.currentStage);
@@ -44,7 +43,7 @@ const Tender = () => {
             }
             setLoggedUser(true);
         }
-    }, [router.query.id]);
+    }, [router.query.id, currentStage]);
 
 
     return (
@@ -56,7 +55,7 @@ const Tender = () => {
                     </Layout>
                     <Card title={`Licitación N°: ${router.query.id ? router.query.id : ''}`}>
                         <GeneralInfo tenderLoading={tenderLoading} tender={tender} />
-                        <StagesInfo stagesLoading={stagesLoading} tenderStages={tenderStages} currentStage={currentStage} />
+                        <StagesInfo stagesLoading={stagesLoading} tenderStages={tenderStages} currentStage={currentStage} setCurrentStage={setCurrentStage} />
                     </Card>
                 </div>
             )}
