@@ -81,7 +81,7 @@ const TableTenders = ({ tenders, loading, setLoading }: TenderProps) => {
     }
 
     const actionBodyView = (rowData: any) => {
-        return <Button className="p-button-rounded" icon="pi pi-eye" onClick={() => { window.open(`http://http://licitech.brazilsouth.cloudapp.azure.com:3001/tenders/tender/${rowData.id}`, '_blank'); }}></Button>;
+        return <Button className="p-button-rounded" icon="pi pi-eye" onClick={() => { window.open(`http://licitech.brazilsouth.cloudapp.azure.com:3001/tenders/tender/${rowData.id}`, '_blank'); }}></Button>;
     }
     const header = renderHeader();
 
