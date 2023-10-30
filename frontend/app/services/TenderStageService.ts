@@ -14,7 +14,7 @@ type newStage = {
 const getTenderStages = async (tenderId: number) => {
     try {
         const authToken = localStorage.getItem('authToken');
-        const response = await fetch(`http://52.255.142.208:3000/tenders/tender/stage/${tenderId}`, {
+        const response = await fetch(`http://licitech.brazilsouth.cloudapp.azure.com:3000/tenders/tender/stage/${tenderId}`, {
             headers: {
                 'Authorization': `Bearer ${authToken}`
             }
@@ -30,7 +30,7 @@ const uploadFile = async (tenderId: number, stageId: number, file: File) => {
         const formData = new FormData();
         formData.append("file", file);
         const authToken = localStorage.getItem('authToken');
-        const response = await fetch(`http://52.255.142.208:3000/tenders/tender/stage/file/upload/${tenderId}/${stageId}`, {
+        const response = await fetch(`http://licitech.brazilsouth.cloudapp.azure.com:3000/tenders/tender/stage/file/upload/${tenderId}/${stageId}`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${authToken}`
@@ -45,7 +45,7 @@ const uploadFile = async (tenderId: number, stageId: number, file: File) => {
 const getStageComments = async (stageId: number) => {
     try {
         const authToken = localStorage.getItem('authToken');
-        const response = await fetch(`http://52.255.142.208:3000/tenders/tender/stage/comment/${stageId}`, {
+        const response = await fetch(`http://licitech.brazilsouth.cloudapp.azure.com:3000/tenders/tender/stage/comment/${stageId}`, {
             headers: {
                 'Authorization': `Bearer ${authToken}`
             }
@@ -59,7 +59,7 @@ const getStageComments = async (stageId: number) => {
 const getStageFiles = async (tenderId: number, stageName: number) => {
     try {
         const authToken = localStorage.getItem('authToken');
-        const response = await fetch(`http://52.255.142.208:3000/tenders/tender/stage/file/find/${tenderId}/${stageName}`, {
+        const response = await fetch(`http://licitech.brazilsouth.cloudapp.azure.com:3000/tenders/tender/stage/file/find/${tenderId}/${stageName}`, {
             headers: {
                 'Authorization': `Bearer ${authToken}`
             }
@@ -74,7 +74,7 @@ const getStageFiles = async (tenderId: number, stageName: number) => {
 const createStageComments = async (body: { stageId: number, post: string }) => {
     try {
         const authToken = localStorage.getItem('authToken');
-        const response = await fetch(`http://52.255.142.208:3000/tenders/tender/stage/comment/create`, {
+        const response = await fetch(`http://licitech.brazilsouth.cloudapp.azure.com:3000/tenders/tender/stage/comment/create`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${authToken}`
@@ -91,7 +91,7 @@ const createStageComments = async (body: { stageId: number, post: string }) => {
 const createNewStage = async (body: newStage) => {
     try {
         const authToken = localStorage.getItem('authToken');
-        const response = await fetch('http://52.255.142.208:3000/tenders/tender/stage/create', {
+        const response = await fetch('http://licitech.brazilsouth.cloudapp.azure.com:3000/tenders/tender/stage/create', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
