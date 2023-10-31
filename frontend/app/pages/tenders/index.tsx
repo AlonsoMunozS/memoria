@@ -35,7 +35,7 @@ const Tenders: React.FC = () => {
           <Layout>
             <HomeBar />
           </Layout>
-          <TableTenders tenders={tenders} loading={loading} setLoading={setLoading} ></TableTenders>
+          <TableTenders tenders={tenders} loading={loading} setLoading={setLoading} setTenders={setTenders}></TableTenders>
         </div>
       )}
 

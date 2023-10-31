@@ -9,6 +9,7 @@ import { Menu } from "primereact/menu";
 import { ProgressSpinner } from "primereact/progressspinner";
 import { Card } from "primereact/card";
 import AddNextStageDialog from "./AddNextStageDialog";
+import AddComment from "./AddComment";
 
 type StageComment = {
     stageId: number
@@ -18,10 +19,12 @@ type StageComment = {
 }
 interface StageCardProps {
     stage?: any,
-    currentStage?: number
+    currentStage?: number,
+    setCurrentStage: React.Dispatch<React.SetStateAction<number>>
 }
-const StageCard = ({ stage, currentStage }: StageCardProps) => {
-    const [showDialog, setShowDialog] = useState(false);
+const StageCard = ({ stage, currentStage, setCurrentStage }: StageCardProps) => {
+    const [showDialogAddNextStage, setShowDialogAddNextStage] = useState(false);
+    const [showDialogAddComment, setShowDialogAddComment] = useState(false);
     const [fileSelected, setFileSelected] = useState<File>();
     const msgs = useRef<Toast | null>(null);
     const converDate = (date: number) => {
@@ -44,7 +47,6 @@ const StageCard = ({ stage, currentStage }: StageCardProps) => {
         setFilesLoading(true);
         const filesName = await getStageFiles(stage.tenderId, stage.name);
         setFiles(filesName)
-        console.log(filesName)
         setFilesLoading(false);
     }
 
@@ -66,6 +68,8 @@ const StageCard = ({ stage, currentStage }: StageCardProps) => {
         getStageCommentsHandler()
 
     }
+
+
     const getStageCommentsHandler = async () => {
         const comments = await getStageComments(stage.id)
         setStageComments(comments)
@@ -73,12 +77,13 @@ const StageCard = ({ stage, currentStage }: StageCardProps) => {
     }
 
     const onClickAddNextStage = () => {
-        setShowDialog(true);
+        setShowDialogAddNextStage(true);
     }
 
-    const onHideDialog = () => {
-        setShowDialog(false);
+    const onClickAddComment = () => {
+        setShowDialogAddComment(true);
     }
+
     const handleButtonClick = () => {
         if (fileInputRef.current) {
             fileInputRef.current.click()
@@ -110,13 +115,9 @@ const StageCard = ({ stage, currentStage }: StageCardProps) => {
     }, [stage])
     return (
         <div style={{ width: "100%" }}>
-            <AddNextStageDialog showDialog={showDialog} setShowDialog={setShowDialog} stage={stage} />
+            <AddComment showDialog={showDialogAddComment} setShowDialog={setShowDialogAddComment} stage={stage} setStageCommentsLoading={setStageCommentsLoading} setStageComments={setStageComments} />
+            <AddNextStageDialog showDialog={showDialogAddNextStage} setShowDialog={setShowDialogAddNextStage} stage={stage} setCurrentStage={setCurrentStage} />
             <Toast ref={msgs} position="bottom-center" />
-            <Dialog className='dialogForm-resp' header="Nueva Etapa" visible={showDialog} onHide={() => onHideDialog()} >
-                <div>
-                    <Tag id="stage.name" style={{ textAlign: 'right', fontSize: '16px' }} className={`tender-status stage${stage.name + 1}`}>{stages.tag[stage.name + 1]}</Tag>
-                </div>
-            </Dialog>
             <div className="stageCard">
                 <div className='container'>
                     <div style={{ marginBottom: '3rem' }}>
@@ -140,24 +141,26 @@ const StageCard = ({ stage, currentStage }: StageCardProps) => {
                         {fileSelected && <Button className="p-button-text" icon={"pi pi-times"} onClick={handleCancelFile} />}
 
                     </div>
-                    {!filesLoading && files.length != 0 && <div>
-                        <Menu model={items} style={{ width: '100%', maxHeight: '150px', overflowY: 'auto' }} />
-                    </div>}
-                    <div style={{ display: "flex", justifyContent: "flex-start", width: '100%', maxHeight: '150px', border: '1px solid var(--surface-d)', borderRadius: '3px' }}>
-                        {filesLoading ? <ProgressSpinner style={{ width: '50px', height: '50px' }} strokeWidth="8" fill="var(--surface-ground)" animationDuration=".5s" /> : files.length == 0 && <span>No hay archivos</span>}
+                    <div style={{ marginBottom: '5vh' }}>
+                        {!filesLoading && files.length != 0 && <div>
+                            <Menu model={items} style={{ width: '100%', maxHeight: '150px', overflowY: 'auto' }} />
+                        </div>}
+                        <div style={{ display: "flex", justifyContent: "flex-start", width: '100%', maxHeight: '150px', border: '1px solid var(--surface-d)', borderRadius: '3px' }}>
+                            {filesLoading ? <ProgressSpinner style={{ width: '50px', height: '50px' }} strokeWidth="8" fill="var(--surface-ground)" animationDuration=".5s" /> : files.length == 0 && <span>No hay archivos</span>}
 
+                        </div>
                     </div>
 
-                    <div style={{ display: 'flex', alignItems: 'center', marginTop: '1rem', marginBottom: '1rem' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
                         <span style={{ marginRight: '10px' }}><strong>Comentarios: </strong></span>
-                        <Button icon="pi pi-plus" className="p-button-rounded p-button-sm p-button-outlined" disabled={!(currentStage == stage.name)}></Button>
+                        <Button icon="pi pi-plus" className="p-button-rounded p-button-sm p-button-outlined" disabled={!(currentStage == stage.name)} onClick={onClickAddComment}></Button>
                     </div>
-                    <div style={{ display: "flex", justifyContent: "flex-start", width: '100%', maxHeight: '150px', border: '1px solid var(--surface-d)', borderRadius: '3px' }}>
+                    <div style={{ display: "flex", justifyContent: "flex-start", width: '100%', maxHeight: '150px', border: '1px solid var(--surface-d)', borderRadius: '3px', marginBottom: '3vh' }}>
                         {stageComments && !stageCommentsLoading && stageComments.map(item => (
                             <div className="p-col-12 p-md-6 p-lg-4" key={item.stageId} style={{ width: "100%" }}>
                                 <Card >
-                                    <div><strong>Creado por:</strong> {item.createdBy}</div>
-                                    <div><strong>Fecha de creacion:</strong> {item.createdAt}</div>
+                                    <div><strong>Creado por:</strong> Admin</div>
+                                    <div><strong>Fecha de creacion:</strong> {converDate(item.createdAt)}</div>
                                     <div><strong>Comentario:</strong> {item.post}</div>
                                 </Card>
 

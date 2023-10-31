@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Dialog } from "primereact/dialog";
 import { Tag } from "primereact/tag";
 import { stages } from "../../../../../data/stages";
@@ -11,11 +11,14 @@ import { addLocale } from "primereact/api";
 import { createNewStage } from "../../../../../services/TenderStageService";
 import { updateTender } from "../../../../../services/TenderService";
 import { useRouter } from "next/router";
+import { ProgressSpinner } from "primereact/progressspinner";
+import { Toast } from "primereact/toast";
 
 interface AddNextStage {
     showDialog: boolean,
     setShowDialog: React.Dispatch<React.SetStateAction<boolean>>,
-    stage: any
+    stage: any,
+    setCurrentStage: React.Dispatch<React.SetStateAction<number>>
 }
 
 interface FormErrors {
@@ -23,14 +26,13 @@ interface FormErrors {
     toDate?: any
 }
 
-const AddNextStageDialog = ({ showDialog, setShowDialog, stage }: AddNextStage) => {
+const AddNextStageDialog = ({ showDialog, setShowDialog, stage, setCurrentStage }: AddNextStage) => {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
-
+    const msgs = useRef<Toast | null>(null);
     const addNewNextStage = async (data: any) => {
         setLoading(true);
         var date = new Date(data.toDate)
-        console.log(data);
         if (typeof (router.query.id) == "string") {
 
             const body = {
@@ -45,9 +47,12 @@ const AddNextStageDialog = ({ showDialog, setShowDialog, stage }: AddNextStage) 
             const responseStatusCurrentStage = await updateTender(parseInt(router.query.id, 10), updateCurrentStage);
 
             if (responseStatus === 201) {
-                setLoading(true);
+                setCurrentStage(data.newCurrentStage);
                 onHideDialog();
                 formik.resetForm();
+                setLoading(false);
+                msgs.current?.show({ severity: "success", summary: "Exitoso", detail: "Etapa creada correctamente", life: 3000 });
+
             }
         }
     }
@@ -127,6 +132,7 @@ const AddNextStageDialog = ({ showDialog, setShowDialog, stage }: AddNextStage) 
 
     return (
         <div>
+            <Toast ref={msgs} position="bottom-center" />
             <Dialog className='dialogForm-resp' header="Nueva Etapa" visible={showDialog} onHide={() => onHideDialog()} >
                 <div className="form-demo">
                     <div className="flex justify-content-center">
@@ -154,7 +160,15 @@ const AddNextStageDialog = ({ showDialog, setShowDialog, stage }: AddNextStage) 
 
                                 <div className="confirm-button-container">
                                     <Button type="button" label="Cancelar" icon="pi pi-times" className="p-button-text" onClick={() => { onHideDialog() }} />
-                                    <Button type="submit" label="Guardar" icon="pi pi-check" iconPos="right" />
+                                    <Button
+                                        type="submit"
+                                        label="Guardar"
+                                        icon={loading ? null : 'pi pi-check'}
+                                        iconPos="right" // Esto coloca el icono a la derecha del texto del botón 
+                                        className={loading ? 'p-button-disabled' : ''}
+                                        disabled={loading}
+                                    >
+                                        {loading && <ProgressSpinner style={{ width: '20px', height: '20px' }} strokeWidth="15" animationDuration=".5s" />}</Button>
                                 </div>
                             </form>
                         </div>

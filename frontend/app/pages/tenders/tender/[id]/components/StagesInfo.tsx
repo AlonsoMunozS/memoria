@@ -7,8 +7,9 @@ interface StagesInfoProps {
     tenderStages: Array<any>
     currentStage?: number;
     stagesLoading: boolean;
+    setCurrentStage: React.Dispatch<React.SetStateAction<number>>
 }
-const StagesInfo = ({ tenderStages, currentStage, stagesLoading }: StagesInfoProps) => {
+const StagesInfo = ({ tenderStages, currentStage, stagesLoading, setCurrentStage }: StagesInfoProps) => {
     const [selectedStage, setSelectedStage] = useState<{ name?: number, toDate?: number }>();
     const onClickHandle = (stage: any) => {
         setSelectedStage(stage);
@@ -42,7 +43,7 @@ const StagesInfo = ({ tenderStages, currentStage, stagesLoading }: StagesInfoPro
                             <Button key={index} id={`${stage.name}`} name={stages.tag[stage.name]} tooltip={stages.tag[stage.name]} tooltipOptions={{ position: "top", style: { fontSize: '10px', padding: '4px 8px' } }} className="buttonStage p-button-rounded p-button-text p-button-raised" style={{ color: selectedStage?.name == stage.name ? 'white' : '#545454', backgroundColor: selectedStage?.name == stage.name ? '#6366F1' : 'white' }} label={(index + 1).toString()} onClick={() => { onClickHandle(stage) }} />
                         ))}
                     </div>
-                    {selectedStage && <StageCard stage={selectedStage} currentStage={currentStage} />}
+                    {selectedStage && <StageCard stage={selectedStage} currentStage={currentStage} setCurrentStage={setCurrentStage} />}
                 </div>}
             </AccordionTab>
         </Accordion>

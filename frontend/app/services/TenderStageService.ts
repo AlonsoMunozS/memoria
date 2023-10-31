@@ -77,6 +77,7 @@ const createStageComments = async (body: { stageId: number, post: string }) => {
         const response = await fetch(`http://licitech.brazilsouth.cloudapp.azure.com:3000/tenders/tender/stage/comment/create`, {
             method: 'POST',
             headers: {
+                'Content-Type': 'application/json',
                 'Authorization': `Bearer ${authToken}`
             },
             body: JSON.stringify(body)

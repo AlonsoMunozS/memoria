@@ -8,7 +8,7 @@ const UserPerfil: React.FC = () => {
     const router = useRouter();
     const items = [
         {
-            label: '¡Hola, Usuario!',
+            label: '¡Hola, Admin!',
             items: [
                 {
                     label: 'Ver perfil',
@@ -31,7 +31,7 @@ const UserPerfil: React.FC = () => {
             <div className="card">
                 <Menu model={items} popup ref={menu} id="popup_menu" />
                 <Button
-                    label="Usuario"
+                    label="Admin"
                     icon="pi pi-user"
                     className="p-button-rounded p-button-outlined fullbutton-resp"
                     onClick={(event) => menu.current?.toggle(event)}

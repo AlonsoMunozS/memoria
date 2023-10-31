@@ -9,12 +9,21 @@ import { Tag } from 'primereact/tag';
 import { Dropdown, DropdownProps } from 'primereact/dropdown';
 import { createTender } from '../../../services/TenderService';
 import { ProgressSpinner } from 'primereact/progressspinner';
+import { getTenders } from '../../../services/TenderService';
+import { Tender } from '../tender/models/Tender';
+import { Calendar } from 'primereact/calendar';
+import { addLocale } from "primereact/api";
+import { error } from 'console';
+import { createNewStage } from '../../../services/TenderStageService';
 
 interface dialogProps {
     setShowDialog: (bool: boolean) => void,
     setType: React.Dispatch<React.SetStateAction<"success" | "info" | "warn" | "error" | undefined>>,
     setMessage: React.Dispatch<React.SetStateAction<string | undefined>>
-    setShowToast: React.Dispatch<React.SetStateAction<boolean>>
+    setShowToast: React.Dispatch<React.SetStateAction<boolean>>,
+    setTenders: React.Dispatch<React.SetStateAction<Array<Tender>>>,
+    setLoadingTenders: React.Dispatch<React.SetStateAction<boolean>>,
+    tenders: Array<Tender>
 }
 
 interface FormErrors {
@@ -25,13 +34,14 @@ interface FormErrors {
     commune?: string
     address?: string
     mercadoPublicoId?: string
+    toDate?: any
 }
 interface FormData {
     name: string;
     safi: string;
 }
 
-export const NewTenderForm: React.FC<dialogProps> = ({ setShowDialog, setType, setMessage, setShowToast }) => {
+export const NewTenderForm: React.FC<dialogProps> = ({ setShowDialog, setType, setMessage, setShowToast, setTenders, setLoadingTenders, tenders }) => {
     const [showMessage, setShowMessage] = useState(false);
     const [formData, setFormData] = useState<FormData>({
         name: '',
@@ -114,19 +124,50 @@ export const NewTenderForm: React.FC<dialogProps> = ({ setShowDialog, setType, s
         setShowDialog(false);
     }
 
+    const addNewNextStage = async (tender: Tender, data: any) => {
+        var date = new Date(data.toDate)
+
+        const body = {
+            tenderId: tender.id,
+            name: 0,
+            toDate: date.getTime()
+        }
+        await createNewStage(body);
+    }
+
+    const getTenderList = async (data: any) => {
+        setLoadingTenders(true);
+        const responseTenders = await getTenders();
+        setTenders(responseTenders);
+        addNewNextStage(responseTenders[responseTenders.length - 1], data);
+        setLoadingTenders(false);
+    }
+
     const addNewTender = async (data: any) => {
         setLoading(true);
         const responseStatus = await createTender(data);
         if (responseStatus === 201) {
-            setLoading(true);
             setType("success")
             setMessage("Licitación agregada con éxito")
             onHide();
             setShowToast(true);
             formik.resetForm();
+            setLoading(false);
+            getTenderList(data);
 
         }
     }
+
+    addLocale('es', {
+        firstDayOfWeek: 1,
+        dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+        dayNamesShort: ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'],
+        dayNamesMin: ['D', 'L', 'M', 'X', 'J', 'V', 'S'],
+        monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+        monthNamesShort: ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'],
+        today: 'Hoy',
+        clear: 'Limpiar'
+    });
 
     const formik = useFormik({
         initialValues: {
@@ -137,7 +178,8 @@ export const NewTenderForm: React.FC<dialogProps> = ({ setShowDialog, setType, s
             commune: undefined,
             address: '',
             mercadoPublicoId: '',
-            category: undefined
+            category: undefined,
+            toDate: undefined
 
         },
         validate: (data) => {
@@ -172,6 +214,10 @@ export const NewTenderForm: React.FC<dialogProps> = ({ setShowDialog, setType, s
 
             if (!data.address) {
                 errors.address = 'Este campo es requerido.';
+            }
+
+            if (!data.toDate) {
+                errors.toDate = 'Este campo es requerido';
             }
 
             return errors;
@@ -253,6 +299,13 @@ export const NewTenderForm: React.FC<dialogProps> = ({ setShowDialog, setType, s
                             <span>
                                 <Dropdown id='category' name='category' value={formik.values.category} options={categories.categories} onChange={formik.handleChange} filter showClear placeholder="Seleccionar Categoría" emptyFilterMessage="No se encontraron coincidencias" valueTemplate={dropSelectedTemplate} itemTemplate={dropOptionTemplate} />
                                 <label htmlFor="category" className={classNames({ 'p-error': isFormFieldValid('commune') })}></label>
+                            </span>
+                        </div>
+                        <div className="field">
+                            <span>
+                                <Calendar id="toDate" name="toDate" value={formik.values.toDate} onChange={formik.handleChange} onBlur={formik.handleBlur} placeholder="Fecha de término de Publicación" locale="es" />
+                                <label htmlFor="toDate" className={classNames({ 'p-error': isFormFieldValid("toDate") })}></label>
+                                {getFormErrorMessage('toDate')}
                             </span>
                         </div>
                         <div className="confirm-button-container">
