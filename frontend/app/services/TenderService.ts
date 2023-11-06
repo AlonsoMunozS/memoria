@@ -14,7 +14,7 @@ export type UpdateTenderValue = {
 const createTender = async (body: Tender) => {
     try {
         const authToken = localStorage.getItem('authToken');
-        const response = await fetch('http://licitech.brazilsouth.cloudapp.azure.com:3000/tenders/create', {
+        const response = await fetch('http://191.233.245.250:3000/tenders/create', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -31,7 +31,7 @@ const createTender = async (body: Tender) => {
 const getTenders = async () => {
     try {
         const authToken = localStorage.getItem('authToken');
-        const response = await fetch('http://licitech.brazilsouth.cloudapp.azure.com:3000/tenders/', {
+        const response = await fetch('http://191.233.245.250:3000/tenders/', {
             headers: {
                 'Authorization': `Bearer ${authToken}`
             }
@@ -46,7 +46,7 @@ const getTenders = async () => {
 const getTender = async (id: number) => {
     try {
         const authToken = localStorage.getItem('authToken');
-        const response = await fetch(`http://licitech.brazilsouth.cloudapp.azure.com:3000/tenders/tender/${id}`, {
+        const response = await fetch(`http://191.233.245.250:3000/tenders/tender/${id}`, {
             headers: {
                 'Authorization': `Bearer ${authToken}`
             }
@@ -61,7 +61,7 @@ const getTender = async (id: number) => {
 const updateTender = async (id: number, body: UpdateTenderValue) => {
     try {
         const authToken = localStorage.getItem('authToken');
-        const response = await fetch(`http://licitech.brazilsouth.cloudapp.azure.com:3000/tenders/tender/update/${id}`, {
+        const response = await fetch(`http://191.233.245.250:3000/tenders/tender/update/${id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',

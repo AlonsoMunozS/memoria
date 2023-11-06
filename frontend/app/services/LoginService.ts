@@ -4,7 +4,7 @@ interface User {
 }
 const login = async (body: User) => {
     let status = null;
-    await fetch('http://licitech.brazilsouth.cloudapp.azure.com:3000/users/login', {
+    await fetch('http://191.233.245.250:3000/users/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
