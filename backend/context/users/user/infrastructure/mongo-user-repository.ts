@@ -76,4 +76,25 @@ export class MongoUserRepository implements UserRepository {
       await client.close();
     }
   }
+  async find(): Promise<Array<User>> {
+    try {
+      await client.connect();
+      const collection = database.collection(collectionName);
+      const usersCursor = collection.find({});
+      const usersArray = await usersCursor.toArray();
+      const mappedUsers: User[] = usersArray.map((userDoc: any) => {
+        return new User({
+          id: userDoc?.id,
+          rut: userDoc?.rut,
+          email: userDoc?.email,
+          createAt: userDoc?.createAt,
+          userPermits: userDoc?.userPermits,
+          role: userDoc?.role
+        });
+      });
+      return mappedUsers;
+    } finally {
+      await client.close();
+    }
+  }
 }
