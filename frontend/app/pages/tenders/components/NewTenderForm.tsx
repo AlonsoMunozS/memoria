@@ -13,7 +13,6 @@ import { getTenders } from '../../../services/TenderService';
 import { Tender } from '../tender/models/Tender';
 import { Calendar } from 'primereact/calendar';
 import { addLocale } from "primereact/api";
-import { error } from 'console';
 import { createNewStage } from '../../../services/TenderStageService';
 
 interface dialogProps {
@@ -22,8 +21,7 @@ interface dialogProps {
     setMessage: React.Dispatch<React.SetStateAction<string | undefined>>
     setShowToast: React.Dispatch<React.SetStateAction<boolean>>,
     setTenders: React.Dispatch<React.SetStateAction<Array<Tender>>>,
-    setLoadingTenders: React.Dispatch<React.SetStateAction<boolean>>,
-    tenders: Array<Tender>
+    setLoadingTenders: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 interface FormErrors {
@@ -41,7 +39,7 @@ interface FormData {
     safi: string;
 }
 
-export const NewTenderForm: React.FC<dialogProps> = ({ setShowDialog, setType, setMessage, setShowToast, setTenders, setLoadingTenders, tenders }) => {
+export const NewTenderForm: React.FC<dialogProps> = ({ setShowDialog, setType, setMessage, setShowToast, setTenders, setLoadingTenders }) => {
     const [showMessage, setShowMessage] = useState(false);
     const [formData, setFormData] = useState<FormData>({
         name: '',

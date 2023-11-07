@@ -15,6 +15,12 @@ const UserPerfil: React.FC = () => {
                     icon: 'pi pi-user-edit'
                 },
                 {
+                    label: 'Panel de Administrador',
+                    icon: 'pi pi-shield',
+                    command: () => { router.push('/admin') },
+                    visible: true
+                },
+                {
                     label: 'Cerrar Sesión',
                     icon: 'pi pi-sign-out',
                     command: () => {
