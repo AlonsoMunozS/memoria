@@ -44,6 +44,7 @@ export class MongoUserRepository implements UserRepository {
       const user = new User({
         id: userFound?.userId,
         createAt: userFound?.createAt,
+        name: userFound?.name,
         email: userFound?.email,
         rut: userFound?.rut,
         userPermits: userFound?.userPermits,
@@ -64,6 +65,7 @@ export class MongoUserRepository implements UserRepository {
       const mappedUser: User[] = usersArray.map((userDoc: any) => {
         return new User({
           id: userDoc?.id,
+          name: userDoc?.name,
           email: userDoc?.email,
           createAt: userDoc?.createAt,
           role: userDoc?.role,
@@ -85,6 +87,7 @@ export class MongoUserRepository implements UserRepository {
       const mappedUsers: User[] = usersArray.map((userDoc: any) => {
         return new User({
           id: userDoc?.id,
+          name: userDoc?.name,
           rut: userDoc?.rut,
           email: userDoc?.email,
           createAt: userDoc?.createAt,

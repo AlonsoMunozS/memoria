@@ -3,14 +3,16 @@ import { UserAttributes } from "./UserAttributes"
 
 export class User {
 	readonly id: string
+	readonly name: string
 	readonly rut: string
 	readonly email: string
 	readonly createAt: number
 	readonly userPermits?: UserPermits
 	readonly role: string
 
-	constructor({ id, rut, email, createAt, userPermits, role }: {
+	constructor({ id, name, rut, email, createAt, userPermits, role }: {
 		id: string,
+		name: string,
 		rut: string,
 		email: string,
 		createAt: number
@@ -19,6 +21,7 @@ export class User {
 
 	}) {
 		this.id = id
+		this.name = name
 		this.rut = rut
 		this.email = email
 		this.createAt = createAt
@@ -34,6 +37,7 @@ export class User {
 		userAttributes: UserAttributes,
 	}): User {
 		const currentDate = Date.now()
+		const name = userAttributes.name
 		const rut = userAttributes.rut
 		const email = userAttributes.email
 		const userPermits = userAttributes.userPermits
@@ -41,6 +45,7 @@ export class User {
 
 		const user = new User({
 			id,
+			name,
 			rut,
 			email,
 			createAt: currentDate,
