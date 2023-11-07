@@ -23,7 +23,6 @@ interface dialogProps {
     setShowToast: React.Dispatch<React.SetStateAction<boolean>>,
     setTenders: React.Dispatch<React.SetStateAction<Array<Tender>>>,
     setLoadingTenders: React.Dispatch<React.SetStateAction<boolean>>,
-    tenders: Array<Tender>
 }
 
 interface FormErrors {
@@ -41,7 +40,7 @@ interface FormData {
     safi: string;
 }
 
-export const NewTenderForm: React.FC<dialogProps> = ({ setShowDialog, setType, setMessage, setShowToast, setTenders, setLoadingTenders, tenders }) => {
+export const NewTenderForm: React.FC<dialogProps> = ({ setShowDialog, setType, setMessage, setShowToast, setTenders, setLoadingTenders }) => {
     const [showMessage, setShowMessage] = useState(false);
     const [formData, setFormData] = useState<FormData>({
         name: '',

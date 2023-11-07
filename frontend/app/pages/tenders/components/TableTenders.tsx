@@ -99,9 +99,9 @@ const TableTenders = ({ tenders, loading, setLoading, setTenders }: TenderProps)
                 filters={filters} filterDisplay="menu"
                 globalFilterFields={['name', 'mercadoPublicoId', 'currentStage']} emptyMessage="No se han encontrado licitaciones."
                 currentPageReportTemplate={"Se encontraton {totalRecords} Licitaciones"}>
-                <Column field="name" header="Nombre" sortable filter filterPlaceholder="Búsqueda por nombre" style={{ minWidth: '14rem' }} />
-                <Column field="mercadoPublicoId" header="ID Mercado Público" sortable filter filterPlaceholder="Búsqueda por Id mercado público" style={{ minWidth: '14rem' }} />
-                <Column field="currentStage" header="Etapa" sortable filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '10rem' }} body={currentStageBodyTemplate} filter filterElement={currentStageFilterTemplate} />
+                <Column field="name" header="Nombre" />
+                <Column field="mercadoPublicoId" header="ID Mercado Público" />
+                <Column field="currentStage" header="Etapa" body={currentStageBodyTemplate} />
                 <Column header='Ver' headerStyle={{ width: '4rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={actionBodyView} />
             </DataTable>
             <NewTenderDialog showDialog={displayNewTenderDialog} setShowDialog={setDisplayNewTenderDialog}>
