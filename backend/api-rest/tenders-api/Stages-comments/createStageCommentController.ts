@@ -6,6 +6,7 @@ import { CreateStageCommentRequest } from "../../../context/tenders/stages/stage
 
 type CreateStageCommentBodyRequest = {
   stageId: number
+  createdBy: string
   post: string
 }
 
@@ -24,13 +25,13 @@ export class CreateStageCommentController {
 
     const token = authorization.split(" ")[1]
 
-    const createdBy = await VerifyToken(token)
-    if (!createdBy) {
+    const tokenVerified = await VerifyToken(token)
+    if (!tokenVerified) {
       res.status(401).send();
       return;
     }
 
-    const { stageId, post } = req.body as CreateStageCommentBodyRequest;
+    const { stageId, createdBy, post } = req.body as CreateStageCommentBodyRequest;
 
     const today = new Date();
     const createdAt = today.getTime();
@@ -41,8 +42,8 @@ export class CreateStageCommentController {
     }
     const request: CreateStageCommentRequest = {
       stageId,
-      post,
       createdBy,
+      post,
       createdAt
     }
 
