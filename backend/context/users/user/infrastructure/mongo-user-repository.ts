@@ -101,4 +101,15 @@ export class MongoUserRepository implements UserRepository {
       await client.close();
     }
   }
+  async updatePermits(updatedUser: User): Promise<void> {
+    try {
+      await client.connect();
+      const collection = database.collection(collectionName);
+      const filter = { id: updatedUser.id };
+
+      await collection.updateOne(filter, { $set: updatedUser });
+    } finally {
+      await client.close();
+    }
+  }
 }

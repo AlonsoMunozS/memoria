@@ -15,6 +15,7 @@ const login = async (body: User) => {
     }
     const data = await response.json();
     localStorage['authToken'] = data.accessToken;
+    localStorage['expirationTime'] = data.expirationTime;
     await getUser(data.accessToken);
     return response.status;
 

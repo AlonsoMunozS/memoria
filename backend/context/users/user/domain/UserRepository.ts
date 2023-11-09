@@ -6,5 +6,6 @@ export interface UserRepository {
     find(): Promise<Array<User>>;
     findById(id: string): Promise<User>;
     findByRole(role: string): Promise<Array<User>>;
+    updatePermits(user: User): Promise<void>;
 }
 
