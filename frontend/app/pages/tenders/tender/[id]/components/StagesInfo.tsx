@@ -3,6 +3,7 @@ import { Button } from "primereact/button";
 import { useEffect, useState } from "react";
 import StageCard from "./StageCard";
 import { stages } from "../../../../../data/stages";
+import { timeTokenVerify } from "../../../../../services/LoginService";
 interface StagesInfoProps {
     tenderStages: Array<any>
     currentStage?: number;
@@ -27,6 +28,12 @@ const StagesInfo = ({ tenderStages, currentStage, stagesLoading, setCurrentStage
         )
     }
     useEffect(() => {
+        const expirationTime = localStorage.getItem('expirationTime');
+        if (!expirationTime) return;
+        if (timeTokenVerify(parseInt(expirationTime))) {
+            localStorage.clear();
+            window.location.href = '/login';
+        }
         if (!stagesLoading) {
             setSelectedStage(tenderStages[tenderStages.length - 1])
         }

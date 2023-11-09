@@ -14,6 +14,7 @@ import InfoMessage from '../../components/InfoMessage';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
 import { requestRemoveTender } from '../../../services/TenderService';
+import { timeTokenVerify } from '../../../services/LoginService';
 
 interface TenderProps {
     tenders: Array<Tender>,
@@ -61,6 +62,12 @@ const TableTenders = ({ tenders, loading, setLoading, setTenders }: TenderProps)
         setDisplayRequestDeleteTenderDialog(false);
     }
     const sendRequestDelete = async (tenderId: string) => {
+        const expirationTime = localStorage.getItem('expirationTime');
+        if (!expirationTime) return;
+        if (timeTokenVerify(parseInt(expirationTime))) {
+            localStorage.clear();
+            window.location.href = '/login';
+        }
         setDisplayRequestDeleteTenderDialog(true)
         setIdTenderRemoveRequest(tenderId)
     }

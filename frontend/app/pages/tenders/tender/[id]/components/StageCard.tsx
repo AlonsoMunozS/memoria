@@ -9,6 +9,7 @@ import { ProgressSpinner } from "primereact/progressspinner";
 import { Card } from "primereact/card";
 import AddNextStageDialog from "./AddNextStageDialog";
 import AddComment from "./AddComment";
+import { timeTokenVerify } from "../../../../../services/LoginService";
 
 type StageComment = {
     stageId: number
@@ -67,14 +68,32 @@ const StageCard = ({ stage, currentStage, setCurrentStage }: StageCardProps) => 
     }
 
     const onClickAddNextStage = () => {
+        const expirationTime = localStorage.getItem('expirationTime');
+        if (!expirationTime) return;
+        if (timeTokenVerify(parseInt(expirationTime))) {
+            localStorage.clear();
+            window.location.href = '/login';
+        }
         setShowDialogAddNextStage(true);
     }
 
     const onClickAddComment = () => {
+        const expirationTime = localStorage.getItem('expirationTime');
+        if (!expirationTime) return;
+        if (timeTokenVerify(parseInt(expirationTime))) {
+            localStorage.clear();
+            window.location.href = '/login';
+        }
         setShowDialogAddComment(true);
     }
 
     const handleButtonClick = () => {
+        const expirationTime = localStorage.getItem('expirationTime');
+        if (!expirationTime) return;
+        if (timeTokenVerify(parseInt(expirationTime))) {
+            localStorage.clear();
+            window.location.href = '/login';
+        }
         if (fileInputRef.current) {
             fileInputRef.current.click()
         }
@@ -98,6 +117,12 @@ const StageCard = ({ stage, currentStage, setCurrentStage }: StageCardProps) => 
     }))
 
     useEffect(() => {
+        const expirationTime = localStorage.getItem('expirationTime');
+        if (!expirationTime) return;
+        if (timeTokenVerify(parseInt(expirationTime))) {
+            localStorage.clear();
+            window.location.href = '/login';
+        }
         setFilesLoading(true)
         setStageCommentsLoading(true)
         getStageCommentsHandler();

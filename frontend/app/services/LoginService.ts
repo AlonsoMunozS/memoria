@@ -41,4 +41,13 @@ const getUser = async (authtoken: String) => {
         console.error('Error fetching data:', error);
     }
 }
-export default login;
+const timeTokenVerify = (expirationTime: number | null) => {
+    const currentDate = Date.now();
+    if (!expirationTime) return false;
+    const timeExpired = expirationTime < currentDate;
+    return timeExpired;
+}
+export {
+    login,
+    timeTokenVerify
+}

@@ -14,6 +14,7 @@ import { Tender } from '../tender/models/Tender';
 import { Calendar } from 'primereact/calendar';
 import { addLocale } from "primereact/api";
 import { createNewStage } from '../../../services/TenderStageService';
+import { timeTokenVerify } from '../../../services/LoginService';
 
 interface dialogProps {
     setShowDialog: (bool: boolean) => void,
@@ -221,6 +222,12 @@ export const NewTenderForm: React.FC<dialogProps> = ({ setShowDialog, setType, s
             return errors;
         },
         onSubmit: (data) => {
+            const expirationTime = localStorage.getItem('expirationTime');
+            if (!expirationTime) return;
+            if (timeTokenVerify(parseInt(expirationTime))) {
+                localStorage.clear();
+                window.location.href = '/login';
+            }
             setFormData(data);
             setShowMessage(true);
             addNewTender(data);

@@ -8,6 +8,7 @@ import { Dropdown } from 'primereact/dropdown';
 import { Tag } from 'primereact/tag';
 import { stages } from '../../../../../data/stages';
 import { UpdateTenderValue, updateTender } from '../../../../../services/TenderService';
+import { timeTokenVerify } from '../../../../../services/LoginService';
 interface tenderProps {
     tenderLoading: boolean,
     tender: Tender | undefined
@@ -54,6 +55,12 @@ const GeneralInfo = ({ tender, tenderLoading }: tenderProps) => {
     }
 
     useEffect(() => {
+        const expirationTime = localStorage.getItem('expirationTime');
+        if (!expirationTime) return;
+        if (timeTokenVerify(parseInt(expirationTime))) {
+            localStorage.clear();
+            window.location.href = '/login';
+        }
         //setId(tender?.id ? tender?.id.toString() : '');
         setTenderName(tender?.name || '');
         setSafi(tender?.safi || '');
@@ -66,6 +73,12 @@ const GeneralInfo = ({ tender, tenderLoading }: tenderProps) => {
     }, [tender]);
 
     const updateTenderInfo = async (body: UpdateTenderValue) => {
+        const expirationTime = localStorage.getItem('expirationTime');
+        if (!expirationTime) return;
+        if (timeTokenVerify(parseInt(expirationTime))) {
+            localStorage.clear();
+            window.location.href = '/login';
+        }
         if (tender) await updateTender(tender.id, body);
         setIsLoading(false);
     }
