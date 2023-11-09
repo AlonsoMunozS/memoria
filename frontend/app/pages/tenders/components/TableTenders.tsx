@@ -31,6 +31,9 @@ const TableTenders = ({ tenders, loading, setLoading, setTenders }: TenderProps)
     const [message, setMessage] = useState<string | undefined>();
     const [showToast, setShowToast] = useState<boolean>(false);
 
+    const dataUser = localStorage.getItem('dataUser');
+    const dataUserJson = JSON.parse(dataUser || '{}');
+
     const [filters, setFilters] = useState({
         'global': { value: null, matchMode: FilterMatchMode.CONTAINS },
         'safi': { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
@@ -57,8 +60,8 @@ const TableTenders = ({ tenders, loading, setLoading, setTenders }: TenderProps)
                     <InputText style={{ width: '100%' }} value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Búsqueda por palabra clave" />
                 </div>
                 <div>
-                    <Button className="p-button-rounded fullplusbutton-resp" icon="pi pi-plus" label='Agregar Licitación' onClick={() => { setDisplayNewTenderDialog(true); setShowToast(false) }} />
-                    <Button className="p-button-rounded smallplusbutton-resp" icon="pi pi-plus" onClick={() => { setDisplayNewTenderDialog(true) }} />
+                    <Button className="p-button-rounded fullplusbutton-resp" icon="pi pi-plus" label='Agregar Licitación' onClick={() => { setDisplayNewTenderDialog(true); setShowToast(false) }} disabled={dataUserJson.userPermits == null ? true : false} />
+                    <Button className="p-button-rounded smallplusbutton-resp" icon="pi pi-plus" onClick={() => { setDisplayNewTenderDialog(true) }} disabled={dataUserJson.userPermits == null ? true : false} />
                 </div>
             </div>
         )
@@ -82,12 +85,12 @@ const TableTenders = ({ tenders, loading, setLoading, setTenders }: TenderProps)
     }
 
     const actionBodyView = (rowData: any) => {
-        return <Button className="p-button-rounded" icon="pi pi-eye" onClick={() => { window.open(`http://localhost:3001/tenders/tender/${rowData.id}`, '_blank'); }}></Button>;
+        return <Button className="p-button-rounded" icon="pi pi-eye" onClick={() => { window.open(`http://localhost:3001/tenders/tender/${rowData.id}`, '_blank'); }} disabled={dataUserJson.userPermits == null ? true : false}></Button>;
     }
 
 
     const actionBodyDelete = (rowData: any) => {
-        return <Button className="p-button-rounded p-button-danger" icon="pi pi-times"></Button>;
+        return <Button className="p-button-rounded p-button-danger" icon="pi pi-times" disabled={dataUserJson.userPermits == null ? true : false}></Button>;
     }
     const header = renderHeader();
 

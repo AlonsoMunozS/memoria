@@ -2,7 +2,7 @@ type newUser = {
     userAttributes: {
         rut: string,
         email: string,
-        userPermits: {
+        userPermits?: {
             tenders?: {
                 create: boolean,
                 remove: boolean,
@@ -16,7 +16,7 @@ type newUser = {
                 read: boolean
             }
         },
-        role: string
+        role?: string
     },
     password: string
 
