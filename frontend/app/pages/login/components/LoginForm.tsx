@@ -78,6 +78,7 @@ export const LoginForm = () => {
         <div className="form-demo">
             <div className="flex justify-content-center">
                 <div className="card">
+                    <img style={{ height: "14rem" }} src="https://firebasestorage.googleapis.com/v0/b/memoria-9bc6e.appspot.com/o/logo.png?alt=media&token=a15651b6-1518-4a2d-919a-a5b06142acf2&_gl=1*10p8siy*_ga*MjgxMTgwNzcwLjE2OTI4NTEyNjk.*_ga_CW55HF8NVT*MTY5OTQ5NzI1NC42OC4xLjE2OTk0OTczMTYuNjAuMC4w" />
                     <form onSubmit={formik.handleSubmit} className="p-fluid">
                         <div className="field" style={{ textAlign: 'left' }}>
                             <span className="p-float-label p-input-icon-right">
@@ -97,7 +98,7 @@ export const LoginForm = () => {
                         </div>
                         <Button
                             type="submit"
-                            label="Ingresar"
+                            label="Iniciar sesión"
                             icon={loading ? null : ''}
                             iconPos="right" // Esto coloca el icono a la derecha del texto del botón 
                             className={loading ? 'p-button-disabled' : ''}
