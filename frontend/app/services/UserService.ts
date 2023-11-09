@@ -98,9 +98,30 @@ const getUsers = async () => {
     }
 }
 
+const updateUserPermits = async (id: string | undefined, body: any) => {
+    try {
+        const authToken = localStorage.getItem('authToken');
+
+        const response = await fetch(`http://localhost:3000/users/updatePermits/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${authToken}`
+            },
+            body: JSON.stringify(body)
+        });
+
+        return response.status
+
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
+}
+
 export {
     getUserNotifications,
     createUser,
     getUser,
-    getUsers
+    getUsers,
+    updateUserPermits
 };

@@ -8,6 +8,7 @@ import StagesInfo from "./components/StagesInfo";
 import { getTender } from "../../../../services/TenderService";
 import { Tender } from "../models/Tender";
 import { getTenderStages } from "../../../../services/TenderStageService";
+import { timeTokenVerify } from "../../../../services/LoginService";
 const Tender = () => {
     const [loggedUser, setLoggedUser] = useState<boolean>(false);
     const [tender, setTender] = useState<Tender>();
@@ -36,6 +37,12 @@ const Tender = () => {
     useEffect(() => {
         if (localStorage.getItem('authToken') == null) {
             router.push('/login');
+        }
+        const expirationTime = localStorage.getItem('expirationTime');
+        if (!expirationTime) return;
+        if (timeTokenVerify(parseInt(expirationTime))) {
+            localStorage.clear();
+            window.location.href = '/login';
         }
         else {
             if (typeof (router.query.id) == "string") {

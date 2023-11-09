@@ -4,6 +4,7 @@ import { Menu } from 'primereact/menu';
 import React, { useEffect, useRef, useState } from 'react';
 import { getUserNotifications } from '../../services/UserService';
 import { MenuItem } from 'primereact/menuitem';
+import { timeTokenVerify } from '../../services/LoginService';
 
 
 
@@ -32,6 +33,12 @@ const UserNotifications: React.FC = () => {
     };
 
     useEffect(() => {
+        const expirationTime = localStorage.getItem('expirationTime');
+        if (!expirationTime) return;
+        if (timeTokenVerify(parseInt(expirationTime))) {
+            localStorage.clear();
+            window.location.href = '/login';
+        }
         getNotifications();
     }, [loading]);
 

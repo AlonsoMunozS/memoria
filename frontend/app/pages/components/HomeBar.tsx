@@ -13,9 +13,9 @@ const HomeBar: React.FC = () => {
   const dataUserJson = JSON.parse(dataUser || '{}');
 
   const items = [
-    { label: 'Licitaciones', link: '/tenders', command: () => { router.push('/tenders') }, disabled: dataUserJson.userPermits == null ? true : false },
-    { label: 'Contratos en ejecución', link: '/contracts', command: () => { router.push('/contracts') }, disabled: dataUserJson.userPermits == null ? true : false },
-    { label: 'Empresas', link: '/companies', command: () => { router.push('/companies') }, disabled: dataUserJson.userPermits == null ? true : false },
+    { label: 'Licitaciones', link: '/tenders', command: () => { router.push('/tenders') }, disabled: dataUserJson.userPermits == null ? true : dataUserJson.userPermits?.tenders == undefined ? true : false },
+    { label: 'Contratos en ejecución', link: '/contracts', command: () => { router.push('/contracts') }, disabled: dataUserJson.userPermits == null ? true : dataUserJson.userPermits?.contracts == undefined ? true : false },
+    { label: 'Empresas', link: '/companies', command: () => { router.push('/companies') }, disabled: dataUserJson.userPermits == null ? true : dataUserJson.userPermits?.companies == undefined ? true : false },
   ];
 
   const activeIndex = items.findIndex((item) => item.link === router.pathname);
