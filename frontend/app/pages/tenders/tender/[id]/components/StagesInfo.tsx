@@ -43,8 +43,8 @@ const StagesInfo = ({ tenderStages, currentStage, stagesLoading, setCurrentStage
     return (
         <Accordion activeIndex={stagesLoading ? 0 : -1}>
             <AccordionTab header={viewStagesHeader()} >
-                {!stagesLoading && <div style={{ display: "flex", flexDirection: "column", gap: "2rem", alignItems: "center", }}>
-                    <div style={{ display: "flex", justifyContent: "center", gap: "1rem", position: "relative" }}>
+                {!stagesLoading && <div style={{ display: "flex", flexDirection: "column", gap: "2rem", alignItems: "center", width: "80%", overflowX: "auto" }}>
+                    <div style={{ display: "flex", justifyContent: "center", gap: "1rem", position: "relative", width: "100%", overflowX: "auto" }}>
                         <div style={{ position: "absolute", top: "50%", left: 0, right: 0, borderBottom: "1px solid #d8d6d6" }}></div>
                         {tenderStages && tenderStages.map((stage, index) => (
                             <Button key={index} id={`${stage.name}`} name={stages.tag[stage.name]} tooltip={stages.tag[stage.name]} tooltipOptions={{ position: "top", style: { fontSize: '10px', padding: '4px 8px' } }} className="buttonStage p-button-rounded p-button-text p-button-raised" style={{ color: selectedStage?.name == stage.name ? 'white' : '#545454', backgroundColor: selectedStage?.name == stage.name ? '#6366F1' : 'white' }} label={(index + 1).toString()} onClick={() => { onClickHandle(stage) }} />
