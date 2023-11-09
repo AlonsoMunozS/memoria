@@ -26,8 +26,7 @@ const UserPerfil: React.FC = () => {
                     label: 'Cerrar Sesión',
                     icon: 'pi pi-sign-out',
                     command: () => {
-                        localStorage.removeItem('authToken');
-                        localStorage.removeItem('dataUser');
+                        localStorage.clear();
                         router.push('/login');
                     }
                 }
