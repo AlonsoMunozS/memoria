@@ -29,7 +29,7 @@ const getUser = async (authtoken: String) => {
 
     const userId = payload['sub']
     try {
-        const response = await fetch(`http://localhost:3000/users/user/${userId}`, {
+        const response = await fetch(`http://191.233.245.250:3000/users/user/${userId}`, {
             headers: {
                 'Authorization': `Bearer ${authtoken}`
             }
