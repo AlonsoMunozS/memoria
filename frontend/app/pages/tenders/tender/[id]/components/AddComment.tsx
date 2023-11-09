@@ -32,6 +32,9 @@ const AddComment = ({ showDialog, setShowDialog, stage, setStageCommentsLoading,
     const [loading, setLoading] = useState(false);
     const msgs = useRef<Toast | null>(null);
 
+    const dataUser = localStorage.getItem('dataUser');
+    const dataUserJson = JSON.parse(dataUser || '{}');
+
     const getStageCommentsHandler = async () => {
         setStageCommentsLoading(true);
         const comments = await getStageComments(stage.id)
@@ -43,7 +46,7 @@ const AddComment = ({ showDialog, setShowDialog, stage, setStageCommentsLoading,
         setLoading(true);
         const body = {
             stageId: stage.id,
-            createdBy: 'Admin',
+            createdBy: dataUserJson.name,
             post: data.post
         }
         console.log(body)

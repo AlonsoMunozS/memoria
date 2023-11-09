@@ -1,8 +1,7 @@
-import { createStageComments, getStageComments, getStageFiles, uploadFile } from "../../../../../services/TenderStageService";
+import { getStageComments, getStageFiles, uploadFile } from "../../../../../services/TenderStageService";
 import { useRef, useState, useEffect } from "react";
 import { stages } from "../../../../../data/stages";
 import { Tag } from "primereact/tag";
-import { Dialog } from "primereact/dialog";
 import { Button } from "primereact/button";
 import { Toast } from "primereact/toast";
 import { Menu } from "primereact/menu";
@@ -146,18 +145,19 @@ const StageCard = ({ stage, currentStage, setCurrentStage }: StageCardProps) => 
                         <span style={{ marginRight: '10px' }}><strong>Comentarios: </strong></span>
                         <Button icon="pi pi-plus" className="p-button-rounded p-button-sm p-button-outlined" disabled={!(currentStage == stage.name)} onClick={onClickAddComment}></Button>
                     </div>
-                    <div style={{ display: "flex", justifyContent: "flex-start", width: '100%', maxHeight: '150px', border: '1px solid var(--surface-d)', borderRadius: '3px', marginBottom: '3vh' }}>
-                        {stageComments && !stageCommentsLoading && stageComments.map(item => (
-                            <div className="p-col-12 p-md-6 p-lg-4" key={item.stageId} style={{ width: "100%" }}>
-                                <Card >
-                                    <div><strong>Creado por:</strong> {item.createdBy}</div>
-                                    <div><strong>Fecha de creacion:</strong> {converDate(item.createdAt)}</div>
-                                    <div><strong>Comentario:</strong> {item.post}</div>
-                                </Card>
+                    <div style={{ display: "flex", flexDirection: "column", width: '100%', border: '1px solid var(--surface-d)', borderRadius: '3px', marginBottom: '3vh' }}>
+                        <div style={{ width: '100%', height: '200px', overflowY: 'auto' }}>
+                            {stageComments && !stageCommentsLoading && stageComments.map(item => (
+                                <div key={item.stageId} style={{ marginBottom: '1rem' }}>
+                                    <Card >
+                                        <div><strong>Creado por:</strong> {item.createdBy}</div>
+                                        <div><strong>Fecha de creacion:</strong> {converDate(item.createdAt)}</div>
+                                        <div><strong>Comentario:</strong> {item.post}</div>
+                                    </Card>
+                                </div>
 
-                            </div>
-
-                        ))}
+                            ))}
+                        </div>
                         {stageCommentsLoading && <ProgressSpinner style={{ width: '50px', height: '50px' }} strokeWidth="8" fill="var(--surface-ground)" animationDuration=".5s" />}
                         {stageComments?.length == 0 && !stageCommentsLoading && <span>No hay comentarios</span>}
 
