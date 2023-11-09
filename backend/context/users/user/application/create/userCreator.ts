@@ -13,12 +13,14 @@ export class UserCreator {
 
   async createUser(request: CreateUserRequest): Promise<any> {
     const rut = request.userAttributes.rut
+    const name = request.userAttributes.name
     const email = request.userAttributes.email
     const userPermits = request.userAttributes?.userPermits
     const role = request.userAttributes.role
 
     const userAttributes: UserAttributes = {
       email,
+      name,
       rut,
       userPermits,
       role

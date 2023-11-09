@@ -7,7 +7,7 @@ export const Login = () => {
     return (
         <div className="background">
             <div>
-                <Card title="Inicio de sesión" className="card-body" >
+                <Card className="card-body" >
                     <LoginForm />
                 </Card>
             </div>

@@ -14,6 +14,7 @@ export class NotificationSender {
         const today = new Date();
         const createdAt = today.getTime();
         const users = await this.byRoleUserFinder.findByRoleUser({ role: request.role })
+        console.log(users)
 
 
         if (users && request.type === "createTender") {

@@ -23,7 +23,7 @@ const HomePage = () => {
           <Layout>
             <HomeBar />
           </Layout>
-          <img style={{ width: "100%", position: 'absolute' }} src="https://firebasestorage.googleapis.com/v0/b/memoria-9bc6e.appspot.com/o/Home.jpg?alt=media&token=73939307-ad60-48d8-b721-eda7f8cc79c0&_gl=1*a83g0p*_ga*MjgxMTgwNzcwLjE2OTI4NTEyNjk.*_ga_CW55HF8NVT*MTY5NzgyMjczMC41OS4xLjE2OTc4MjI3MzUuNTUuMC4w" />
+          <img style={{ width: "50%", position: 'absolute' }} src="https://firebasestorage.googleapis.com/v0/b/memoria-9bc6e.appspot.com/o/background.png?alt=media&token=2ac52401-7c1f-4181-8718-8673f5d1ba7e&_gl=1*1fgmiad*_ga*MjgxMTgwNzcwLjE2OTI4NTEyNjk.*_ga_CW55HF8NVT*MTY5OTM4MzUzNS42Ni4xLjE2OTkzODQ0NTEuMy4wLjA." />
         </div>
       )}
     </div>

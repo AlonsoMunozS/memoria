@@ -55,3 +55,13 @@
 .p-scrollpanel.custombar .p-scrollpanel-bar:hover {
     background-color: #007ad9;
 }
+
+@media (max-width: 800px) {
+    .part2 {
+        display: none;
+    }
+
+    .contenedor-tenderInfo {
+        grid-template-columns: 1fr;
+    }
+}

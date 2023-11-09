@@ -2,7 +2,7 @@ import { Badge } from 'primereact/badge';
 import { Button } from 'primereact/button';
 import { Menu } from 'primereact/menu';
 import React, { useEffect, useRef, useState } from 'react';
-import getUserNotifications from '../../services/UserService';
+import { getUserNotifications } from '../../services/UserService';
 import { MenuItem } from 'primereact/menuitem';
 
 
@@ -45,12 +45,9 @@ const UserNotifications: React.FC = () => {
     let items = [
         ...notificationitems,
         {
-            template: () => {
-                return (
-                    <div style={{ display: 'flex', alignContent: "column", justifyContent: "center" }}>
-                        <Button style={{ height: '2rem' }} label="Recargar" icon={loading ? 'pi pi-refresh pi-spin' : 'pi pi-refresh'} onClick={refreshClick} />
-                    </div>)
-            }
+            label: "Recargar notificaciones",
+            icon: 'pi pi-undo', // Puedes cambiar el icono según tus necesidades
+            command: () => { refreshClick() }
         }
     ];
     const allItems: MenuItem[] = [{

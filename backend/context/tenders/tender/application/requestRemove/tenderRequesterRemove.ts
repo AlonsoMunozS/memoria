@@ -16,7 +16,7 @@ export class TenderRequesterRemove {
 
     await this.notificationSenser.sendNotification({
       id: tender.id,
-      role: "admin",
+      role: "Admin",
       type: "RequestRemoveNotification",
       requester: request.userId
     })

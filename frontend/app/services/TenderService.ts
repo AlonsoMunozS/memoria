@@ -75,9 +75,24 @@ const updateTender = async (id: number, body: UpdateTenderValue) => {
     }
 }
 
+const requestRemoveTender = async (id: string) => {
+    try {
+        const authToken = localStorage.getItem('authToken');
+        const response = await fetch(`http://localhost:3000/tenders/tender/requestRemove/${id}`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${authToken}`
+            }
+        });
+        return response.status
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
+}
 export {
     createTender,
     getTenders,
     getTender,
-    updateTender
+    updateTender,
+    requestRemoveTender
 };

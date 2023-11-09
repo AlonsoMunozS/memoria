@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { FilterMatchMode, FilterOperator } from 'primereact/api';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
@@ -12,6 +12,8 @@ import NewTenderForm from './NewTenderForm';
 import { stages } from '../../../data/stages';
 import InfoMessage from '../../components/InfoMessage';
 import { ProgressSpinner } from 'primereact/progressspinner';
+import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
+import { requestRemoveTender } from '../../../services/TenderService';
 
 interface TenderProps {
     tenders: Array<Tender>,
@@ -30,6 +32,10 @@ const TableTenders = ({ tenders, loading, setLoading, setTenders }: TenderProps)
     const [type, setType] = useState<"success" | "info" | "warn" | "error" | undefined>();
     const [message, setMessage] = useState<string | undefined>();
     const [showToast, setShowToast] = useState<boolean>(false);
+    const [idTenderRemoveRequest, setIdTenderRemoveRequest] = useState<string>("")
+
+    const dataUser = localStorage.getItem('dataUser');
+    const dataUserJson = JSON.parse(dataUser || '{}');
 
     const [filters, setFilters] = useState({
         'global': { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -39,6 +45,8 @@ const TableTenders = ({ tenders, loading, setLoading, setTenders }: TenderProps)
     });
     const [globalFilterValue, setGlobalFilterValue] = useState('');
     const [displayNewTenderDialog, setDisplayNewTenderDialog] = useState(false);
+    const [displayRequestDeleteTenderDialog, setDisplayRequestDeleteTenderDialog] = useState(false);
+
 
     const onGlobalFilterChange = (e: any) => {
         const value = e.target.value;
@@ -47,6 +55,14 @@ const TableTenders = ({ tenders, loading, setLoading, setTenders }: TenderProps)
 
         setFilters(_filters);
         setGlobalFilterValue(value);
+    }
+    const accept = async () => {
+        await requestRemoveTender(idTenderRemoveRequest)
+        setDisplayRequestDeleteTenderDialog(false);
+    }
+    const sendRequestDelete = async (tenderId: string) => {
+        setDisplayRequestDeleteTenderDialog(true)
+        setIdTenderRemoveRequest(tenderId)
     }
 
     const renderHeader = () => {
@@ -57,8 +73,8 @@ const TableTenders = ({ tenders, loading, setLoading, setTenders }: TenderProps)
                     <InputText style={{ width: '100%' }} value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Búsqueda por palabra clave" />
                 </div>
                 <div>
-                    <Button className="p-button-rounded fullplusbutton-resp" icon="pi pi-plus" label='Agregar Licitación' onClick={() => { setDisplayNewTenderDialog(true); setShowToast(false) }} />
-                    <Button className="p-button-rounded smallplusbutton-resp" icon="pi pi-plus" onClick={() => { setDisplayNewTenderDialog(true) }} />
+                    <Button className="p-button-rounded fullplusbutton-resp" icon="pi pi-plus" label='Agregar Licitación' onClick={() => { setDisplayNewTenderDialog(true); setShowToast(false) }} disabled={dataUserJson.userPermits == null ? true : false} />
+                    <Button className="p-button-rounded smallplusbutton-resp" icon="pi pi-plus" onClick={() => { setDisplayNewTenderDialog(true) }} disabled={dataUserJson.userPermits == null ? true : false} />
                 </div>
             </div>
         )
@@ -82,10 +98,15 @@ const TableTenders = ({ tenders, loading, setLoading, setTenders }: TenderProps)
     }
 
     const actionBodyView = (rowData: any) => {
-        return <Button className="p-button-rounded" icon="pi pi-eye" onClick={() => { window.open(`http://191.233.245.250:3001/tenders/tender/${rowData.id}`, '_blank'); }}></Button>;
+        return <Button className="p-button-rounded" icon="pi pi-eye" onClick={() => { window.open(`http://191.233.245.250:3001/tenders/tender/${rowData.id}`, '_blank'); }} disabled={dataUserJson.userPermits == null ? true : false}></Button>;
+    }
+
+
+    const actionBodyDelete = (rowData: any) => {
+        return <Button className="p-button-rounded p-button-danger" icon="pi pi-times" onClick={() => { sendRequestDelete(rowData.id) }} disabled={dataUserJson.userPermits == null ? true : false}></Button>;
     }
     const header = renderHeader();
-
+    const messageRequest = `¿Estas seguro/a de enviar la solicitud para eliminar la licitación ${idTenderRemoveRequest}?`
     return (
         <div className="datatable-doc-demo">
             {loading && (
@@ -99,10 +120,11 @@ const TableTenders = ({ tenders, loading, setLoading, setTenders }: TenderProps)
                 filters={filters} filterDisplay="menu"
                 globalFilterFields={['name', 'mercadoPublicoId', 'currentStage']} emptyMessage="No se han encontrado licitaciones."
                 currentPageReportTemplate={"Se encontraton {totalRecords} Licitaciones"}>
-                <Column field="name" header="Nombre" sortable filter filterPlaceholder="Búsqueda por nombre" style={{ minWidth: '14rem' }} />
-                <Column field="mercadoPublicoId" header="ID Mercado Público" sortable filter filterPlaceholder="Búsqueda por Id mercado público" style={{ minWidth: '14rem' }} />
-                <Column field="currentStage" header="Etapa" sortable filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '10rem' }} body={currentStageBodyTemplate} filter filterElement={currentStageFilterTemplate} />
+                <Column field="name" header="Nombre" />
+                <Column field="mercadoPublicoId" header="ID Mercado Público" />
+                <Column field="currentStage" header="Etapa" body={currentStageBodyTemplate} />
                 <Column header='Ver' headerStyle={{ width: '4rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={actionBodyView} />
+                <Column header='Eliminar' headerStyle={{ width: '4rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={actionBodyDelete} />
             </DataTable>
             <NewTenderDialog showDialog={displayNewTenderDialog} setShowDialog={setDisplayNewTenderDialog}>
                 <NewTenderForm setShowDialog={setDisplayNewTenderDialog} setType={setType} setMessage={setMessage} setShowToast={setShowToast} setTenders={setTenders} setLoadingTenders={setLoading} />
@@ -110,6 +132,8 @@ const TableTenders = ({ tenders, loading, setLoading, setTenders }: TenderProps)
             <div className='p-toast'>
                 <InfoMessage type={type} message={message} showToast={showToast} />
             </div>
+            <ConfirmDialog visible={displayRequestDeleteTenderDialog} onHide={() => setDisplayRequestDeleteTenderDialog(false)} message={messageRequest}
+                header="Solicitud de eliminación" icon="pi pi-exclamation-triangle" acceptClassName='p-button-danger' accept={accept} reject={() => { setDisplayRequestDeleteTenderDialog(false) }} />
         </div>
     );
 };

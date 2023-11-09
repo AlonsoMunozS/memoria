@@ -22,6 +22,7 @@ export class CreateUserController {
       userAttributes,
       password
     }
+    console.log(request)
 
     try {
       await this.userCretor.createUser(request)

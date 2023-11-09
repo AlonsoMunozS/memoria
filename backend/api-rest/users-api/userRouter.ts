@@ -1,6 +1,6 @@
 import express from "express";
 
-import { createUserController, findByIdUserController, loginUserController, updatePasswordController } from "./usersDependencies";
+import { createUserController, findByIdUserController, findUsersController, loginUserController, updatePasswordController, updatePermitsController } from "./usersDependencies";
 
 
 const userRouter = express.Router();
@@ -20,9 +20,16 @@ userRouter.get(
   findByIdUserController.findByIdUser.bind(findByIdUserController)
 );
 
+userRouter.get(
+  "/",
+  findUsersController.findUsers.bind(findUsersController)
+);
 userRouter.put(
   "/updatePassword",
   updatePasswordController.updatePassword.bind(updatePasswordController)
 );
-
+userRouter.put(
+  "/updatePermits/:userUpdatedId",
+  updatePermitsController.updatePermits.bind(updatePermitsController)
+);
 export { userRouter };

@@ -19,6 +19,7 @@ const collectionName = "Users";
 export class MongoUserRepository implements UserRepository {
 
   async create(userId: string, userAttributes: UserAttributes): Promise<void> {
+    console.log(userAttributes)
     const user = User.create({
       id: userId,
       userAttributes
@@ -43,6 +44,7 @@ export class MongoUserRepository implements UserRepository {
       }
       const user = new User({
         id: userFound?.userId,
+        name: userFound?.name,
         createAt: userFound?.createAt,
         email: userFound?.email,
         rut: userFound?.rut,
@@ -64,6 +66,7 @@ export class MongoUserRepository implements UserRepository {
       const mappedUser: User[] = usersArray.map((userDoc: any) => {
         return new User({
           id: userDoc?.id,
+          name: userDoc?.name,
           email: userDoc?.email,
           createAt: userDoc?.createAt,
           role: userDoc?.role,
@@ -72,6 +75,39 @@ export class MongoUserRepository implements UserRepository {
         });
       });
       return mappedUser;
+    } finally {
+      await client.close();
+    }
+  }
+  async find(): Promise<Array<User>> {
+    try {
+      await client.connect();
+      const collection = database.collection(collectionName);
+      const usersCursor = collection.find({});
+      const usersArray = await usersCursor.toArray();
+      const mappedUsers: User[] = usersArray.map((userDoc: any) => {
+        return new User({
+          id: userDoc?.id,
+          name: userDoc?.name,
+          rut: userDoc?.rut,
+          email: userDoc?.email,
+          createAt: userDoc?.createAt,
+          userPermits: userDoc?.userPermits,
+          role: userDoc?.role
+        });
+      });
+      return mappedUsers;
+    } finally {
+      await client.close();
+    }
+  }
+  async updatePermits(updatedUser: User): Promise<void> {
+    try {
+      await client.connect();
+      const collection = database.collection(collectionName);
+      const filter = { id: updatedUser.id };
+
+      await collection.updateOne(filter, { $set: updatedUser });
     } finally {
       await client.close();
     }

@@ -71,7 +71,7 @@ const getStageFiles = async (tenderId: number, stageName: number) => {
     }
 }
 
-const createStageComments = async (body: { stageId: number, post: string }) => {
+const createStageComments = async (body: { stageId: number, createdBy: string, post: string }) => {
     try {
         const authToken = localStorage.getItem('authToken');
         const response = await fetch(`http://191.233.245.250:3000/tenders/tender/stage/comment/create`, {
