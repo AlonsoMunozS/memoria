@@ -19,6 +19,7 @@ const collectionName = "Users";
 export class MongoUserRepository implements UserRepository {
 
   async create(userId: string, userAttributes: UserAttributes): Promise<void> {
+    console.log(userAttributes)
     const user = User.create({
       id: userId,
       userAttributes

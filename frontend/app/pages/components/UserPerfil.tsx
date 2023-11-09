@@ -10,7 +10,7 @@ const UserPerfil: React.FC = () => {
     const dataUserJson = JSON.parse(dataUser || '{}');
     const items = [
         {
-            label: `¡Hola, Admin!`,
+            label: `¡Hola, ${dataUserJson.name}!`,
             items: [
                 {
                     label: 'Ver perfil',
@@ -27,6 +27,7 @@ const UserPerfil: React.FC = () => {
                     icon: 'pi pi-sign-out',
                     command: () => {
                         localStorage.removeItem('authToken');
+                        localStorage.removeItem('dataUser');
                         router.push('/login');
                     }
                 }
@@ -39,7 +40,7 @@ const UserPerfil: React.FC = () => {
             <div className="card">
                 <Menu model={items} popup ref={menu} id="popup_menu" />
                 <Button
-                    label="Admin"
+                    label={dataUserJson.name}
                     icon="pi pi-user"
                     className="p-button-rounded p-button-outlined fullbutton-resp"
                     onClick={(event) => menu.current?.toggle(event)}

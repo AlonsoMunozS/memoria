@@ -3,31 +3,21 @@ interface User {
     password: string
 }
 const login = async (body: User) => {
-    let status = null;
-    await fetch('http://localhost:3000/users/login', {
+    const response = await fetch('http://localhost:3000/users/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(body)
     })
-        .then(response => {
-            status = response.status;
-            if (!response.ok) {
-                throw new Error(`La solicitud falló con código de estado ${response.status}`);
-            }
+    if (!response.ok) {
+        return response.status;
+    }
+    const data = await response.json();
+    localStorage['authToken'] = data.accessToken;
+    await getUser(data.accessToken);
+    return response.status;
 
-            return response.json();
-        })
-        .then(data => {
-            localStorage['authToken'] = data.accessToken;
-            getUser(data.accessToken);
-        })
-        .catch(error => {
-            //console.error('Error de solicitud:', error.message);
-        });
-
-    return status;
 }
 
 const getUser = async (authtoken: String) => {
@@ -44,7 +34,7 @@ const getUser = async (authtoken: String) => {
             }
         });
         const jsonData = await response.json();
-        localStorage['dataUser'] = JSON.stringify(jsonData);;
+        localStorage['dataUser'] = JSON.stringify(await jsonData);;
         console.log("jsonData:", jsonData.email)
     } catch (error) {
         console.error('Error fetching data:', error);

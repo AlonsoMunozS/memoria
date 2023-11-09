@@ -19,8 +19,8 @@ export class UserCreator {
     const role = request.userAttributes.role
 
     const userAttributes: UserAttributes = {
-      name,
       email,
+      name,
       rut,
       userPermits,
       role
