@@ -60,15 +60,6 @@ const StageCard = ({ stage, currentStage, setCurrentStage }: StageCardProps) => 
         getFiles()
 
     }
-    const createCommentHandler = async (post: string) => {
-        setStageCommentsLoading(true);
-        await createStageComments({ stageId: stage.id, post })
-        setStageCommentsLoading(false);
-        msgs.current?.show({ severity: "success", summary: "Exitoso", detail: "Archivo subido correctamente", life: 3000 });
-        getStageCommentsHandler()
-
-    }
-
 
     const getStageCommentsHandler = async () => {
         const comments = await getStageComments(stage.id)
@@ -159,7 +150,7 @@ const StageCard = ({ stage, currentStage, setCurrentStage }: StageCardProps) => 
                         {stageComments && !stageCommentsLoading && stageComments.map(item => (
                             <div className="p-col-12 p-md-6 p-lg-4" key={item.stageId} style={{ width: "100%" }}>
                                 <Card >
-                                    <div><strong>Creado por:</strong> Admin</div>
+                                    <div><strong>Creado por:</strong> {item.createdBy}</div>
                                     <div><strong>Fecha de creacion:</strong> {converDate(item.createdAt)}</div>
                                     <div><strong>Comentario:</strong> {item.post}</div>
                                 </Card>

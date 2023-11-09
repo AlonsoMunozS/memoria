@@ -6,9 +6,11 @@ import React, { useRef } from 'react';
 const UserPerfil: React.FC = () => {
     const menu = useRef<Menu | null>(null);
     const router = useRouter();
+    const dataUser = localStorage.getItem('dataUser');
+    const dataUserJson = JSON.parse(dataUser || '{}');
     const items = [
         {
-            label: '¡Hola, Admin!',
+            label: `¡Hola, Admin!`,
             items: [
                 {
                     label: 'Ver perfil',
@@ -31,7 +33,7 @@ const UserPerfil: React.FC = () => {
             ]
         }
     ];
-
+    console.log("DataUser:", dataUserJson.email)
     return (
         <div>
             <div className="card">

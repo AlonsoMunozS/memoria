@@ -43,6 +43,7 @@ const AddComment = ({ showDialog, setShowDialog, stage, setStageCommentsLoading,
         setLoading(true);
         const body = {
             stageId: stage.id,
+            createdBy: 'Admin',
             post: data.post
         }
         console.log(body)
