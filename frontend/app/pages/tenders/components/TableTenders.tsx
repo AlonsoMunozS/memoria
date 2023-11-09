@@ -73,8 +73,8 @@ const TableTenders = ({ tenders, loading, setLoading, setTenders }: TenderProps)
                     <InputText style={{ width: '100%' }} value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Búsqueda por palabra clave" />
                 </div>
                 <div>
-                    <Button className="p-button-rounded fullplusbutton-resp" icon="pi pi-plus" label='Agregar Licitación' onClick={() => { setDisplayNewTenderDialog(true); setShowToast(false) }} disabled={dataUserJson.userPermits == null ? true : false} />
-                    <Button className="p-button-rounded smallplusbutton-resp" icon="pi pi-plus" onClick={() => { setDisplayNewTenderDialog(true) }} disabled={dataUserJson.userPermits == null ? true : false} />
+                    <Button className="p-button-rounded fullplusbutton-resp" icon="pi pi-plus" label='Agregar Licitación' onClick={() => { setDisplayNewTenderDialog(true); setShowToast(false) }} disabled={dataUserJson.userPermits == null ? true : dataUserJson.userPermits?.tenders?.create == false ? true : false} />
+                    <Button className="p-button-rounded smallplusbutton-resp" icon="pi pi-plus" onClick={() => { setDisplayNewTenderDialog(true) }} disabled={dataUserJson.userPermits == null ? true : dataUserJson.userPermits?.tenders?.create == false ? true : false} />
                 </div>
             </div>
         )
@@ -98,12 +98,12 @@ const TableTenders = ({ tenders, loading, setLoading, setTenders }: TenderProps)
     }
 
     const actionBodyView = (rowData: any) => {
-        return <Button className="p-button-rounded" icon="pi pi-eye" onClick={() => { window.open(`http://localhost:3001/tenders/tender/${rowData.id}`, '_blank'); }} disabled={dataUserJson.userPermits == null ? true : false}></Button>;
+        return <Button className="p-button-rounded" icon="pi pi-eye" onClick={() => { window.open(`http://localhost:3001/tenders/tender/${rowData.id}`, '_blank'); }} disabled={dataUserJson.userPermits == null ? true : dataUserJson.userPermits?.tenders?.read == false ? true : false}></Button>;
     }
 
 
     const actionBodyDelete = (rowData: any) => {
-        return <Button className="p-button-rounded p-button-danger" icon="pi pi-times" onClick={() => { sendRequestDelete(rowData.id) }} disabled={dataUserJson.userPermits == null ? true : false}></Button>;
+        return <Button className="p-button-rounded p-button-danger" icon="pi pi-times" onClick={() => { sendRequestDelete(rowData.id) }} disabled={dataUserJson.userPermits == null ? true : dataUserJson.userPermits?.tenders?.remove == false ? true : false}></Button>;
     }
     const header = renderHeader();
     const messageRequest = `¿Estas seguro/a de enviar la solicitud para eliminar la licitación ${idTenderRemoveRequest}?`

@@ -6,6 +6,7 @@ import { getUsers } from '../../services/UserService';
 import TableUsers from './components/TableUsers';
 
 type User = {
+    id: string,
     name: string,
     rut: string,
     email: string,
