@@ -35,7 +35,6 @@ const Admin: React.FC = () => {
     const getUserList = async () => {
         const responseUsers = await getUsers();
         setUsers(responseUsers);
-        console.log(responseUsers);
         setLoading(false);
     }
 

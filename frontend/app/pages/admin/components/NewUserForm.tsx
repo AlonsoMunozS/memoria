@@ -6,11 +6,13 @@ import { ProgressSpinner } from "primereact/progressspinner"
 import { useState } from "react"
 import { classNames } from 'primereact/utils';
 import { Password } from "primereact/password"
+import { createUser, getUsers } from "../../../services/UserService"
 
 interface dialogProps {
     setShowDialog: (bool: boolean) => void,
     setUsers: React.Dispatch<React.SetStateAction<Array<User>>>,
-    showDialog: boolean
+    showDialog: boolean,
+    setLoading: React.Dispatch<React.SetStateAction<boolean>>
 }
 type User = {
     name: string,
@@ -41,33 +43,43 @@ interface FormErrors {
     password?: string
 }
 
-export const NewUserForm: React.FC<dialogProps> = ({ setShowDialog, showDialog, setUsers }) => {
-    const [selectedRegion, setSelectedRegion] = useState<boolean>(false);
-    const [selectedProvince, setSelectedProvince] = useState<boolean>(false);
-    const [provinceSelectRegion, setProvinceSelectRegion] = useState<Array<string>>();
-    const [communeSelectProvince, setCommuneSelectProvince] = useState<Array<string>>();
-    const [loading, setLoading] = useState<boolean>(false)
+export const NewUserForm: React.FC<dialogProps> = ({ setShowDialog, showDialog, setUsers, setLoading }) => {
+    const [loadingSave, setLoadingSave] = useState<boolean>(false)
+
+
+    const getUserList = async () => {
+        setLoading(true);
+        const responseUsers = await getUsers();
+        setUsers(responseUsers);
+        setLoading(false);
+    }
 
 
     const addNewUser = async (data: any) => {
-        //setLoading(true);
-        //const responseStatus = await createTender(data);
-        /*if (responseStatus === 201) {
-            setType("success")
-            setMessage("Licitación agregada con éxito")
+        setLoadingSave(true);
+        const dataUser = {
+            userAttributes: {
+                name: data.name,
+                rut: data.rut,
+                email: data.email,
+            },
+            password: data.password
+        }
+        const responseStatus = await createUser(dataUser);
+        if (responseStatus === 201) {
             onHide();
-            setShowToast(true);
             formik.resetForm();
-            setLoading(false);
-            getTenderList(data);
+            setLoadingSave(false);
+            getUserList();
 
-        }*/
+        }
         console.log(data);
 
     }
 
     const onHide = () => {
         setShowDialog(false);
+        formik.resetForm();
     }
 
     const formik = useFormik({
@@ -155,12 +167,12 @@ export const NewUserForm: React.FC<dialogProps> = ({ setShowDialog, showDialog, 
                                     <Button
                                         type="submit"
                                         label="Guardar"
-                                        icon={loading ? null : 'pi pi-check'}
+                                        icon={loadingSave ? null : 'pi pi-check'}
                                         iconPos="right" // Esto coloca el icono a la derecha del texto del botón 
-                                        className={loading ? 'p-button-disabled ' : 'p-button-warning'}
-                                        disabled={loading}
+                                        className={loadingSave ? 'p-button-disabled p-button-warning' : 'p-button-warning'}
+                                        disabled={loadingSave}
                                     >
-                                        {loading && <ProgressSpinner style={{ width: '20px', height: '20px' }} strokeWidth="15" animationDuration=".5s" />}</Button>
+                                        {loadingSave && <ProgressSpinner style={{ width: '20px', height: '20px' }} strokeWidth="15" animationDuration=".5s" />}</Button>
                                 </div>
                             </form>
                         </div>

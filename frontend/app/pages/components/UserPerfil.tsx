@@ -20,7 +20,7 @@ const UserPerfil: React.FC = () => {
                     label: 'Panel de Administrador',
                     icon: 'pi pi-shield',
                     command: () => { router.push('/admin') },
-                    visible: true
+                    visible: dataUserJson.role == 'Admin' ? true : false
                 },
                 {
                     label: 'Cerrar Sesión',

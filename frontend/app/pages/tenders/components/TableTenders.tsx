@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { FilterMatchMode, FilterOperator } from 'primereact/api';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
@@ -84,6 +84,11 @@ const TableTenders = ({ tenders, loading, setLoading, setTenders }: TenderProps)
     const actionBodyView = (rowData: any) => {
         return <Button className="p-button-rounded" icon="pi pi-eye" onClick={() => { window.open(`http://localhost:3001/tenders/tender/${rowData.id}`, '_blank'); }}></Button>;
     }
+
+
+    const actionBodyDelete = (rowData: any) => {
+        return <Button className="p-button-rounded p-button-danger" icon="pi pi-times"></Button>;
+    }
     const header = renderHeader();
 
     return (
@@ -103,6 +108,7 @@ const TableTenders = ({ tenders, loading, setLoading, setTenders }: TenderProps)
                 <Column field="mercadoPublicoId" header="ID Mercado Público" />
                 <Column field="currentStage" header="Etapa" body={currentStageBodyTemplate} />
                 <Column header='Ver' headerStyle={{ width: '4rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={actionBodyView} />
+                <Column header='Eliminar' headerStyle={{ width: '4rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={actionBodyDelete} />
             </DataTable>
             <NewTenderDialog showDialog={displayNewTenderDialog} setShowDialog={setDisplayNewTenderDialog}>
                 <NewTenderForm setShowDialog={setDisplayNewTenderDialog} setType={setType} setMessage={setMessage} setShowToast={setShowToast} setTenders={setTenders} setLoadingTenders={setLoading} />

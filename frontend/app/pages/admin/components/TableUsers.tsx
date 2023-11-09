@@ -95,9 +95,9 @@ const TableUsers = ({ users, loading, setLoading, setUsers }: UserProps) => {
                 <Column field="name" header="Nombre" />
                 <Column field="rut" header="Rut" />
                 <Column field="email" header="Correo electrónico" />
-                <Column header='Editar' headerStyle={{ width: '4rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={actionBodyView} />
+                <Column header='Editar permisos' headerStyle={{ width: '10rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={actionBodyView} />
             </DataTable>
-            <NewUserForm setShowDialog={setDisplayNewUserDialog} showDialog={displayNewUserDialog} setUsers={setUsers} />
+            <NewUserForm setShowDialog={setDisplayNewUserDialog} showDialog={displayNewUserDialog} setUsers={setUsers} setLoading={setLoading} />
             <div className='p-toast'>
                 <InfoMessage type={type} message={message} showToast={showToast} />
             </div>
