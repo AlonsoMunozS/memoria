@@ -45,12 +45,9 @@ const UserNotifications: React.FC = () => {
     let items = [
         ...notificationitems,
         {
-            template: () => {
-                return (
-                    <div style={{ display: 'flex', alignContent: "column", justifyContent: "center" }}>
-                        <Button style={{ height: '2rem' }} label="Recargar" icon={loading ? 'pi pi-refresh pi-spin' : 'pi pi-refresh'} onClick={refreshClick} />
-                    </div>)
-            }
+            label: "Recargar notificaciones",
+            icon: 'pi pi-undo', // Puedes cambiar el icono según tus necesidades
+            command: () => { refreshClick() }
         }
     ];
     const allItems: MenuItem[] = [{
