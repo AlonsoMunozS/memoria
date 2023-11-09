@@ -15,6 +15,7 @@ interface dialogProps {
     setLoading: React.Dispatch<React.SetStateAction<boolean>>
 }
 type User = {
+    id: string,
     name: string,
     rut: string,
     email: string,

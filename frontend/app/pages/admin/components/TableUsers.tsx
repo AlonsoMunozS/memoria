@@ -7,8 +7,10 @@ import { InputText } from 'primereact/inputtext';
 import InfoMessage from '../../components/InfoMessage';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import NewUserForm from './NewUserForm';
+import EditUserForm from './EditUserForm';
 
 type User = {
+    id: string,
     name: string,
     rut: string,
     email: string,
@@ -41,6 +43,7 @@ const TableUsers = ({ users, loading, setLoading, setUsers }: UserProps) => {
     const [type, setType] = useState<"success" | "info" | "warn" | "error" | undefined>();
     const [message, setMessage] = useState<string | undefined>();
     const [showToast, setShowToast] = useState<boolean>(false);
+    const [actualUser, setActualUser] = useState<User>();
 
     const [filters, setFilters] = useState({
         'global': { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -50,6 +53,7 @@ const TableUsers = ({ users, loading, setLoading, setUsers }: UserProps) => {
     });
     const [globalFilterValue, setGlobalFilterValue] = useState('');
     const [displayNewUserDialog, setDisplayNewUserDialog] = useState(false);
+    const [displayNewUserDialogEdit, setDisplayNewUserDialogEdit] = useState(false);
 
     const onGlobalFilterChange = (e: any) => {
         const value = e.target.value;
@@ -75,8 +79,8 @@ const TableUsers = ({ users, loading, setLoading, setUsers }: UserProps) => {
         )
     }
 
-    const actionBodyView = (rowData: any) => {
-        return <Button className="p-button-rounded p-button-warning" icon="pi pi-pencil"></Button>;
+    const actionBodyEdit = (rowData: any) => {
+        return <Button className="p-button-rounded p-button-warning" icon="pi pi-pencil" onClick={() => { setDisplayNewUserDialogEdit(true), setActualUser(rowData) }}></Button>;
     }
     const header = renderHeader();
 
@@ -95,9 +99,10 @@ const TableUsers = ({ users, loading, setLoading, setUsers }: UserProps) => {
                 <Column field="name" header="Nombre" />
                 <Column field="rut" header="Rut" />
                 <Column field="email" header="Correo electrónico" />
-                <Column header='Editar permisos' headerStyle={{ width: '10rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={actionBodyView} />
+                <Column header='Editar permisos' headerStyle={{ width: '10rem', textAlign: 'center' }} bodyStyle={{ textAlign: 'center', overflow: 'visible' }} body={actionBodyEdit} />
             </DataTable>
             <NewUserForm setShowDialog={setDisplayNewUserDialog} showDialog={displayNewUserDialog} setUsers={setUsers} setLoading={setLoading} />
+            <EditUserForm setShowDialog={setDisplayNewUserDialogEdit} showDialog={displayNewUserDialogEdit} setUsers={setUsers} setLoading={setLoading} user={actualUser} setUser={setActualUser} />
             <div className='p-toast'>
                 <InfoMessage type={type} message={message} showToast={showToast} />
             </div>
