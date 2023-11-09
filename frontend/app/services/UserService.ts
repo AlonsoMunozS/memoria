@@ -3,7 +3,13 @@ type newUser = {
         rut: string,
         email: string,
         userPermits: {
-            contracts: {
+            tenders?: {
+                create: boolean,
+                remove: boolean,
+                update: boolean,
+                read: boolean
+            },
+            contracts?: {
                 create: boolean,
                 remove: boolean,
                 update: boolean,
@@ -77,7 +83,7 @@ const getUsers = async () => {
     try {
         const authToken = localStorage.getItem('authToken');
 
-        const response = await fetch('http://localhost:3000/notifications/findByUser/', {
+        const response = await fetch('http://localhost:3000/users', {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${authToken}`
