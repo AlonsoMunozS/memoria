@@ -56,7 +56,7 @@ export class CreateTenderStageController {
 
     try {
       await this.tenderStageCreator.createTenderStage(request)
-      res.status(201).send();
+      res.status(200).send();
       return;
     } catch (error) {
       if (error instanceof Error) {

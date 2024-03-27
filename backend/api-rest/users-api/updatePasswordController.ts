@@ -26,7 +26,7 @@ export class UpdatePasswordController {
 
         try {
             await this.passwordUpdater.updatePassword(request)
-            res.status(201).send();
+            res.status(200).send();
             return;
         } catch (error) {
             if (error instanceof Error) {

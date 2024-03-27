@@ -46,7 +46,7 @@ export class UpdateTenderController {
         }
         try {
             await this.tenderUpdater.updateTender(request)
-            res.status(201).send();
+            res.status(200).send();
             return;
         } catch (error) {
             res.status(500).send();

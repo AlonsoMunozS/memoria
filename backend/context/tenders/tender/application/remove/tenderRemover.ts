@@ -15,10 +15,10 @@ export class TenderRemover {
     }
     await this.tenderRepository.remove(tender.id)
 
-    await this.notificationSenser.sendNotification({
-      id: tender.id,
-      role: "admin",
-      type: "removeTender"
-    })
+    // await this.notificationSenser.sendNotification({
+    //   id: tender.id,
+    //   role: "Admin",
+    //   type: "removeTender"
+    // })
   }
 }
